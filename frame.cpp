@@ -26,21 +26,12 @@ void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 }
 void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    /* Устанавливаем позицию графического элемента
-     * в графической сцене, транслировав координаты
-     * курсора внутри графического элемента
-     * в координатную систему графической сцены
-     * */
-
     this->setPos(mapToScene(event->pos()));
     Q_UNUSED(event);
 
 }
 void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    /* При нажатии мышью на графический элемент
-     * заменяем курсор на руку, которая держит этот элемента
-     * */
     if (event->button() & Qt::RightButton){
     this->setCursor(QCursor(Qt::ClosedHandCursor));
     Q_UNUSED(event);
@@ -50,9 +41,6 @@ void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void FRAME::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    /* При отпускании мышью элемента
-     * заменяем на обычный курсор стрелку
-     * */
     this->setCursor(QCursor(Qt::ArrowCursor));
     Q_UNUSED(event);
 }

@@ -43,13 +43,11 @@ void MainWindow::loadImg()
 {
     bool a=pixImg.loadFromData(ImgGetleft->downloadedImg());
     if(pix!=nullptr && a){leftCAM->removeItem(pix); leftCAM->clear(); delete pix;}
-    //QPixmap p=pixImg.scaled(4000,4000);
     if(a){
     pix=leftCAM->addPixmap(pixImg);
     pix->setPos(-960,-540);
     leftCAM->update ();
     }
-    //delete pix;
 
 }
 
@@ -104,30 +102,3 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if(event->key()==Qt::Key_Minus){ui->graphicsView->scale(0.5,0.5);ui->graphicsView_2->scale(0.5,0.5);}
     if(event->key()==Qt::Key_Plus){ui->graphicsView->scale(2,2);ui->graphicsView_2->scale(2,2);}
 }
-
-void MainWindow::read_data()
-{
-    QByteArray data;
-    QHostAddress addr;
-    quint16 port;
-    data.resize(leftsock->pendingDatagramSize());
-    leftsock->readDatagram(data.data(),data.size(),&addr,&port);
-    add_mixmap(data);
-
-}
-
-void MainWindow::add_mixmap(QByteArray &data)
-{
-    QByteArray b2=QByteArray::fromBase64(data);
-    QImage m=QImage::fromData(data);
-
-
-    p.fromImage(m);
-    leftCAM->addPixmap(p);
-
-    leftCAM->update();
-    qDebug()<<12;
-
-}
-
-
