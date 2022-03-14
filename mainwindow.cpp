@@ -26,21 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing);
     ui->graphicsView_2->setRenderHint(QPainter::HighQualityAntialiasing);
 
-    QUrl imageUrl("https://blog.mystart.com/wp-content/uploads/MyDogs_5ffddc6904abd18a7e5ddec5.jpeg");
-    ImgGet = new ImgData(imageUrl, this);
-    connect(ImgGet,&ImgData::downloaded,this,&MainWindow::loadImg);
+    QUrl imageUrl("http://admin:qwerty1234@169.254.111.243/ISAPI/Streaming/channels/101/picture?snapShotImageType=JPEG");
+    ImgGetleft = new ImgData(imageUrl, this);
+    connect(ImgGetleft,&ImgData::downloaded,this,&MainWindow::loadImg);
 
 
-//    leftsock=new QUdpSocket(this);
 
-//    leftsock->bind(QHostAddress("169.254.150.186"),20018);
-
-//    connect(leftsock,&QUdpSocket::readyRead,this,&MainWindow::read_data);
-//    leftCAM->addPixmap(p);
-    //QTimer *tmr=new QTimer(this);
-   // connect(tmr,&QTimer::timeout,this,&MainWindow::add_mixmap);
-   // tmr->setInterval(200);
-    //tmr->start();
 }
 
 MainWindow::~MainWindow()
@@ -50,9 +41,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadImg()
 {
-    pixImg.loadFromData (ImgGet->downloadedImg());
-    leftCAM->addPixmap (pixImg);
+    bool a=pixImg.loadFromData(ImgGetleft->downloadedImg());
+    if(pix!=nullptr && a){leftCAM->removeItem(pix); leftCAM->clear(); delete pix;}
+    //QPixmap p=pixImg.scaled(4000,4000);
+    if(a){
+    pix=leftCAM->addPixmap(pixImg);
+    pix->setPos(-960,-540);
     leftCAM->update ();
+    }
+    //delete pix;
+
 }
 
 
@@ -67,7 +65,7 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     bool item_under_mouse=true;
 
 
-   for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse()){item_under_mouse=false; break;}}
+   for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse()){item_under_mouse=true; break;}}
 
     if(event->button()==Qt::LeftButton && item_under_mouse){
     FRAME* F=new FRAME();

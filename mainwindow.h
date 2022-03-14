@@ -57,7 +57,8 @@ private:
     QUdpSocket *leftsock=nullptr;
     QPixmap p;
     QPixmap pixImg;
-    ImgData * ImgGet=nullptr;
+    ImgData * ImgGetleft=nullptr;
+     QGraphicsPixmapItem *pix=nullptr;
 
 };
 #endif // MAINWINDOW_H

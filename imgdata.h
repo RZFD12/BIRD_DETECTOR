@@ -21,9 +21,11 @@ class ImgData : public QObject
 
  private slots:
   void ImgDownloaded(QNetworkReply* pReply);
+  void get();
   private:
   QNetworkAccessManager m_WebCtrl;
   QByteArray m_DownloadedData;
+  QUrl data_url;
 };
 
 #endif  //IMGDATA_H
