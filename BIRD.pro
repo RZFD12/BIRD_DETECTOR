@@ -13,11 +13,13 @@ CONFIG += c++11
 
 SOURCES += \
     frame.cpp \
+    imgdata.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     frame.h \
+    imgdata.h \
     mainwindow.h
 
 FORMS += \

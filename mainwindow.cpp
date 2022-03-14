@@ -26,12 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView->setRenderHint(QPainter::HighQualityAntialiasing);
     ui->graphicsView_2->setRenderHint(QPainter::HighQualityAntialiasing);
 
-    leftsock=new QUdpSocket(this);
+    QUrl imageUrl("https://blog.mystart.com/wp-content/uploads/MyDogs_5ffddc6904abd18a7e5ddec5.jpeg");
+    ImgGet = new ImgData(imageUrl, this);
+    connect(ImgGet,&ImgData::downloaded,this,&MainWindow::loadImg);
 
-    leftsock->bind(QHostAddress("169.254.150.186"),20018);
 
-    connect(leftsock,&QUdpSocket::readyRead,this,&MainWindow::read_data);
-    leftCAM->addPixmap(p);
+//    leftsock=new QUdpSocket(this);
+
+//    leftsock->bind(QHostAddress("169.254.150.186"),20018);
+
+//    connect(leftsock,&QUdpSocket::readyRead,this,&MainWindow::read_data);
+//    leftCAM->addPixmap(p);
     //QTimer *tmr=new QTimer(this);
    // connect(tmr,&QTimer::timeout,this,&MainWindow::add_mixmap);
    // tmr->setInterval(200);
@@ -41,6 +46,13 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::loadImg()
+{
+    pixImg.loadFromData (ImgGet->downloadedImg());
+    leftCAM->addPixmap (pixImg);
+    leftCAM->update ();
 }
 
 
@@ -119,4 +131,5 @@ void MainWindow::add_mixmap(QByteArray &data)
     qDebug()<<12;
 
 }
+
 

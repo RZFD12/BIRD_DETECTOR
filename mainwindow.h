@@ -7,6 +7,7 @@
 #include <QKeyEvent>
 #include <QMap>
 #include <QUdpSocket>
+#include "imgdata.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +33,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void loadImg();
+
 private slots:
     void on_nextbtn_clicked();
 
@@ -45,11 +49,15 @@ private slots:
 
     void add_mixmap(QByteArray &data);
 
+
 private:
     Ui::MainWindow *ui;
     CamScene *leftCAM;
     CamScene *rightCAM;
     QUdpSocket *leftsock=nullptr;
     QPixmap p;
+    QPixmap pixImg;
+    ImgData * ImgGet=nullptr;
+
 };
 #endif // MAINWINDOW_H
