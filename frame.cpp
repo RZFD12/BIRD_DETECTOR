@@ -1,5 +1,6 @@
 #include "frame.h"
 
+
 FRAME::FRAME(QObject *parent)
 {
 
@@ -9,7 +10,6 @@ FRAME::~FRAME()
 {
 
 }
-
 
 QRectF FRAME::boundingRect() const
 {
@@ -26,12 +26,15 @@ void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 }
 void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+
+
     this->setPos(mapToScene(event->pos()));
     Q_UNUSED(event);
 
 }
 void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+
     if (event->button() & Qt::RightButton){
     this->setCursor(QCursor(Qt::ClosedHandCursor));
     Q_UNUSED(event);
@@ -41,6 +44,9 @@ void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void FRAME::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    /* При отпускании мышью элемента
+     * заменяем на обычный курсор стрелку
+     * */
     this->setCursor(QCursor(Qt::ArrowCursor));
     Q_UNUSED(event);
 }

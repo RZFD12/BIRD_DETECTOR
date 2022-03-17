@@ -1,31 +1,69 @@
 #include "imgdata.h"
 #include <QTimer>
+#include <QImage>
 
-ImgData::ImgData(QUrl imageUrl, QObject *parent) :
+#include "opencv2/opencv.hpp"
+using namespace cv;
+ImgData::ImgData(std::string url, QObject *parent) :
  QObject(parent)
 {
- connect(&m_WebCtrl, &QNetworkAccessManager::finished,this,&ImgData::ImgDownloaded);
- data_url=imageUrl;
  QTimer * timer=new QTimer(this);
  connect(timer,&QTimer::timeout,this,&ImgData::get);
- timer->setInterval(250);
+ timer->setInterval(5);
  timer->start();
+ video.open(url);
+
 }
 
 ImgData::~ImgData() { }
 
-void ImgData::ImgDownloaded(QNetworkReply* pReply) {
- m_DownloadedData = pReply->readAll();
- pReply->deleteLater();
- emit downloaded();
-}
+
+//cv::cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
+//adaptiveThreshold(frame,tresh,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,block_size,C);
 
 void ImgData::get()
 {
-    QNetworkRequest request(data_url);
-    m_WebCtrl.get(request);
+    Mat frame;
+   // Mat tresh;
+    if(video.isOpened()){video>>frame;
+        if(!frame.empty()){
+            switch(FrameFilter){
+
+                    case RGB:{
+                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_RGB888);
+                    emit image(&qimg);
+                    break;}
+
+                    case Gray:{
+                    cv::cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
+                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
+                    emit image(&qimg);
+                    break;}
+
+                    case Threshold:{
+                    cv::cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
+                    adaptiveThreshold(frame,frame,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,block_size,C);
+                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
+                    emit image(&qimg);
+                    break;}
+
+
+
+                                    }
+                        }
+                }
 }
 
-QByteArray ImgData::downloadedImg() const {
- return m_DownloadedData;
+void ImgData::treshhold_param(int bs, double C)
+{
+    if(bs%2==1){this->block_size=bs;}
+    else{this->block_size=bs+1;}
+    this->C=C;
 }
+
+void ImgData::img_filter(state filter)
+{
+    this->FrameFilter=filter;
+}
+
+
