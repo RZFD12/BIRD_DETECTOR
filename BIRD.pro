@@ -25,12 +25,9 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-INCLUDEPATH += $$(OPENCV_SDK_DIR)\include
+INCLUDEPATH += /usr/local/include
 
-LIBS += $$(OPENCV_SDK_DIR)\x64\mingw\bin\libopencv_*
-
-
-
+LIBS += /usr/local/lib/libopencv_*
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
