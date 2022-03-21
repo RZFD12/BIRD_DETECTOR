@@ -12,12 +12,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    filehandler.cpp \
     frame.cpp \
     imgdata.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    filehandler.h \
     frame.h \
     imgdata.h \
     mainwindow.h
@@ -25,9 +27,12 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-INCLUDEPATH += /usr/local/include
+INCLUDEPATH += $$(OPENCV_SDK_DIR)\include
 
-LIBS += /usr/local/lib/libopencv_*
+LIBS += $$(OPENCV_SDK_DIR)\x64\mingw\bin\libopencv_*
+
+
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

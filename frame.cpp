@@ -1,6 +1,4 @@
 #include "frame.h"
-
-
 FRAME::FRAME(QObject *parent)
 {
 

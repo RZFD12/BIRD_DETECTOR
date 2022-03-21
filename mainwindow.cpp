@@ -4,6 +4,8 @@
 #include <QMediaPlayer>
 #include <QTimer>
 #include <QGraphicsPixmapItem>
+#include <QThread>
+#include <QFileDialog>
 
 
 #include <opencv2/core/core.hpp>
@@ -36,6 +38,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     //std::string url="rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101";
 
+    ui->lineEdit->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
+    ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
+
+    filehandler =new FileHandler();
+
+
 
 
 }
@@ -50,18 +58,19 @@ void MainWindow::loadImg()
 
 }
 
-void MainWindow::loadimgleft(QImage *img) //left
+void MainWindow::loadimgleft(QPixmap piximg) //left
 {
     if(leftpix!=nullptr){leftCAM->removeItem(leftpix); leftCAM->clear(); delete leftpix;}
-    leftpix=leftCAM->addPixmap(QPixmap::fromImage(img->rgbSwapped()));
+    leftpix=leftCAM->addPixmap(piximg);
     leftpix->setPos(-960,-540);
     leftCAM->update ();
+    //qDebug()<<piximg.depth();
 }
 
-void MainWindow::loadimgrigt(QImage *img)
+void MainWindow::loadimgrigt(QPixmap piximg)
 {
     if(rightpix!=nullptr){rightCAM->removeItem(rightpix);rightCAM->clear(); delete rightpix;}
-    rightpix=rightCAM->addPixmap(QPixmap::fromImage(img->rgbSwapped()));
+    rightpix=rightCAM->addPixmap(piximg);
     rightpix->setPos(-960,-540);
     rightCAM->update();
 }
@@ -71,10 +80,15 @@ void MainWindow::loadimgrigt(QImage *img)
 void MainWindow::on_lineEdit_editingFinished()// left
 {
     if(ImgGetleft==nullptr){
-    ImgGetleft = new ImgData(ui->lineEdit->text().toStdString(), this);
+    ImgGetleft = new ImgData(ui->lineEdit->text().toStdString());
+    ImgGetleft->set_filehandler(this->filehandler);
+    QThread *lthread=new QThread(this);
+    ImgGetleft->moveToThread(lthread);
     connect(ImgGetleft,&ImgData::image,this,&MainWindow::loadimgleft);
     connect(this,&MainWindow::tresh_param,ImgGetleft,&ImgData::treshhold_param);
     connect(this,&MainWindow::img_filter,ImgGetleft,&ImgData::img_filter);
+    connect(lthread,&QThread::started,ImgGetleft,&ImgData::start);
+    lthread->start();
     }
 }
 
@@ -82,10 +96,14 @@ void MainWindow::on_lineEdit_editingFinished()// left
 void MainWindow::on_lineEdit_2_editingFinished() //right
 {
     if(ImgGetright==nullptr){
-     ImgGetright = new ImgData(ui->lineEdit_2->text().toStdString(), this);
+     ImgGetright = new ImgData(ui->lineEdit_2->text().toStdString());
+     QThread *rthread=new QThread(this);
+     ImgGetright->moveToThread(rthread);
      connect(ImgGetright,&ImgData::image,this,&MainWindow::loadimgrigt);
      connect(this,&MainWindow::tresh_param,ImgGetright,&ImgData::treshhold_param);
      connect(this,&MainWindow::img_filter,ImgGetright,&ImgData::img_filter);
+     connect(rthread,&QThread::started,ImgGetright,&ImgData::start);
+     rthread->start();
     }
 }
 
@@ -186,7 +204,7 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QList<QGraphicsItem*> itemlist=this->items();
     bool item_under_mouse=true;
-   for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse()){item_under_mouse=true; break;}}
+    for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse()){item_under_mouse=true; break;}}
     if(event->button()==Qt::LeftButton && item_under_mouse){
     FRAME* F=new FRAME();
     F->setPos(event->scenePos().x(),event->scenePos().y());
@@ -203,4 +221,27 @@ void CamScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 
+
+
+void MainWindow::on_toolButton_pressed()// save
+{
+    QString fileName=QFileDialog::getSaveFileName(this, tr("Save File"),
+                                                  "./scripts",
+                                                  tr("Traces (*.bin)"));
+
+    ui->lineEdit_3->setText(fileName);
+
+    filehandler->set_file_name(fileName);
+
+}
+
+
+void MainWindow::on_toolButton_2_pressed()// open
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                      "./scripts",
+                                                      tr("Traces (*.bin)"));
+    ui->lineEdit_4->setText(fileName);
+
+}
 

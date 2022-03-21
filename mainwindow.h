@@ -10,6 +10,7 @@
 #include "imgdata.h"
 #include <QPixmap>
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -37,8 +38,8 @@ public:
 public slots:
     void loadImg();
 
-    void loadimgleft(QImage *img);
-    void loadimgrigt(QImage *img);
+    void loadimgleft(QPixmap piximg);
+    void loadimgrigt(QPixmap piximg);
 
 private slots:
     void on_nextbtn_clicked();
@@ -66,6 +67,10 @@ private slots:
 
     void image_filter();
 
+    void on_toolButton_pressed();
+
+    void on_toolButton_2_pressed();
+
 private:
     Ui::MainWindow *ui;
     CamScene *leftCAM;
@@ -80,9 +85,12 @@ private:
     QGraphicsPixmapItem *leftpix=nullptr;
     QGraphicsPixmapItem *rightpix=nullptr;
 
+    FileHandler*filehandler=nullptr;
+
 
 signals:
    void tresh_param(int bs,double C);
    void img_filter(state filter);
+
 };
 #endif // MAINWINDOW_H

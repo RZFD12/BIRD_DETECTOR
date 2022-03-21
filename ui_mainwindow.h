@@ -54,6 +54,10 @@ public:
     QRadioButton *RGB;
     QRadioButton *GRAY;
     QRadioButton *THRESH;
+    QLineEdit *lineEdit_3;
+    QLineEdit *lineEdit_4;
+    QToolButton *toolButton;
+    QToolButton *toolButton_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -162,6 +166,18 @@ public:
 
         horizontalLayout_2->addWidget(THRESH);
 
+        lineEdit_3 = new QLineEdit(centralwidget);
+        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
+        lineEdit_3->setGeometry(QRect(490, 850, 211, 21));
+        lineEdit_4 = new QLineEdit(centralwidget);
+        lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
+        lineEdit_4->setGeometry(QRect(490, 880, 211, 21));
+        toolButton = new QToolButton(centralwidget);
+        toolButton->setObjectName(QString::fromUtf8("toolButton"));
+        toolButton->setGeometry(QRect(710, 850, 41, 20));
+        toolButton_2 = new QToolButton(centralwidget);
+        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
+        toolButton_2->setGeometry(QRect(710, 880, 41, 20));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -190,6 +206,8 @@ public:
         RGB->setText(QCoreApplication::translate("MainWindow", "RGB", nullptr));
         GRAY->setText(QCoreApplication::translate("MainWindow", "GRAY", nullptr));
         THRESH->setText(QCoreApplication::translate("MainWindow", "THRESHOLD", nullptr));
+        toolButton->setText(QCoreApplication::translate("MainWindow", "save", nullptr));
+        toolButton_2->setText(QCoreApplication::translate("MainWindow", "open", nullptr));
     } // retranslateUi
 
 };
