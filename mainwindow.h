@@ -1,15 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include <QMainWindow>
-#include<QGraphicsSceneEvent>
-#include <QGraphicsScene>
+
 #include <frame.h>
+#include "imgdata.h"
+#include <QMainWindow>
+#include <QGraphicsSceneEvent>
+#include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QMap>
 #include <QUdpSocket>
-#include "imgdata.h"
 #include <QPixmap>
-
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -63,8 +63,8 @@ private:
     QUdpSocket *leftsock=nullptr;
     QPixmap p;
     QPixmap pixImg;
-    ImgData * ImgGetleft=nullptr;
-    ImgData *ImgGetright=nullptr;
+    ImgData * ImgGetLeft=nullptr;
+    ImgData *ImgGetRight=nullptr;
     QGraphicsPixmapItem *leftpix=nullptr;
     QGraphicsPixmapItem *rightpix=nullptr;
     FileHandler*filehandler=nullptr;

@@ -1,15 +1,13 @@
 #include "imgdata.h"
 #include <QtDebug>
-#include "opencv2/opencv.hpp"
+
 using namespace cv;
-ImgData::ImgData(std::string url, QObject *parent) :
- QObject(parent)
+ImgData::ImgData(std::string url, QObject *parent) : QObject(parent)
 {
     m_video_url=url;
 }
 
 ImgData::~ImgData() { }
-
 
 //cv::cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
 //adaptiveThreshold(frame,tresh,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,block_size,C);
@@ -17,9 +15,11 @@ ImgData::~ImgData() { }
 void ImgData::get()
 {
     Mat frame;
-    if(m_video.isOpened()){
+    if(m_video.isOpened())
+    {
         m_video>>frame;
-        if(!frame.empty()){
+        if(!frame.empty())
+        {
             switch(m_FrameFilter)
             {
                 case RGB:{

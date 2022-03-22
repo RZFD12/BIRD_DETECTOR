@@ -1,9 +1,11 @@
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
+
 #include <QObject>
 #include <QImage>
 #include <QFile>
 #include <QMap>
+
 struct image_saving_protocol{
     quint8 CAMERA_ID;
     unsigned int NUMBER_OF_FRAMES;

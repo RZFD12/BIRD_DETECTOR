@@ -7,10 +7,6 @@
 #include <QThread>
 #include <QFileDialog>
 
-
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -31,8 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
-
-    //std::string url="rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101";
 
     ui->lineEdit->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
     ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
@@ -68,16 +62,16 @@ void MainWindow::loadImgRight(QPixmap piximg)
 
 void MainWindow::on_lineEdit_editingFinished()// left
 {
-    if(ImgGetleft==nullptr)
+    if(ImgGetLeft==nullptr)
     {
-        ImgGetleft = new ImgData(ui->lineEdit->text().toStdString());
-        ImgGetleft->setFileHandler(this->filehandler);
+        ImgGetLeft = new ImgData(ui->lineEdit->text().toStdString());
+        ImgGetLeft->setFileHandler(this->filehandler);
         QThread *lthread=new QThread(this);
-        ImgGetleft->moveToThread(lthread);
-        connect(ImgGetleft,&ImgData::image,this,&MainWindow::loadImgLeft);
-        connect(this,&MainWindow::thresHold,ImgGetleft,&ImgData::setThresHold);
-        connect(this,&MainWindow::imgFilter,ImgGetleft,&ImgData::imgFilter);
-        connect(lthread,&QThread::started,ImgGetleft,&ImgData::start);
+        ImgGetLeft->moveToThread(lthread);
+        connect(ImgGetLeft,&ImgData::image,this,&MainWindow::loadImgLeft);
+        connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
+        connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
+        connect(lthread,&QThread::started,ImgGetLeft,&ImgData::start);
         lthread->start();
     }
 }
@@ -85,15 +79,16 @@ void MainWindow::on_lineEdit_editingFinished()// left
 
 void MainWindow::on_lineEdit_2_editingFinished() //right
 {
-    if(ImgGetright==nullptr){
-     ImgGetright = new ImgData(ui->lineEdit_2->text().toStdString());
-     QThread *rthread=new QThread(this);
-     ImgGetright->moveToThread(rthread);
-     connect(ImgGetright,&ImgData::image,this,&MainWindow::loadImgRight);
-     connect(this,&MainWindow::thresHold,ImgGetright,&ImgData::setThresHold);
-     connect(this,&MainWindow::imgFilter,ImgGetright,&ImgData::imgFilter);
-     connect(rthread,&QThread::started,ImgGetright,&ImgData::start);
-     rthread->start();
+    if(ImgGetRight==nullptr)
+    {
+        ImgGetRight = new ImgData(ui->lineEdit_2->text().toStdString());
+        QThread *rthread=new QThread(this);
+        ImgGetRight->moveToThread(rthread);
+        connect(ImgGetRight,&ImgData::image,this,&MainWindow::loadImgRight);
+        connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
+        connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
+        connect(rthread,&QThread::started,ImgGetRight,&ImgData::start);
+        rthread->start();
     }
 }
 
