@@ -20,6 +20,7 @@ class CamScene :public QGraphicsScene
     Q_OBJECT
 public:
     CamScene(QWidget*parent=nullptr);
+
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
     //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -37,38 +38,22 @@ public:
 
 public slots:
     void loadImg();
-
-    void loadimgleft(QPixmap piximg);
-    void loadimgrigt(QPixmap piximg);
+    void loadImgLeft(QPixmap piximg);
+    void loadImgRight(QPixmap piximg);
 
 private slots:
-    void on_nextbtn_clicked();
-
-    void on_playbtn_clicked();
-
-    void on_prevbtn_clicked();
-
+    void on_nextButton_clicked();
+    void on_playButton_clicked();
+    void on_prevButton_clicked();
     void keyPressEvent(QKeyEvent *event);
-
-    void read_data();
-
-    void add_mixmap(QByteArray &data);
-
-
+    void read();
+    void addMixmap(QByteArray &data);
     void on_lineEdit_editingFinished();
-
     void on_lineEdit_2_editingFinished();
-
     void on_horizontalSlider_valueChanged(int value);
-
     void on_horizontalSlider_2_valueChanged(int value);
-
-
-
-    void image_filter();
-
+    void imageFilter();
     void on_toolButton_pressed();
-
     void on_toolButton_2_pressed();
 
 private:
@@ -78,19 +63,15 @@ private:
     QUdpSocket *leftsock=nullptr;
     QPixmap p;
     QPixmap pixImg;
-
     ImgData * ImgGetleft=nullptr;
     ImgData *ImgGetright=nullptr;
-
     QGraphicsPixmapItem *leftpix=nullptr;
     QGraphicsPixmapItem *rightpix=nullptr;
-
     FileHandler*filehandler=nullptr;
 
-
 signals:
-   void tresh_param(int bs,double C);
-   void img_filter(state filter);
+   void thresHold(int bs,double C);
+   void imgFilter(state filter);
 
 };
 #endif // MAINWINDOW_H

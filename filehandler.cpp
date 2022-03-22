@@ -8,46 +8,44 @@ FileHandler::FileHandler(QObject *parent) : QObject(parent)
 
 }
 
+void FileHandler::setFileName(const QString &newFileName)
+{
+    m_fileName = newFileName;
+    m_file.setFileName (newFileName);
+}
+
 bool FileHandler::save(image_saving_protocol &p)
 {
-    buff.append(p);
-    qDebug()<<buff.size();
-    if(file.open(QIODevice::Append) && buff.size()>200)
+    m_buff.append(p);
+    qDebug()<<m_buff.size();
+    if(m_file.open(QIODevice::Append) && m_buff.size()>200)
     {
-        QDataStream out(&file);
+        QDataStream out(&m_file);
         out.setVersion(QDataStream::Qt_4_2);
-        for(const auto &it :qAsConst(buff)){
-        out<<it.CAMERA_ID<<it.NUMUBER_OF_FRAMES<<it.tsec<<it.tusec<<it.image;
-        qDebug()<<it.image.sizeInBytes();
+        for(const auto &it :qAsConst(m_buff))
+        {
+            out<<it.CAMERA_ID<<it.NUMBER_OF_FRAMES<<it.tsec<<it.tusec<<it.image;
+            qDebug()<<it.image.sizeInBytes();
         }
-        file.flush();
-        file.close();
-        buff.clear();
-        buff.squeeze();
-
+        m_file.flush();
+        m_file.close();
+        m_buff.clear();
+        m_buff.squeeze();
         qDebug()<<count;
         count ++;
         return true;
-
     }
-    else{file.close();return false;}
+    else{m_file.close();return false;}
 }
 
-QMap<camera,image_saving_protocol> FileHandler::read(int num_frames)
+QMap<camera,image_saving_protocol> FileHandler::read(int numFrames)
 {
     image_saving_protocol protocol;
 
-
-    if(file.open(QIODevice::ReadOnly)){
-    file.seek(num_frames);
-    file.read(10);
-
+    if(m_file.open(QIODevice::ReadOnly))
+    {
+        m_file.seek(numFrames);
+        m_file.read(10);
     }
-    return images;
-}
-
-void FileHandler::set_file_name(QString file_name)
-{
-    this->file_name=file_name;
-    file.setFileName(this->file_name);
+    return m_images;
 }

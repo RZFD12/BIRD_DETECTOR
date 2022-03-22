@@ -1,7 +1,7 @@
 QT       += core gui
-QT       +=multimedia
-QT       +=network
-QT       +=multimediawidgets
+QT       += multimedia
+QT       += network
+QT       += multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,11 +27,15 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-INCLUDEPATH += $$(OPENCV_SDK_DIR)\include
 
-LIBS += $$(OPENCV_SDK_DIR)\x64\mingw\bin\libopencv_*
-
-
+win32{
+    INCLUDEPATH += $$(OPENCV_SDK_DIR)\include
+    LIBS += $$(OPENCV_SDK_DIR)\x64\mingw\bin\libopencv_*
+}
+unix{
+    INCLUDEPATH += /usr/local/include
+    LIBS += /usr/local/lib/libopencv_*
+}
 
 
 # Default rules for deployment.

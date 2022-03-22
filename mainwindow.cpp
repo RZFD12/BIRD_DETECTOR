@@ -28,13 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     leftCAM->setSceneRect(-2000,-2000,4000,4000);
     rightCAM->setSceneRect(-2000,-2000,4000,4000);
 
-
-    connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::image_filter);
-
-    connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::image_filter);
-
-    connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::image_filter);
-
+    connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
+    connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
+    connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
 
     //std::string url="rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101";
 
@@ -42,10 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
 
     filehandler =new FileHandler();
-
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -58,16 +50,15 @@ void MainWindow::loadImg()
 
 }
 
-void MainWindow::loadimgleft(QPixmap piximg) //left
+void MainWindow::loadImgLeft(QPixmap piximg)
 {
     if(leftpix!=nullptr){leftCAM->removeItem(leftpix); leftCAM->clear(); delete leftpix;}
     leftpix=leftCAM->addPixmap(piximg);
     leftpix->setPos(-960,-540);
     leftCAM->update ();
-    //qDebug()<<piximg.depth();
 }
 
-void MainWindow::loadimgrigt(QPixmap piximg)
+void MainWindow::loadImgRight(QPixmap piximg)
 {
     if(rightpix!=nullptr){rightCAM->removeItem(rightpix);rightCAM->clear(); delete rightpix;}
     rightpix=rightCAM->addPixmap(piximg);
@@ -75,20 +66,19 @@ void MainWindow::loadimgrigt(QPixmap piximg)
     rightCAM->update();
 }
 
-
-
 void MainWindow::on_lineEdit_editingFinished()// left
 {
-    if(ImgGetleft==nullptr){
-    ImgGetleft = new ImgData(ui->lineEdit->text().toStdString());
-    ImgGetleft->set_filehandler(this->filehandler);
-    QThread *lthread=new QThread(this);
-    ImgGetleft->moveToThread(lthread);
-    connect(ImgGetleft,&ImgData::image,this,&MainWindow::loadimgleft);
-    connect(this,&MainWindow::tresh_param,ImgGetleft,&ImgData::treshhold_param);
-    connect(this,&MainWindow::img_filter,ImgGetleft,&ImgData::img_filter);
-    connect(lthread,&QThread::started,ImgGetleft,&ImgData::start);
-    lthread->start();
+    if(ImgGetleft==nullptr)
+    {
+        ImgGetleft = new ImgData(ui->lineEdit->text().toStdString());
+        ImgGetleft->setFileHandler(this->filehandler);
+        QThread *lthread=new QThread(this);
+        ImgGetleft->moveToThread(lthread);
+        connect(ImgGetleft,&ImgData::image,this,&MainWindow::loadImgLeft);
+        connect(this,&MainWindow::thresHold,ImgGetleft,&ImgData::setThresHold);
+        connect(this,&MainWindow::imgFilter,ImgGetleft,&ImgData::imgFilter);
+        connect(lthread,&QThread::started,ImgGetleft,&ImgData::start);
+        lthread->start();
     }
 }
 
@@ -99,34 +89,25 @@ void MainWindow::on_lineEdit_2_editingFinished() //right
      ImgGetright = new ImgData(ui->lineEdit_2->text().toStdString());
      QThread *rthread=new QThread(this);
      ImgGetright->moveToThread(rthread);
-     connect(ImgGetright,&ImgData::image,this,&MainWindow::loadimgrigt);
-     connect(this,&MainWindow::tresh_param,ImgGetright,&ImgData::treshhold_param);
-     connect(this,&MainWindow::img_filter,ImgGetright,&ImgData::img_filter);
+     connect(ImgGetright,&ImgData::image,this,&MainWindow::loadImgRight);
+     connect(this,&MainWindow::thresHold,ImgGetright,&ImgData::setThresHold);
+     connect(this,&MainWindow::imgFilter,ImgGetright,&ImgData::imgFilter);
      connect(rthread,&QThread::started,ImgGetright,&ImgData::start);
      rthread->start();
     }
 }
 
-
-
-
-
-
-
-
-void MainWindow::on_nextbtn_clicked()
+void MainWindow::on_nextButton_clicked()
 {
 
 }
 
-
-void MainWindow::on_playbtn_clicked()
+void MainWindow::on_playButton_clicked()
 {
 
 }
 
-
-void MainWindow::on_prevbtn_clicked()
+void MainWindow::on_prevButton_clicked()
 {
 
 }
@@ -137,17 +118,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if(event->key()==Qt::Key_Plus){ui->graphicsView->scale(2,2);ui->graphicsView_2->scale(2,2);}
 }
 
-void MainWindow::read_data()
+void MainWindow::read()
 {
     QByteArray data;
     QHostAddress addr;
     quint16 port;
     data.resize(leftsock->pendingDatagramSize());
     leftsock->readDatagram(data.data(),data.size(),&addr,&port);
-    add_mixmap(data);
+    addMixmap(data);
 }
 
-void MainWindow::add_mixmap(QByteArray &data)
+void MainWindow::addMixmap(QByteArray &data)
 {
     QByteArray b2=QByteArray::fromBase64(data);
     QImage m=QImage::fromData(data);
@@ -156,44 +137,27 @@ void MainWindow::add_mixmap(QByteArray &data)
     leftCAM->update();
 }
 
-
-
-
-
-
 void MainWindow::on_horizontalSlider_valueChanged(int value)// bs
 {
-    emit tresh_param(value,static_cast<double>(ui->horizontalSlider_2->value()));
+    emit thresHold(value,static_cast<double>(ui->horizontalSlider_2->value()));
 
 }
-
 
 void MainWindow::on_horizontalSlider_2_valueChanged(int value) //c
 {
     int bs=ui->horizontalSlider->value();
-    emit tresh_param(bs,static_cast<double>(value));
-
+    emit thresHold(bs,static_cast<double>(value));
 }
 
-
-
-
-void MainWindow::image_filter()
+void MainWindow::imageFilter()
 {
-    QRadioButton *btn=qobject_cast<QRadioButton*>(QObject::sender());
-
-    if(btn==ui->RGB){emit img_filter(state::RGB);}
-    else if (btn==ui->GRAY){emit img_filter(state::Gray);}
-    else if (btn==ui->THRESH) {emit img_filter(state::Threshold);}
-    else {}
-
-    btn=nullptr;
-    delete btn;
+    QRadioButton *button=qobject_cast<QRadioButton*>(QObject::sender());
+    if(button==ui->RGB){emit imgFilter(state::RGB);}
+    else if (button==ui->GRAY){emit imgFilter(state::Gray);}
+    else if (button==ui->THRESH) {emit imgFilter(state::Threshold);}
+    button=nullptr;
+    delete button;
 }
-
-
-
-
 
 CamScene::CamScene(QWidget *parent)
 {
@@ -205,36 +169,28 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QList<QGraphicsItem*> itemlist=this->items();
     bool item_under_mouse=true;
     for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse()){item_under_mouse=true; break;}}
-    if(event->button()==Qt::LeftButton && item_under_mouse){
-    FRAME* F=new FRAME();
-    F->setPos(event->scenePos().x(),event->scenePos().y());
-    F->setZValue(0.2);
-    this->addItem(F);
+    if(event->button()==Qt::LeftButton && item_under_mouse)
+    {
+        FRAME* F=new FRAME();
+        F->setPos(event->scenePos().x(),event->scenePos().y());
+        F->setZValue(0.2);
+        this->addItem(F);
     }
-
 }
-
 
 void CamScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 
 }
 
-
-
-
 void MainWindow::on_toolButton_pressed()// save
 {
     QString fileName=QFileDialog::getSaveFileName(this, tr("Save File"),
                                                   "./scripts",
                                                   tr("Traces (*.bin)"));
-
     ui->lineEdit_3->setText(fileName);
-
-    filehandler->set_file_name(fileName);
-
+    filehandler->setFileName(fileName);
 }
-
 
 void MainWindow::on_toolButton_2_pressed()// open
 {
@@ -242,6 +198,5 @@ void MainWindow::on_toolButton_2_pressed()// open
                                                       "./scripts",
                                                       tr("Traces (*.bin)"));
     ui->lineEdit_4->setText(fileName);
-
 }
 

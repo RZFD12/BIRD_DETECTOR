@@ -23,49 +23,33 @@ enum state {Threshold,Gray,RGB};
 
 class ImgData : public QObject
 {
- Q_OBJECT
- public:
+    Q_OBJECT
+public:
   explicit ImgData(std::string, QObject *parent = 0);
   virtual ~ImgData();
 
-
- signals:
+signals:
   void downloaded();
   void image(QPixmap pix);
 
- private slots:
-
-
+private slots:
   void get();
 
-
 private:
-
-  std::string video_url;
-
-  cv::VideoCapture video;
-
-  int block_size=15;
-
-  double C=15;
-
-  state FrameFilter=Gray;
-
-  int b=qRegisterMetaType<state>("state");
-
+  std::string m_video_url;
+  cv::VideoCapture m_video;
+  int m_block_size=15;
+  double m_C=15;
+  state m_FrameFilter=Gray;
+  int m_b=qRegisterMetaType<state>("state");
   FileHandler *filehandler=nullptr;
-
   image_saving_protocol p;
 
-
 public slots:
-void treshhold_param(int bs,double C);
-
-void img_filter(state filter);
-
-void start();
-
-void set_filehandler(FileHandler *f);
+    void setThresHold(int bs,double C);
+    void imgFilter(state filter);
+    void start();
+    void setFileHandler(FileHandler *f);
 };
 
 #endif  //IMGDATA_H

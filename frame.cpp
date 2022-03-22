@@ -33,10 +33,11 @@ void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
-    if (event->button() & Qt::RightButton){
-    this->setCursor(QCursor(Qt::ClosedHandCursor));
-    Q_UNUSED(event);
-    this->deleteLater();
+    if (event->button() & Qt::RightButton)
+    {
+        this->setCursor(QCursor(Qt::ClosedHandCursor));
+        Q_UNUSED(event);
+        this->deleteLater();
     }
 }
 

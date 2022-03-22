@@ -6,7 +6,7 @@
 #include <QMap>
 struct image_saving_protocol{
     quint8 CAMERA_ID;
-    unsigned int NUMUBER_OF_FRAMES;
+    unsigned int NUMBER_OF_FRAMES;
     unsigned int tsec;
     unsigned int tusec;
     QImage image;
@@ -20,18 +20,14 @@ class FileHandler : public QObject
 public:
     explicit FileHandler(QObject *parent = nullptr);
 private:
-    QString file_name;
-    QFile file;
-    QMap<camera,image_saving_protocol> images;
-    QVector <image_saving_protocol> buff;
-
-    //quint16 protocol_size=1920*108
+    QString m_fileName;
+    QFile m_file;
+    QMap<camera,image_saving_protocol> m_images;
+    QVector <image_saving_protocol> m_buff;
 public:
     bool save(image_saving_protocol &p);
-    QMap<camera,image_saving_protocol> read(int num_frames);
-    void set_file_name(QString file_name);
-
-
+    QMap<camera,image_saving_protocol> read(int numFrames);
+    void setFileName(const QString &newFileName);
 
 signals:
 

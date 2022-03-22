@@ -54,21 +54,21 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QToolButton" name="prevbtn">
+      <widget class="QToolButton" name="prevButton">
        <property name="text">
         <string>prev</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="playbtn">
+      <widget class="QToolButton" name="playButton">
        <property name="text">
         <string>play</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="nextbtn">
+      <widget class="QToolButton" name="nextButton">
        <property name="text">
         <string>next</string>
        </property>
@@ -140,7 +140,7 @@
        <x>-1</x>
        <y>20</y>
        <width>281</width>
-       <height>41</height>
+       <height>42</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
@@ -273,7 +273,7 @@
      <x>0</x>
      <y>0</y>
      <width>1900</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
