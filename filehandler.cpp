@@ -20,13 +20,16 @@ bool FileHandler::save(image_saving_protocol &p)
     qDebug()<<m_buff.size();
     if(m_file.open(QIODevice::Append) && m_buff.size()>200)
     {
-        QDataStream out(&m_file);
-        out.setVersion(QDataStream::Qt_4_2);
+        QByteArray baout;
+        QDataStream out(&baout, QIODevice::WriteOnly);
         for(const auto &it :qAsConst(m_buff))
-        {
-            out<<it.CAMERA_ID<<it.NUMBER_OF_FRAMES<<it.tsec<<it.tusec<<it.image;
+        {            
+            out<<it.CAMERA_ID<<it.NUMBER_OF_FRAMES<<it.tsec<<it.tusec/*<<it.image;*/;
+            out.writeRawData((const char*)it.image.bits(), it.image.byteCount());
             qDebug()<<it.image.sizeInBytes();
         }
+        QByteArray qCompress(baout, -1);
+        m_file.write(qCompress);
         m_file.flush();
         m_file.close();
         m_buff.clear();
