@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
 
     filehandler =new FileHandler();
+
+    connect(filehandler,&FileHandler::read_image,this,&MainWindow::loadImgRight);
 }
 
 MainWindow::~MainWindow()
@@ -102,8 +104,10 @@ void MainWindow::on_playButton_clicked()
 
 }
 
-void MainWindow::on_prevButton_clicked()
+void MainWindow::on_prevButton_clicked()     
 {
+    image_saving_protocol p;
+    filehandler->matread(p);
 
 }
 

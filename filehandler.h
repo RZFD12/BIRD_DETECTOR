@@ -5,13 +5,21 @@
 #include <QImage>
 #include <QFile>
 #include <QMap>
+#include <QPixmap>
+
+
+#include <opencv2\opencv.hpp>
+#include <iostream>
+#include <fstream>
+
+using namespace cv;
 
 struct image_saving_protocol{
-    quint8 CAMERA_ID;
+    unsigned int CAMERA_ID;
     unsigned int NUMBER_OF_FRAMES;
     unsigned int tsec;
     unsigned int tusec;
-    QImage image;
+    Mat frame;
 };
 enum camera {left,right};
 Q_DECLARE_METATYPE(image_saving_protocol)
@@ -26,12 +34,22 @@ private:
     QFile m_file;
     QMap<camera,image_saving_protocol> m_images;
     QVector <image_saving_protocol> m_buff;
+
+
+    void matwrite(const image_saving_protocol& saving_protocol);
+
 public:
     bool save(image_saving_protocol &p);
     QMap<camera,image_saving_protocol> read(int numFrames);
     void setFileName(const QString &newFileName);
 
+
+    void matread(image_saving_protocol &read_protocol);
+
+
 signals:
+
+    void read_image(QPixmap p);
 
 };
 

@@ -1,6 +1,6 @@
 #include "imgdata.h"
 #include <QtDebug>
-
+#include <QTime>
 using namespace cv;
 ImgData::ImgData(std::string url, QObject *parent) : QObject(parent)
 {
@@ -14,6 +14,9 @@ ImgData::~ImgData() { }
 
 void ImgData::get()
 {
+
+
+
     Mat frame;
     if(m_video.isOpened())
     {
@@ -31,7 +34,7 @@ void ImgData::get()
                 case Gray:{
                     cv::cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
-                    p.image=qimg;
+                    p.frame=frame;
                     cv::bitwise_not(frame,frame);
                     emit image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
@@ -44,13 +47,20 @@ void ImgData::get()
                     emit image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
             }
-            p.CAMERA_ID=1;
+            p.CAMERA_ID=135;
             p.NUMBER_OF_FRAMES=1;
             p.tsec=0;
             p.tusec=0;
-            filehandler->save(p);
+            QDateTime dt = QDateTime::currentDateTime();
+
+           // p.image.convertToFormat(QImage::)
+              filehandler->save(p);
         }
+        else{qDebug()<<"empty";}
+
     }
+
+
 }
 
 void ImgData::setThresHold(int bs, double C)
@@ -69,7 +79,7 @@ void ImgData::start()
 {
     QTimer * timer=new QTimer(this);
     connect(timer,&QTimer::timeout,this,&ImgData::get);
-    timer->setInterval(10);
+    timer->setInterval(100);
     timer->start();
     m_video.open(m_video_url);
 }

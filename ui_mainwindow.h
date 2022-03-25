@@ -35,9 +35,9 @@ public:
     QGraphicsView *graphicsView_2;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
-    QToolButton *prevbtn;
-    QToolButton *playbtn;
-    QToolButton *nextbtn;
+    QToolButton *prevButton;
+    QToolButton *playButton;
+    QToolButton *nextButton;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
     QLabel *label;
@@ -83,20 +83,20 @@ public:
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        prevbtn = new QToolButton(horizontalLayoutWidget);
-        prevbtn->setObjectName(QString::fromUtf8("prevbtn"));
+        prevButton = new QToolButton(horizontalLayoutWidget);
+        prevButton->setObjectName(QString::fromUtf8("prevButton"));
 
-        horizontalLayout->addWidget(prevbtn);
+        horizontalLayout->addWidget(prevButton);
 
-        playbtn = new QToolButton(horizontalLayoutWidget);
-        playbtn->setObjectName(QString::fromUtf8("playbtn"));
+        playButton = new QToolButton(horizontalLayoutWidget);
+        playButton->setObjectName(QString::fromUtf8("playButton"));
 
-        horizontalLayout->addWidget(playbtn);
+        horizontalLayout->addWidget(playButton);
 
-        nextbtn = new QToolButton(horizontalLayoutWidget);
-        nextbtn->setObjectName(QString::fromUtf8("nextbtn"));
+        nextButton = new QToolButton(horizontalLayoutWidget);
+        nextButton->setObjectName(QString::fromUtf8("nextButton"));
 
-        horizontalLayout->addWidget(nextbtn);
+        horizontalLayout->addWidget(nextButton);
 
         lineEdit = new QLineEdit(centralwidget);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
@@ -115,7 +115,7 @@ public:
         groupBox->setGeometry(QRect(0, 830, 281, 101));
         formLayoutWidget = new QWidget(groupBox);
         formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(-1, 20, 281, 41));
+        formLayoutWidget->setGeometry(QRect(-1, 20, 281, 42));
         formLayout = new QFormLayout(formLayoutWidget);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
@@ -181,7 +181,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1900, 20));
+        menubar->setGeometry(QRect(0, 0, 1900, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -195,9 +195,9 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        prevbtn->setText(QCoreApplication::translate("MainWindow", "prev", nullptr));
-        playbtn->setText(QCoreApplication::translate("MainWindow", "play", nullptr));
-        nextbtn->setText(QCoreApplication::translate("MainWindow", "next", nullptr));
+        prevButton->setText(QCoreApplication::translate("MainWindow", "prev", nullptr));
+        playButton->setText(QCoreApplication::translate("MainWindow", "play", nullptr));
+        nextButton->setText(QCoreApplication::translate("MainWindow", "next", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
