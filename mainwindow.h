@@ -46,7 +46,6 @@ private slots:
     void on_playButton_clicked();
     void on_prevButton_clicked();
     void keyPressEvent(QKeyEvent *event);
-    void read();
     void addMixmap(QByteArray &data);
     void on_lineEdit_editingFinished();
     void on_lineEdit_2_editingFinished();

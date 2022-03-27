@@ -7,7 +7,6 @@
 #include <QMap>
 #include <QPixmap>
 
-
 #include <opencv2\opencv.hpp>
 #include <iostream>
 #include <fstream>
@@ -15,10 +14,10 @@
 using namespace cv;
 
 struct image_saving_protocol{
-    unsigned int CAMERA_ID;
-    unsigned int NUMBER_OF_FRAMES;
-    unsigned int tsec;
-    unsigned int tusec;
+    int CAMERA_ID;
+    int NUMBER_OF_FRAMES;
+    int tsec;
+    int tusec;
     Mat frame;
 };
 enum camera {left,right};
@@ -29,26 +28,19 @@ class FileHandler : public QObject
     Q_OBJECT
 public:
     explicit FileHandler(QObject *parent = nullptr);
+
 private:
     QString m_fileName;
-    QFile m_file;
+    FileStorage m_file;
     QMap<camera,image_saving_protocol> m_images;
     QVector <image_saving_protocol> m_buff;
 
-
-    void matwrite(const image_saving_protocol& saving_protocol);
-
-public:
-    bool save(image_saving_protocol &p);
-    QMap<camera,image_saving_protocol> read(int numFrames);
+public:    
     void setFileName(const QString &newFileName);
-
-
-    void matread(image_saving_protocol &read_protocol);
-
+    void save(image_saving_protocol &saving_protocol);
+    void read(image_saving_protocol &read_protocol);
 
 signals:
-
     void read_image(QPixmap p);
 
 };
