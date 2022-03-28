@@ -109,24 +109,13 @@ void MainWindow::on_playButton_clicked()
 void MainWindow::on_prevButton_clicked()     
 {
     image_saving_protocol p;
-    filehandler->matread(p);
-
+    filehandler->read(p);
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if(event->key()==Qt::Key_Minus){ui->graphicsView->scale(0.5,0.5);ui->graphicsView_2->scale(0.5,0.5);}
     if(event->key()==Qt::Key_Plus){ui->graphicsView->scale(2,2);ui->graphicsView_2->scale(2,2);}
-}
-
-void MainWindow::read()
-{
-    QByteArray data;
-    QHostAddress addr;
-    quint16 port;
-    data.resize(leftsock->pendingDatagramSize());
-    leftsock->readDatagram(data.data(),data.size(),&addr,&port);
-    addMixmap(data);
 }
 
 void MainWindow::addMixmap(QByteArray &data)
@@ -141,7 +130,6 @@ void MainWindow::addMixmap(QByteArray &data)
 void MainWindow::on_horizontalSlider_valueChanged(int value)// bs
 {
     emit thresHold(value,static_cast<double>(ui->horizontalSlider_2->value()));
-
 }
 
 void MainWindow::on_horizontalSlider_2_valueChanged(int value) //c
@@ -187,8 +175,8 @@ void CamScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void MainWindow::on_toolButton_pressed()// save
 {
     QString fileName=QFileDialog::getSaveFileName(this, tr("Save File"),
-                                                  "./scripts",
-                                                  tr("Traces (*.bin)"));
+                                                  "./record",
+                                                  tr("Vids (*.ext)"));
     ui->lineEdit_3->setText(fileName);
     filehandler->setFileName(fileName);
 }
@@ -196,8 +184,9 @@ void MainWindow::on_toolButton_pressed()// save
 void MainWindow::on_toolButton_2_pressed()// open
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                      "./scripts",
-                                                      tr("Traces (*.bin)"));
+                                                      "./record",
+                                                      tr("Vids (*.ext)"));
     ui->lineEdit_4->setText(fileName);
+    filehandler->setFileName(fileName);
 }
 

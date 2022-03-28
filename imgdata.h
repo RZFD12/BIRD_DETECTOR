@@ -2,7 +2,6 @@
 #define IMGDATA_H
 
 #include <filehandler.h>
-#include "opencv2/opencv.hpp"
 #include <QObject>
 #include <QByteArray>
 #include <QTimer>

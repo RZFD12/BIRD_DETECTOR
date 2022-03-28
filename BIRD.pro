@@ -1,13 +1,6 @@
-QT       += core gui
-QT       += multimedia
-QT       += network
-QT       += multimediawidgets
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += core gui multimedia network multimediawidgets widgets
 
 CONFIG += c++11
-
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000
 
 SOURCES += \
     filehandler.cpp \
@@ -25,7 +18,6 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-
 win32{
     INCLUDEPATH += $$(OPENCV_SDK_DIR)\include
     LIBS += $$(OPENCV_SDK_DIR)\x64\mingw\bin\libopencv_*
@@ -34,7 +26,6 @@ unix{
     INCLUDEPATH += /usr/local/include
     LIBS += /usr/local/lib/libopencv_*
 }
-
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
