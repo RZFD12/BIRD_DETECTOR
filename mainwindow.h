@@ -40,6 +40,7 @@ public slots:
     void loadImg();
     void loadImgLeft(QPixmap piximg);
     void loadImgRight(QPixmap piximg);
+    void IndexingStatus(QPoint status);
 
 private slots:
     void on_nextButton_clicked();
@@ -67,6 +68,11 @@ private:
     QGraphicsPixmapItem *leftpix=nullptr;
     QGraphicsPixmapItem *rightpix=nullptr;
     FileHandler*filehandler=nullptr;
+    QTimer* frame_timer=nullptr;
+    QTimer* video_timer=nullptr;
+    bool video_play=true;
+
+    int frame_num=0;
 
 signals:
    void thresHold(int bs,double C);

@@ -31,7 +31,7 @@ signals:
   void Image(QPixmap pix);
 
 private slots:
-  void Get();
+
 
 private:
   std::string m_video_url;
@@ -48,6 +48,9 @@ public slots:
     void imgFilter(state filter);
     void Start();
     void setFileHandler(FileHandler *f);
+    void Get();
+signals:
+    void set_image_data(image_saving_protocol p);
 };
 
 #endif  //IMGDATA_H

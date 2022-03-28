@@ -18,10 +18,9 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
-#include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QWidget>
 
@@ -45,10 +44,10 @@ public:
     QGroupBox *groupBox;
     QWidget *formLayoutWidget;
     QFormLayout *formLayout;
-    QLabel *label_3;
-    QSlider *horizontalSlider;
     QLabel *label_4;
     QSlider *horizontalSlider_2;
+    QLabel *label_3;
+    QSlider *horizontalSlider;
     QWidget *horizontalLayoutWidget_2;
     QHBoxLayout *horizontalLayout_2;
     QRadioButton *RGB;
@@ -58,8 +57,7 @@ public:
     QLineEdit *lineEdit_4;
     QToolButton *toolButton;
     QToolButton *toolButton_2;
-    QMenuBar *menubar;
-    QStatusBar *statusbar;
+    QProgressBar *progressBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -70,15 +68,15 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         graphicsView = new QGraphicsView(centralwidget);
         graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
-        graphicsView->setGeometry(QRect(0, 0, 941, 800));
+        graphicsView->setGeometry(QRect(10, 9, 931, 791));
         graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
         graphicsView_2 = new QGraphicsView(centralwidget);
         graphicsView_2->setObjectName(QString::fromUtf8("graphicsView_2"));
-        graphicsView_2->setGeometry(QRect(959, 0, 941, 800));
+        graphicsView_2->setGeometry(QRect(959, 9, 931, 791));
         horizontalLayoutWidget = new QWidget(centralwidget);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(290, 850, 191, 81));
+        horizontalLayoutWidget->setGeometry(QRect(310, 850, 191, 71));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -100,38 +98,26 @@ public:
 
         lineEdit = new QLineEdit(centralwidget);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(30, 800, 911, 21));
+        lineEdit->setGeometry(QRect(70, 800, 871, 21));
         lineEdit_2 = new QLineEdit(centralwidget);
         lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(990, 800, 911, 21));
+        lineEdit_2->setGeometry(QRect(1020, 800, 871, 21));
         label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(960, 800, 31, 16));
+        label->setGeometry(QRect(970, 800, 41, 21));
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(0, 802, 47, 21));
+        label_2->setGeometry(QRect(20, 800, 47, 21));
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(0, 830, 281, 101));
+        groupBox->setGeometry(QRect(10, 830, 291, 91));
+        groupBox->setFlat(true);
         formLayoutWidget = new QWidget(groupBox);
         formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
-        formLayoutWidget->setGeometry(QRect(-1, 20, 281, 42));
+        formLayoutWidget->setGeometry(QRect(9, 20, 271, 42));
         formLayout = new QFormLayout(formLayoutWidget);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
-        label_3 = new QLabel(formLayoutWidget);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-
-        formLayout->setWidget(0, QFormLayout::LabelRole, label_3);
-
-        horizontalSlider = new QSlider(formLayoutWidget);
-        horizontalSlider->setObjectName(QString::fromUtf8("horizontalSlider"));
-        horizontalSlider->setMinimum(3);
-        horizontalSlider->setValue(15);
-        horizontalSlider->setOrientation(Qt::Horizontal);
-
-        formLayout->setWidget(0, QFormLayout::FieldRole, horizontalSlider);
-
         label_4 = new QLabel(formLayoutWidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
 
@@ -145,9 +131,22 @@ public:
 
         formLayout->setWidget(1, QFormLayout::FieldRole, horizontalSlider_2);
 
+        label_3 = new QLabel(formLayoutWidget);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        formLayout->setWidget(0, QFormLayout::LabelRole, label_3);
+
+        horizontalSlider = new QSlider(formLayoutWidget);
+        horizontalSlider->setObjectName(QString::fromUtf8("horizontalSlider"));
+        horizontalSlider->setMinimum(3);
+        horizontalSlider->setValue(15);
+        horizontalSlider->setOrientation(Qt::Horizontal);
+
+        formLayout->setWidget(0, QFormLayout::FieldRole, horizontalSlider);
+
         horizontalLayoutWidget_2 = new QWidget(groupBox);
         horizontalLayoutWidget_2->setObjectName(QString::fromUtf8("horizontalLayoutWidget_2"));
-        horizontalLayoutWidget_2->setGeometry(QRect(-1, 60, 281, 31));
+        horizontalLayoutWidget_2->setGeometry(QRect(9, 60, 271, 31));
         horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget_2);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -168,24 +167,21 @@ public:
 
         lineEdit_3 = new QLineEdit(centralwidget);
         lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
-        lineEdit_3->setGeometry(QRect(490, 850, 211, 21));
+        lineEdit_3->setGeometry(QRect(510, 850, 211, 21));
         lineEdit_4 = new QLineEdit(centralwidget);
         lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
-        lineEdit_4->setGeometry(QRect(490, 880, 211, 21));
+        lineEdit_4->setGeometry(QRect(510, 880, 211, 21));
         toolButton = new QToolButton(centralwidget);
         toolButton->setObjectName(QString::fromUtf8("toolButton"));
-        toolButton->setGeometry(QRect(710, 850, 41, 20));
+        toolButton->setGeometry(QRect(730, 850, 41, 20));
         toolButton_2 = new QToolButton(centralwidget);
         toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
-        toolButton_2->setGeometry(QRect(710, 880, 41, 20));
+        toolButton_2->setGeometry(QRect(730, 880, 41, 20));
+        progressBar = new QProgressBar(centralwidget);
+        progressBar->setObjectName(QString::fromUtf8("progressBar"));
+        progressBar->setGeometry(QRect(960, 870, 921, 23));
+        progressBar->setValue(0);
         MainWindow->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(MainWindow);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1900, 22));
-        MainWindow->setMenuBar(menubar);
-        statusbar = new QStatusBar(MainWindow);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        MainWindow->setStatusBar(statusbar);
 
         retranslateUi(MainWindow);
 
@@ -201,8 +197,8 @@ public:
         label->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
-        label_3->setText(QCoreApplication::translate("MainWindow", "Block_size", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "C", nullptr));
+        label_3->setText(QCoreApplication::translate("MainWindow", "Block_size", nullptr));
         RGB->setText(QCoreApplication::translate("MainWindow", "RGB", nullptr));
         GRAY->setText(QCoreApplication::translate("MainWindow", "GRAY", nullptr));
         THRESH->setText(QCoreApplication::translate("MainWindow", "THRESHOLD", nullptr));

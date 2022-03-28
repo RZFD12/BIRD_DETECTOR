@@ -46,7 +46,7 @@ void ImgData::Get()
             p.tsec = 0;
             p.tusec = 0;
             QDateTime dt = QDateTime::currentDateTime();
-            filehandler->Save(p);
+            emit set_image_data(p);
         }
         else{qDebug()<<"empty";}
     }
@@ -66,15 +66,15 @@ void ImgData::imgFilter(state filter)
 
 void ImgData::Start()
 {
-    QTimer * timer = new QTimer(this);
-    connect(timer,&QTimer::timeout,this,&ImgData::Get);
-    timer->setInterval(100);
-    timer->start();
+   // QTimer * timer = new QTimer(this);
+   // connect(timer,&QTimer::timeout,this,&ImgData::Get);
+   // timer->setInterval(100);
+   // timer->start();
     m_video.open(m_video_url);
 }
 
 void ImgData::setFileHandler(FileHandler *f)
 {
-    this->filehandler = f;
-    this->filehandler->moveToThread(this->thread());
+    //this->filehandler = f;
+    //this->filehandler->moveToThread(this->thread());
 }
