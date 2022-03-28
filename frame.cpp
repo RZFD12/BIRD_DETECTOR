@@ -12,7 +12,7 @@ FRAME::~FRAME()
 
 QRectF FRAME::boundingRect() const
 {
-    return QRectF (-25,-25,50,50);
+    return QRectF(-25,-25,50,50);
 }
 void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {

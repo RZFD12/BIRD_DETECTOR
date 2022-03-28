@@ -23,15 +23,15 @@ class ImgData : public QObject
 {
     Q_OBJECT
 public:
-  explicit ImgData(std::string, QObject *parent = 0);
+  explicit ImgData(string, QObject *parent = 0);
   virtual ~ImgData();
 
 signals:
-  void downloaded();
-  void image(QPixmap pix);
+  void Downloaded();
+  void Image(QPixmap pix);
 
 private slots:
-  void get();
+  void Get();
 
 private:
   std::string m_video_url;
@@ -46,7 +46,7 @@ private:
 public slots:
     void setThresHold(int bs,double C);
     void imgFilter(state filter);
-    void start();
+    void Start();
     void setFileHandler(FileHandler *f);
 };
 

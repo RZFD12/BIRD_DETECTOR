@@ -17,10 +17,10 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>941</width>
-      <height>800</height>
+      <x>10</x>
+      <y>9</y>
+      <width>931</width>
+      <height>791</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -34,19 +34,19 @@
     <property name="geometry">
      <rect>
       <x>959</x>
-      <y>0</y>
-      <width>941</width>
-      <height>800</height>
+      <y>9</y>
+      <width>931</width>
+      <height>791</height>
      </rect>
     </property>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>850</y>
+      <x>350</x>
+      <y>870</y>
       <width>191</width>
-      <height>81</height>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -79,9 +79,9 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>70</x>
       <y>800</y>
-      <width>911</width>
+      <width>871</width>
       <height>21</height>
      </rect>
     </property>
@@ -89,9 +89,9 @@
    <widget class="QLineEdit" name="lineEdit_2">
     <property name="geometry">
      <rect>
-      <x>990</x>
+      <x>1020</x>
       <y>800</y>
-      <width>911</width>
+      <width>871</width>
       <height>21</height>
      </rect>
     </property>
@@ -99,10 +99,10 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>960</x>
+      <x>970</x>
       <y>800</y>
-      <width>31</width>
-      <height>16</height>
+      <width>41</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
@@ -112,8 +112,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>802</y>
+      <x>20</x>
+      <y>800</y>
       <width>47</width>
       <height>21</height>
      </rect>
@@ -125,45 +125,28 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>830</y>
-      <width>281</width>
-      <height>101</height>
+      <x>20</x>
+      <y>850</y>
+      <width>291</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="title">
      <string>IMAGE</string>
     </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
     <widget class="QWidget" name="formLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>-1</x>
+       <x>9</x>
        <y>20</y>
-       <width>281</width>
+       <width>271</width>
        <height>42</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Block_size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSlider" name="horizontalSlider">
-        <property name="minimum">
-         <number>3</number>
-        </property>
-        <property name="value">
-         <number>15</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
@@ -184,14 +167,34 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Block_size</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSlider" name="horizontalSlider">
+        <property name="minimum">
+         <number>3</number>
+        </property>
+        <property name="value">
+         <number>15</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
     <widget class="QWidget" name="horizontalLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>-1</x>
+       <x>9</x>
        <y>60</y>
-       <width>281</width>
+       <width>271</width>
        <height>31</height>
       </rect>
      </property>
@@ -223,8 +226,8 @@
    <widget class="QLineEdit" name="lineEdit_3">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>850</y>
+      <x>10</x>
+      <y>1020</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -233,8 +236,8 @@
    <widget class="QLineEdit" name="lineEdit_4">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>880</y>
+      <x>10</x>
+      <y>1050</y>
       <width>211</width>
       <height>21</height>
      </rect>
@@ -243,8 +246,8 @@
    <widget class="QToolButton" name="toolButton">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>850</y>
+      <x>230</x>
+      <y>1020</y>
       <width>41</width>
       <height>20</height>
      </rect>
@@ -256,8 +259,8 @@
    <widget class="QToolButton" name="toolButton_2">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>880</y>
+      <x>230</x>
+      <y>1050</y>
       <width>41</width>
       <height>20</height>
      </rect>
@@ -267,17 +270,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1900</width>
-     <height>22</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
