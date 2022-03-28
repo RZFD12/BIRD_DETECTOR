@@ -29,42 +29,38 @@ int c=0;
 bool FileHandler::save(image_saving_protocol &p)
 {
     m_buff.append(p);
-    if(m_file.open(QIODevice::Append) && m_buff.size()>50)
-    {
-        QByteArray baout;
 
-        QDataStream out(&baout, QIODevice::WriteOnly);
-        out.setVersion(QDataStream::Qt_5_15);
+    if(m_buff.length()>5){
 
+        std::ofstream FILE_INPUT(m_fileName.toStdString(),std::ios::binary | std::ios::app);
 
-        for(const auto &it :qAsConst(m_buff))
-        {            
-            //out<<it.CAMERA_ID<<it.NUMBER_OF_FRAMES<<it.tsec<<it.tusec;
-            if(c==5){
-            matwrite(it);
-            qDebug()<<it.frame.cols;
-            qDebug()<<it.frame.rows;
+        if(FILE_INPUT.is_open()){
 
-            }
-            c++;
+        for(const auto &it :qAsConst(m_buff)){matwrite(it,FILE_INPUT); qDebug()<<it.frame.cols; qDebug()<<it.frame.rows;}
 
         }
-
-        m_file.flush();
-        m_file.close();
+        FILE_INPUT.close();
         m_buff.clear();
-        m_buff.squeeze();
-        return true;
+
     }
-    else{m_file.close();return false;}
+
+
+    return true;
+
+
+
+
 }
 
 
 
 
-void FileHandler::matwrite(const image_saving_protocol& saving_protocol)
+
+
+
+void FileHandler::matwrite(const image_saving_protocol& saving_protocol, ofstream &fs)
 {
-    ofstream fs(m_fileName.toStdString(), fstream::app);
+
 
      //infromation
      fs.write((char*)&saving_protocol.CAMERA_ID,sizeof(unsigned int));
@@ -74,50 +70,37 @@ void FileHandler::matwrite(const image_saving_protocol& saving_protocol)
 
 
      std::vector<uchar> buff;//buffer for coding
+     std::vector<uint8_t> buff1;
+
      std::vector<int> param(2);
-     param[0] = cv::IMWRITE_PAM_FORMAT_GRAYSCALE;
-     param[1] = 80;//default(95) 0-100
+     param[0] = cv::IMWRITE_PNG_COMPRESSION;
+     param[1] = 5;//default(95) 0-100
+     cv::imencode(".png", saving_protocol.frame, buff, param);
+
+     for(ulong i=0;i<buff.size();i++){buff1.push_back(static_cast<uint8_t>(buff[i]));}
 
 
-     cv::imencode(".jpg", saving_protocol.frame, buff, param);
-     int a = buff.size();
+
+
+
+
+     int a = buff1.size();
      fs.write((char*)&a,sizeof(int));
-     //buff.resize(300000);
-     qDebug()<<buff.size();
+
+
+     fs.write(reinterpret_cast<const char*>(buff1.data()),buff1.size());
 
 
 
-     for(ulong i=0; i<buff.size(); ++i){
-         fs.write((char*)&buff[i],sizeof (uchar));
-     }
+     decode(buff1);
 
-
-//    // Header
-//    int type = saving_protocol.frame.type();
-//    int channels = saving_protocol.frame.channels();
-//    fs.write((char*)&saving_protocol.frame.rows, sizeof(int));    // rows
-//    fs.write((char*)&saving_protocol.frame.cols, sizeof(int));    // cols
-//    fs.write((char*)&type, sizeof(int));        // type
-//    fs.write((char*)&channels, sizeof(int));    // channels
-
-//    // Data
-//    if (saving_protocol.frame.isContinuous())
-//    {
-//        fs.write(saving_protocol.frame.ptr<char>(0), (saving_protocol.frame.dataend - saving_protocol.frame.datastart));
-//    }
-//    else
-//    {
-//        int rowsz = CV_ELEM_SIZE(type) * saving_protocol.frame.cols;
-//        for (int r = 0; r < saving_protocol.frame.rows; ++r)
-//        {
-//            fs.write(saving_protocol.frame.ptr<char>(r), rowsz);
-//        }
-//    }
 }
 
 void FileHandler::matread(image_saving_protocol& read_protocol)
 {
-    ifstream fs(m_fileName.toStdString(), fstream::binary);
+    ifstream fs(m_fileName.toStdString(), std::ios::binary);
+
+
 
     int step=301011;
     fs.seekg(0,ios_base::beg);
@@ -128,25 +111,42 @@ void FileHandler::matread(image_saving_protocol& read_protocol)
     fs.read((char*)&read_protocol.tsec,sizeof (unsigned int));
     fs.read((char*)&read_protocol.tusec,sizeof(unsigned int));
 
-    std::vector<uchar> buff;//buffer for coding
+
 
     int size;
     fs.read((char*)&size,sizeof(int));
-    qDebug()<<size;
 
-    char *buffer = new char[size];
-    fs.read(buffer, size);
+    std::vector<uint8_t> buff1;
 
+    buff1.resize(size);
 
-
-   //std::vector<char> data(buff, buff + size);
-
-    //fs.read((char*)mat.data, CV_ELEM_SIZE(type) * rows * cols);
-    read_protocol.frame = cv::imdecode(cv::Mat(1,size,CV_8UC1, buffer),0);
+    fs.read(reinterpret_cast<char*>(&buff1.front()),buff1.size());
 
 
-    QImage qimg(read_protocol.frame.data,read_protocol.frame.cols,
-                read_protocol.frame.rows,read_protocol.frame.step,QImage::Format_Grayscale8);
+
+
+
+
+   // QImage qimg(read_protocol.frame.data,read_protocol.frame.cols,
+                //read_protocol.frame.rows,read_protocol.frame.step,QImage::Format_Grayscale8);
+
+    decode(buff1);
+
+   // emit read_image(QPixmap::fromImage(qimg.rgbSwapped()));
+
+
+}
+
+void FileHandler::decode(std::vector<uint8_t> buff)
+{
+
+    Mat img;
+
+    img=cv::imdecode(Mat(buff),cv::IMREAD_UNCHANGED);
+    qDebug()<<img.channels()<<" chan";
+
+    QImage qimg(img.data,img.cols,
+                img.rows,img.step,QImage::Format_Grayscale8);
 
     emit read_image(QPixmap::fromImage(qimg.rgbSwapped()));
 

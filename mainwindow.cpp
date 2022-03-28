@@ -60,6 +60,8 @@ void MainWindow::loadImgRight(QPixmap piximg)
     rightpix=rightCAM->addPixmap(piximg);
     rightpix->setPos(-960,-540);
     rightCAM->update();
+
+
 }
 
 void MainWindow::on_lineEdit_editingFinished()// left

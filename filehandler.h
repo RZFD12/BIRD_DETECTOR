@@ -31,12 +31,17 @@ public:
     explicit FileHandler(QObject *parent = nullptr);
 private:
     QString m_fileName;
+
     QFile m_file;
+
     QMap<camera,image_saving_protocol> m_images;
+
     QVector <image_saving_protocol> m_buff;
 
+    void matwrite(const image_saving_protocol& saving_protocol,std::ofstream &fs);
 
-    void matwrite(const image_saving_protocol& saving_protocol);
+
+
 
 public:
     bool save(image_saving_protocol &p);
@@ -45,6 +50,8 @@ public:
 
 
     void matread(image_saving_protocol &read_protocol);
+
+    void decode(std::vector<uint8_t> buff);
 
 
 signals:
