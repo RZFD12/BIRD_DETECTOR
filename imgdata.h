@@ -23,7 +23,7 @@ class ImgData : public QObject
 {
     Q_OBJECT
 public:
-  explicit ImgData(string, QObject *parent = 0);
+  explicit ImgData(int id,string, QObject *parent = 0);
   virtual ~ImgData();
 
 signals:
@@ -34,6 +34,7 @@ private slots:
 
 
 private:
+  int cam_id;
   std::string m_video_url;
   cv::VideoCapture m_video;
   int m_block_size=15;

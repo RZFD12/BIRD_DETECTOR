@@ -40,7 +40,7 @@ public slots:
     void loadImg();
     void loadImgLeft(QPixmap piximg);
     void loadImgRight(QPixmap piximg);
-    void IndexingStatus(QPoint status);
+    void IndexingStatus(QPoint p);
 
 private slots:
     void on_nextButton_clicked();

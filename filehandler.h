@@ -39,7 +39,7 @@ public:
 
     void matRead(image_saving_protocol &read_protocol, frame_state state);
 
-    void Decode(vector<uint8_t> buff);
+    void Decode(vector<uint8_t> buff, int camera_id);
 
     void start();
 
@@ -60,15 +60,21 @@ private:
 
     int current_size=0;
 
-    std::vector<uint32_t> FrameByteIndex;
+    std::vector<uint64> FrameByteIndex;
+
+    std::vector<std::vector<image_saving_protocol>> image_writing_buffer;
+
+    std::vector<image_saving_protocol> current_stream_buffer;
 
 private:
     void matWrite(const image_saving_protocol& saving_protocol,ofstream &fs);
 
-    std::vector<uint32_t> Data_Indexing();
+    std::vector<uint64> Data_Indexing();
 
 signals:
-    void readImage(QPixmap p);
+    void readImageleft(QPixmap p);
+
+    void readImageRight(QPixmap p);
 
     void Status(QPoint p);
 

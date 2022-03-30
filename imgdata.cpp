@@ -2,9 +2,10 @@
 #include <QtDebug>
 #include <QTime>
 
-ImgData::ImgData(string url, QObject *parent) : QObject(parent)
+ImgData::ImgData(int id, string url, QObject *parent) : QObject(parent)
 {
     m_video_url = url;
+    cam_id=id;
 }
 
 ImgData::~ImgData() { }
@@ -21,7 +22,7 @@ void ImgData::Get()
             {
                 case RGB:{
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_RGB888);
-                    bitwise_not(frame,frame);
+                    //bitwise_not(frame,frame);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
 
@@ -41,7 +42,7 @@ void ImgData::Get()
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
             }
-            p.CAMERA_ID = 135;
+            p.CAMERA_ID = cam_id;
             p.NUMBER_OF_FRAMES = 1;
             p.tsec = 0;
             p.tusec = 0;

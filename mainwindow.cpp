@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
 
     ui->lineEdit->setText("rtsp://admin:qwerty1234@169.254.111.243:554/ISAPI/Streaming/Channels/101");
-    ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.38.115:554/ISAPI/Streaming/Channels/101");
+    ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.111.244:554/ISAPI/Streaming/Channels/101");
 
 
 
@@ -50,15 +50,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     file_handler_thread->start();
 
-    connect(filehandler,&FileHandler::readImage,this,&MainWindow::loadImgRight);
+    connect(filehandler,&FileHandler::readImageleft,this,&MainWindow::loadImgLeft);
+
+    connect(filehandler,&FileHandler::readImageRight,this,&MainWindow::loadImgRight);
 
     frame_timer=new QTimer();
 
-    frame_timer->setInterval(100);
+    frame_timer->setInterval(250);
 
     video_timer=new QTimer();
 
-    video_timer->setInterval(100);
+    video_timer->setInterval(250);
 
     connect(video_timer,&QTimer::timeout,this,[this](){
 
@@ -94,11 +96,12 @@ void MainWindow::loadImgRight(QPixmap piximg)
     rightCAM->update();
 }
 
-void MainWindow::IndexingStatus(QPoint status)
+void MainWindow::IndexingStatus(QPoint p)
 {
 
-    ui->progressBar->setMaximum(status.x());
-    ui->progressBar->setValue(status.y());
+    ui->progressBar->setMaximum(p.x());
+    ui->progressBar->setValue(p.y());
+
 
 }
 
@@ -106,14 +109,22 @@ void MainWindow::on_lineEdit_editingFinished()// left
 {
     if(ImgGetLeft == nullptr)
     {
-        ImgGetLeft = new ImgData(ui->lineEdit->text().toStdString());
+        ImgGetLeft = new ImgData(1,ui->lineEdit->text().toStdString());
+
         ImgGetLeft->setFileHandler(this->filehandler);
+
         QThread *lthread = new QThread(this);
+
         ImgGetLeft->moveToThread(lthread);
+
         connect(ImgGetLeft,&ImgData::Image,this,&MainWindow::loadImgLeft);
+
         connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
+
         connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
+
         connect(frame_timer,&QTimer::timeout,ImgGetLeft,&ImgData::Get);
+
         connect(ImgGetLeft,&ImgData::set_image_data,filehandler,&FileHandler::Save);
 
 
@@ -128,12 +139,23 @@ void MainWindow::on_lineEdit_2_editingFinished() //right
 {
     if(ImgGetRight == nullptr)
     {
-        ImgGetRight = new ImgData(ui->lineEdit_2->text().toStdString());
+        ImgGetRight = new ImgData(2,ui->lineEdit_2->text().toStdString());
+
         QThread *rthread = new QThread(this);
+
         ImgGetRight->moveToThread(rthread);
+
         connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
+
         connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
+
         connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
+
+        connect(frame_timer,&QTimer::timeout,ImgGetRight,&ImgData::Get);
+
+        connect(ImgGetRight,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+
+
         connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
         rthread->start();
     }
@@ -199,7 +221,10 @@ void MainWindow::imageFilter()
     if(button == ui->RGB){emit imgFilter(state::RGB);}
     else if (button == ui->GRAY){emit imgFilter(state::Gray);}
     else if (button == ui->THRESH) {emit imgFilter(state::Threshold);}
-    button->deleteLater ();
+
+    button=nullptr;
+
+    delete button;
 }
 
 CamScene::CamScene(QWidget *parent)

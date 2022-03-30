@@ -2,9 +2,11 @@
 #include <QDataStream>
 #include <QtDebug>
 #include <QByteArray>
+#include <QThread>
 
 FileHandler::FileHandler(QObject *parent) : QObject(parent)
 {
+
 
 }
 
@@ -18,17 +20,75 @@ void FileHandler::setFileName(const QString &newFileName)
 
 bool FileHandler::Save(image_saving_protocol p)
 {
-     m_buff.append(p);
-    if(m_buff.length()>200)
-    {
-        ofstream FILE_INPUT(m_fileName.toStdString(),ios::binary | ios::app);
-        if(FILE_INPUT.is_open())
-        {
-            for(const auto &it :qAsConst(m_buff)){matWrite(it,FILE_INPUT);}
-        }
-        FILE_INPUT.close();
-        m_buff.clear();
+    if(current_stream_buffer.size()==0){
+
+        current_stream_buffer.push_back(p);
     }
+
+    if(current_stream_buffer.size()==1 && current_stream_buffer[0].CAMERA_ID==p.CAMERA_ID){
+
+        current_stream_buffer[0]=p;
+    }
+    else if (current_stream_buffer.size()==1 && current_stream_buffer[0].CAMERA_ID!=p.CAMERA_ID){
+
+       current_stream_buffer.push_back(p);
+
+       image_writing_buffer.push_back(current_stream_buffer);
+
+       current_stream_buffer.clear();
+
+       current_stream_buffer.shrink_to_fit();
+
+    }
+
+
+
+    if (image_writing_buffer.size()>199){
+
+        ofstream FILE_INPUT(m_fileName.toStdString(),ios::binary | ios::app);
+        if(FILE_INPUT.is_open()){
+
+            for(ulong i=0;i<image_writing_buffer.size();++i){
+                if(image_writing_buffer[i][0].CAMERA_ID==1){
+
+                    matWrite(image_writing_buffer[i][0],FILE_INPUT);
+
+                    matWrite(image_writing_buffer[i][1],FILE_INPUT);
+
+                }
+
+                else{
+
+                    matWrite(image_writing_buffer[i][1],FILE_INPUT);
+
+                    matWrite(image_writing_buffer[i][0],FILE_INPUT);
+
+                }
+            }
+
+            FILE_INPUT.close();
+
+            image_writing_buffer.clear();
+
+            image_writing_buffer.shrink_to_fit();
+        }
+    }
+
+
+
+
+
+//     m_buff.append(p);
+//    if(m_buff.length()>200)
+//    {
+//        ofstream FILE_INPUT(m_fileName.toStdString(),ios::binary | ios::app);
+//        if(FILE_INPUT.is_open())
+//        {
+//            for(const auto &it :qAsConst(m_buff)){matWrite(it,FILE_INPUT);}
+//        }
+//        FILE_INPUT.close();
+//        m_buff.clear();
+//    }
     return true;
 }
 
@@ -45,7 +105,7 @@ void FileHandler::matWrite(const image_saving_protocol& saving_protocol, ofstrea
     vector<uint8_t> buff1;
     vector<int> param(2);
     param[0] = IMWRITE_PNG_COMPRESSION;
-    param[1] = 3;                                               //default(95) 0-100
+    param[1] = 2;                                               //default(95) 0-100
     imencode(".png", saving_protocol.frame, buff1, param);
     int a = buff1.size();
     qDebug()<<"size="<<a;
@@ -61,9 +121,9 @@ void FileHandler::matWrite(const image_saving_protocol& saving_protocol, ofstrea
 
 }
 
-std::vector<uint32_t> FileHandler::Data_Indexing()
+std::vector<uint64> FileHandler::Data_Indexing()
 {
-    std::vector<uint32_t> indexes;
+    std::vector<uint64> indexes;
 
     ifstream fs(m_fileName.toStdString(), ios::binary);
 
@@ -75,18 +135,20 @@ std::vector<uint32_t> FileHandler::Data_Indexing()
 
         QPoint status;
 
-        status.setX(file.size());
 
+        status.setX(static_cast<quint32>(file.size()/1000));
 
         image_saving_protocol read_protocol;
 
-        uint32_t def_size=0;
+        uint64 def_size=0;
 
         indexes.push_back(def_size);
 
 
         while(!fs.eof()){
+
             fs.read((char*)&read_protocol.CAMERA_ID,sizeof(unsigned int));
+
 
             fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
 
@@ -110,9 +172,18 @@ std::vector<uint32_t> FileHandler::Data_Indexing()
 
             indexes.push_back(def_size);
 
-            status.setY(def_size);
+            //status=qMakePair<uint64,uint64>(static_cast<int>(file_size/1000),static_cast<int>(def_size/1000));
+
+            status.setY(static_cast<quint32>(def_size/1000));
 
             emit Status(status);
+
+            //QThread::msleep(50);
+
+            //qDebug()<<status.second;
+
+         //  qDebug()<<status.y();
+
 
         }
     }
@@ -127,48 +198,69 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
 
     switch (state) {
 
-    case frame_state::next :{position+=1; break;}
+    case frame_state::next :{position+=2; break;}
 
-    case frame_state ::previos :{position-=1; break;}
+    case frame_state ::previos :{position-=2; break;}
 
     default: {position+=0;}
 
     }
 
+    int f=0;
+
     fs.seekg(FrameByteIndex[position],ios_base::beg);
 
-    fs.read((char*)&read_protocol.CAMERA_ID,sizeof(unsigned int));
+    while (f<2){
 
-    //qDebug()<<read_protocol.CAMERA_ID;
+        int fff=0;
 
-    fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
+        fs.read((char*)&fff,sizeof(unsigned int));
 
-    fs.read((char*)&read_protocol.tsec,sizeof (unsigned int));
+        //qDebug()<<read_protocol.CAMERA_ID;
 
-    fs.read((char*)&read_protocol.tusec,sizeof(unsigned int));
+        fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
 
-    int size;
+        fs.read((char*)&read_protocol.tsec,sizeof (unsigned int));
 
-    fs.read((char*)&size,sizeof(int));
+        fs.read((char*)&read_protocol.tusec,sizeof(unsigned int));
 
-    vector<uint8_t> buff1;
+        int size;
 
-    buff1.resize(size);
+        fs.read((char*)&size,sizeof(int));
 
-    fs.read(reinterpret_cast<char*>(&buff1.front()),buff1.size());
+        vector<uint8_t> buff1;
 
-    Decode(buff1);
+        buff1.resize(size);
+
+        fs.read(reinterpret_cast<char*>(&buff1.front()),buff1.size());
+
+        Decode(buff1,fff);
+        f++;
+        //qDebug()<<read_protocol.CAMERA_ID;
+    }
 }
 
-void FileHandler::Decode(vector<uint8_t> buff)
+void FileHandler::Decode(vector<uint8_t> buff,int camera_id)
 {
 
     Mat img;
+
     img = imdecode(Mat(buff),IMREAD_UNCHANGED);
     //qDebug()<<img.channels()<<" chan";
     QImage qimg(img.data,img.cols,
                 img.rows,img.step,QImage::Format_Grayscale8);
-    emit readImage(QPixmap::fromImage(qimg.rgbSwapped()));
+
+    if(camera_id==1){
+
+        emit readImageleft(QPixmap::fromImage(qimg.rgbSwapped()));
+
+    }
+    else{
+
+        emit readImageRight(QPixmap::fromImage(qimg.rgbSwapped()));
+
+    }
+
 }
 
 void FileHandler::start()
