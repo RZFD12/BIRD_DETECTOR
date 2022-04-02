@@ -1,4 +1,4 @@
-QT += core gui multimedia network multimediawidgets widgets
+QT += core gui multimedia network multimediawidgets widgets quickwidgets positioning
 
 CONFIG += c++11
 
@@ -31,3 +31,6 @@ unix{
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    qml.qrc

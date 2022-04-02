@@ -11,17 +11,22 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QProgressBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolButton>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -30,17 +35,21 @@ class Ui_MainWindow
 {
 public:
     QWidget *centralwidget;
-    QGraphicsView *graphicsView;
+    QTabWidget *tabWidget;
+    QWidget *tab;
+    QProgressBar *progressBar;
     QGraphicsView *graphicsView_2;
+    QLabel *label;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QToolButton *prevButton;
     QToolButton *playButton;
     QToolButton *nextButton;
+    QToolButton *toolButton;
     QLineEdit *lineEdit;
-    QLineEdit *lineEdit_2;
-    QLabel *label;
+    QToolButton *toolButton_2;
     QLabel *label_2;
+    QGraphicsView *graphicsView;
     QGroupBox *groupBox;
     QWidget *formLayoutWidget;
     QFormLayout *formLayout;
@@ -53,11 +62,27 @@ public:
     QRadioButton *RGB;
     QRadioButton *GRAY;
     QRadioButton *THRESH;
-    QLineEdit *lineEdit_3;
+    QLineEdit *lineEdit_2;
     QLineEdit *lineEdit_4;
-    QToolButton *toolButton;
-    QToolButton *toolButton_2;
-    QProgressBar *progressBar;
+    QLineEdit *lineEdit_3;
+    QGroupBox *groupBox_2;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QLabel *label_6;
+    QDoubleSpinBox *doubleSpinBox_4;
+    QDoubleSpinBox *doubleSpinBox_3;
+    QWidget *verticalLayoutWidget_2;
+    QVBoxLayout *verticalLayout_2;
+    QLabel *label_5;
+    QDoubleSpinBox *doubleSpinBox;
+    QDoubleSpinBox *doubleSpinBox_2;
+    QLabel *label_7;
+    QLabel *label_8;
+    QPushButton *pushButton;
+    QPushButton *pushButton_2;
+    QWidget *tab_2;
+    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -66,15 +91,22 @@ public:
         MainWindow->resize(1920, 1080);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        graphicsView = new QGraphicsView(centralwidget);
-        graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
-        graphicsView->setGeometry(QRect(10, 9, 941, 791));
-        graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-        graphicsView_2 = new QGraphicsView(centralwidget);
+        tabWidget = new QTabWidget(centralwidget);
+        tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
+        tabWidget->setGeometry(QRect(0, 0, 1920, 1080));
+        tab = new QWidget();
+        tab->setObjectName(QString::fromUtf8("tab"));
+        progressBar = new QProgressBar(tab);
+        progressBar->setObjectName(QString::fromUtf8("progressBar"));
+        progressBar->setGeometry(QRect(1640, 880, 261, 23));
+        progressBar->setValue(0);
+        graphicsView_2 = new QGraphicsView(tab);
         graphicsView_2->setObjectName(QString::fromUtf8("graphicsView_2"));
         graphicsView_2->setGeometry(QRect(970, 10, 941, 791));
-        horizontalLayoutWidget = new QWidget(centralwidget);
+        label = new QLabel(tab);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(980, 800, 41, 21));
+        horizontalLayoutWidget = new QWidget(tab);
         horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
         horizontalLayoutWidget->setGeometry(QRect(860, 840, 201, 41));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
@@ -96,19 +128,24 @@ public:
 
         horizontalLayout->addWidget(nextButton);
 
-        lineEdit = new QLineEdit(centralwidget);
+        toolButton = new QToolButton(tab);
+        toolButton->setObjectName(QString::fromUtf8("toolButton"));
+        toolButton->setGeometry(QRect(1860, 910, 41, 20));
+        lineEdit = new QLineEdit(tab);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
         lineEdit->setGeometry(QRect(70, 800, 881, 21));
-        lineEdit_2 = new QLineEdit(centralwidget);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(1030, 800, 881, 21));
-        label = new QLabel(centralwidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(980, 800, 41, 21));
-        label_2 = new QLabel(centralwidget);
+        toolButton_2 = new QToolButton(tab);
+        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
+        toolButton_2->setGeometry(QRect(1860, 940, 41, 20));
+        label_2 = new QLabel(tab);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(20, 800, 47, 21));
-        groupBox = new QGroupBox(centralwidget);
+        graphicsView = new QGraphicsView(tab);
+        graphicsView->setObjectName(QString::fromUtf8("graphicsView"));
+        graphicsView->setGeometry(QRect(10, 9, 941, 791));
+        graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        groupBox = new QGroupBox(tab);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setGeometry(QRect(20, 830, 291, 101));
         groupBox->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
@@ -166,25 +203,96 @@ public:
 
         horizontalLayout_2->addWidget(THRESH);
 
-        lineEdit_3 = new QLineEdit(centralwidget);
-        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
-        lineEdit_3->setGeometry(QRect(20, 960, 211, 21));
-        lineEdit_4 = new QLineEdit(centralwidget);
+        lineEdit_2 = new QLineEdit(tab);
+        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
+        lineEdit_2->setGeometry(QRect(1030, 800, 881, 21));
+        lineEdit_4 = new QLineEdit(tab);
         lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
-        lineEdit_4->setGeometry(QRect(20, 990, 211, 21));
-        toolButton = new QToolButton(centralwidget);
-        toolButton->setObjectName(QString::fromUtf8("toolButton"));
-        toolButton->setGeometry(QRect(240, 960, 41, 20));
-        toolButton_2 = new QToolButton(centralwidget);
-        toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
-        toolButton_2->setGeometry(QRect(240, 990, 41, 20));
-        progressBar = new QProgressBar(centralwidget);
-        progressBar->setObjectName(QString::fromUtf8("progressBar"));
-        progressBar->setGeometry(QRect(1300, 980, 611, 23));
-        progressBar->setValue(0);
+        lineEdit_4->setGeometry(QRect(1640, 940, 211, 21));
+        lineEdit_3 = new QLineEdit(tab);
+        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
+        lineEdit_3->setGeometry(QRect(1640, 910, 211, 21));
+        groupBox_2 = new QGroupBox(tab);
+        groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
+        groupBox_2->setGeometry(QRect(330, 830, 231, 121));
+        verticalLayoutWidget = new QWidget(groupBox_2);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(136, 30, 84, 83));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        label_6 = new QLabel(verticalLayoutWidget);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setAlignment(Qt::AlignCenter);
+
+        verticalLayout->addWidget(label_6);
+
+        doubleSpinBox_4 = new QDoubleSpinBox(verticalLayoutWidget);
+        doubleSpinBox_4->setObjectName(QString::fromUtf8("doubleSpinBox_4"));
+        doubleSpinBox_4->setDecimals(4);
+
+        verticalLayout->addWidget(doubleSpinBox_4);
+
+        doubleSpinBox_3 = new QDoubleSpinBox(verticalLayoutWidget);
+        doubleSpinBox_3->setObjectName(QString::fromUtf8("doubleSpinBox_3"));
+        doubleSpinBox_3->setDecimals(4);
+
+        verticalLayout->addWidget(doubleSpinBox_3);
+
+        verticalLayoutWidget_2 = new QWidget(groupBox_2);
+        verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
+        verticalLayoutWidget_2->setGeometry(QRect(50, 30, 84, 83));
+        verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
+        label_5 = new QLabel(verticalLayoutWidget_2);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+        label_5->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_2->addWidget(label_5);
+
+        doubleSpinBox = new QDoubleSpinBox(verticalLayoutWidget_2);
+        doubleSpinBox->setObjectName(QString::fromUtf8("doubleSpinBox"));
+        doubleSpinBox->setDecimals(4);
+
+        verticalLayout_2->addWidget(doubleSpinBox);
+
+        doubleSpinBox_2 = new QDoubleSpinBox(verticalLayoutWidget_2);
+        doubleSpinBox_2->setObjectName(QString::fromUtf8("doubleSpinBox_2"));
+        doubleSpinBox_2->setDecimals(4);
+
+        verticalLayout_2->addWidget(doubleSpinBox_2);
+
+        label_7 = new QLabel(groupBox_2);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setGeometry(QRect(10, 60, 31, 17));
+        label_7->setAlignment(Qt::AlignCenter);
+        label_8 = new QLabel(groupBox_2);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+        label_8->setGeometry(QRect(10, 90, 31, 17));
+        label_8->setAlignment(Qt::AlignCenter);
+        pushButton = new QPushButton(tab);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(570, 850, 61, 31));
+        pushButton_2 = new QPushButton(tab);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        pushButton_2->setGeometry(QRect(570, 890, 61, 31));
+        tabWidget->addTab(tab, QString());
+        tab_2 = new QWidget();
+        tab_2->setObjectName(QString::fromUtf8("tab_2"));
+        gridLayoutWidget = new QWidget(tab_2);
+        gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
+        gridLayoutWidget->setGeometry(QRect(10, 9, 1901, 971));
+        gridLayout = new QGridLayout(gridLayoutWidget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setContentsMargins(0, 0, 0, 0);
+        tabWidget->addTab(tab_2, QString());
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
+
+        tabWidget->setCurrentIndex(0);
+
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -192,10 +300,12 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
         prevButton->setText(QCoreApplication::translate("MainWindow", "prev", nullptr));
         playButton->setText(QCoreApplication::translate("MainWindow", "play", nullptr));
         nextButton->setText(QCoreApplication::translate("MainWindow", "next", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
+        toolButton->setText(QCoreApplication::translate("MainWindow", "save", nullptr));
+        toolButton_2->setText(QCoreApplication::translate("MainWindow", "open", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
         groupBox->setTitle(QCoreApplication::translate("MainWindow", "IMAGE", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "C", nullptr));
@@ -203,8 +313,15 @@ public:
         RGB->setText(QCoreApplication::translate("MainWindow", "RGB", nullptr));
         GRAY->setText(QCoreApplication::translate("MainWindow", "GRAY", nullptr));
         THRESH->setText(QCoreApplication::translate("MainWindow", "THRESHOLD", nullptr));
-        toolButton->setText(QCoreApplication::translate("MainWindow", "save", nullptr));
-        toolButton_2->setText(QCoreApplication::translate("MainWindow", "open", nullptr));
+        groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "Cam position", nullptr));
+        label_6->setText(QCoreApplication::translate("MainWindow", "Cam 2", nullptr));
+        label_5->setText(QCoreApplication::translate("MainWindow", "Cam 1", nullptr));
+        label_7->setText(QCoreApplication::translate("MainWindow", "Lat", nullptr));
+        label_8->setText(QCoreApplication::translate("MainWindow", "Lon", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "Apply", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
     } // retranslateUi
 
 };

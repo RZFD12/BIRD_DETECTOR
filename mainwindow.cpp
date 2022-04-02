@@ -23,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
+    map = new QQuickWidget(this);
+    map->setSource(QUrl("qrc:/main.qml"));
+    map->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    ui->gridLayout->addWidget (map);
     ui->lineEdit->setText("rtsp://admin:qwerty1234@169.254.111.243:554/ISAPI/Streaming/Channels/101");
     ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.111.244:554/ISAPI/Streaming/Channels/101");
     filehandler = new FileHandler();

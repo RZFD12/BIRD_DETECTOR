@@ -10,6 +10,10 @@
 #include <QMap>
 #include <QUdpSocket>
 #include <QPixmap>
+#include <QtQuickWidgets/QQuickWidget>
+#include <QQuickItem>
+#include <QQmlContext>
+#include <QtPositioning>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -55,6 +59,7 @@ private:
     FileHandler*filehandler=nullptr;
     QTimer* frame_timer=nullptr;
     QTimer* video_timer=nullptr;
+    QQuickWidget * map;
     bool video_play=true;
     int frame_num=0;
 
