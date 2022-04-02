@@ -20,7 +20,7 @@ Item {
             z: polygon.z + 1
             model: mymodel
             delegate: MapCircle {
-                radius: model.radius
+                radius: 1000000
                 opacity: 0.5
                 border.width: 3
                 color: 'green'
@@ -33,22 +33,25 @@ Item {
             border.width: 0
         }
     }
-    function moveMarker(index, coordinate) {
+    function moveMarker(index, baseLat, baseLon) {
+        var coord = QtPositioning.coordinate(baseLat, baseLon)
         mymodel.set(index, {
-                        "coords": coordinate
+                        "coords": coord
                     })
         var path = polygon.path
-        path[index] = coordinate
+        path[index] = coord
         polygon.path = path
     }
-    function addMarker(coordinate) {
+    function addMarker(baseLat, baseLon) {
+        var coord = QtPositioning.coordinate(baseLat, baseLon)
+        //console.log(baseLat, baseLon)
         mymodel.append({
-                           "coords": coordinate
+                           "coords": coord
                        })
-        polygon.addCoordinate(coordinate)
+        polygon.addCoordinate(coord)
     }
-    function delMarkers(index, coordinate) {
+    function delMarkers() {
         mymodel.clear()
-        polygon.removeCoordinate(coordinate)
+        //polygon.removeCoordinate(coordinate)
     }
 }

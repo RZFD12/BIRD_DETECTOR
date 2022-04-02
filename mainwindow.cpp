@@ -221,3 +221,40 @@ void MainWindow::on_toolButton_2_pressed()// open
     ui->lineEdit_4->setText(fileName);
     filehandler->setFileName(fileName);
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    firstLat = ui->doubleSpinBox->text ().toDouble ();
+    secondLat = ui->doubleSpinBox_4->text ().toDouble ();
+    firstLon = ui->doubleSpinBox_2->text ().toDouble ();
+    secondLon = ui->doubleSpinBox_3->text ().toDouble ();
+    QMetaObject::invokeMethod (map->rootObject (),"addMarker",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,firstLat),
+                               Q_ARG(QVariant,firstLon));
+    QMetaObject::invokeMethod (map->rootObject (),"addMarker",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,secondLat),
+                               Q_ARG(QVariant,secondLon));
+}
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    QMetaObject::invokeMethod (map->rootObject (),"delMarkers",
+                               Qt::DirectConnection);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    QMetaObject::invokeMethod (map->rootObject (),"moveMarker",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,0),
+                               Q_ARG(QVariant,firstLat),
+                               Q_ARG(QVariant,firstLon));
+    QMetaObject::invokeMethod (map->rootObject (),"moveMarker",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,1),
+                               Q_ARG(QVariant,secondLat),
+                               Q_ARG(QVariant,secondLon));
+}

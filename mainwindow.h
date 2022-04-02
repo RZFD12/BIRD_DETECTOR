@@ -62,6 +62,8 @@ private:
     QQuickWidget * map;
     bool video_play=true;
     int frame_num=0;
+    double firstLat, secondLat;
+    double firstLon, secondLon;
 
 private slots:
     void on_nextButton_clicked();
@@ -76,6 +78,9 @@ private slots:
     void imageFilter();
     void on_toolButton_pressed();
     void on_toolButton_2_pressed();
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
 
 signals:
     void thresHold(int bs,double C);

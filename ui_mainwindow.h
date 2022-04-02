@@ -80,6 +80,7 @@ public:
     QLabel *label_8;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
     QWidget *tab_2;
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout;
@@ -217,7 +218,7 @@ public:
         groupBox_2->setGeometry(QRect(330, 830, 231, 121));
         verticalLayoutWidget = new QWidget(groupBox_2);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(136, 30, 84, 83));
+        verticalLayoutWidget->setGeometry(QRect(140, 30, 84, 83));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -273,10 +274,13 @@ public:
         label_8->setAlignment(Qt::AlignCenter);
         pushButton = new QPushButton(tab);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(570, 850, 61, 31));
+        pushButton->setGeometry(QRect(570, 850, 61, 21));
         pushButton_2 = new QPushButton(tab);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(570, 890, 61, 31));
+        pushButton_2->setGeometry(QRect(570, 890, 61, 21));
+        pushButton_3 = new QPushButton(tab);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        pushButton_3->setGeometry(QRect(570, 930, 61, 21));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
@@ -320,6 +324,7 @@ public:
         label_8->setText(QCoreApplication::translate("MainWindow", "Lon", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Apply", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
     } // retranslateUi
