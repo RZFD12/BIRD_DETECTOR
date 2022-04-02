@@ -62,8 +62,10 @@ private:
     QQuickWidget * map;
     bool video_play=true;
     int frame_num=0;
-    double firstLat, secondLat;
-    double firstLon, secondLon;
+    double firstLat;
+    double firstLon;
+    double secondLat;
+    double secondLon;
 
 private slots:
     void on_nextButton_clicked();

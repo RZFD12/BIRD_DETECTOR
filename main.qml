@@ -20,7 +20,7 @@ Item {
             z: polygon.z + 1
             model: mymodel
             delegate: MapCircle {
-                radius: 1000000
+                radius: 100000
                 opacity: 0.5
                 border.width: 3
                 color: 'green'
@@ -44,7 +44,6 @@ Item {
     }
     function addMarker(baseLat, baseLon) {
         var coord = QtPositioning.coordinate(baseLat, baseLon)
-        //console.log(baseLat, baseLon)
         mymodel.append({
                            "coords": coord
                        })
