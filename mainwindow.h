@@ -25,7 +25,6 @@ private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
     //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
 };
 
 class MainWindow : public QMainWindow
@@ -42,20 +41,6 @@ public slots:
     void loadImgRight(QPixmap piximg);
     void IndexingStatus(QPoint p);
 
-private slots:
-    void on_nextButton_clicked();
-    void on_playButton_clicked();
-    void on_prevButton_clicked();
-    void keyPressEvent(QKeyEvent *event);
-    void addMixmap(QByteArray &data);
-    void on_lineEdit_editingFinished();
-    void on_lineEdit_2_editingFinished();
-    void on_horizontalSlider_valueChanged(int value);
-    void on_horizontalSlider_2_valueChanged(int value);
-    void imageFilter();
-    void on_toolButton_pressed();
-    void on_toolButton_2_pressed();
-
 private:
     Ui::MainWindow *ui;
     CamScene *leftCAM;
@@ -71,12 +56,24 @@ private:
     QTimer* frame_timer=nullptr;
     QTimer* video_timer=nullptr;
     bool video_play=true;
-
     int frame_num=0;
 
-signals:
-   void thresHold(int bs,double C);
-   void imgFilter(state filter);
+private slots:
+    void on_nextButton_clicked();
+    void on_playButton_clicked();
+    void on_prevButton_clicked();
+    void keyPressEvent(QKeyEvent *event);
+    void addMixmap(QByteArray &data);
+    void on_lineEdit_editingFinished();
+    void on_lineEdit_2_editingFinished();
+    void on_horizontalSlider_valueChanged(int value);
+    void on_horizontalSlider_2_valueChanged(int value);
+    void imageFilter();
+    void on_toolButton_pressed();
+    void on_toolButton_2_pressed();
 
+signals:
+    void thresHold(int bs,double C);
+    void imgFilter(state filter);
 };
 #endif // MAINWINDOW_H

@@ -23,15 +23,15 @@ class ImgData : public QObject
 {
     Q_OBJECT
 public:
-  explicit ImgData(int id,string, QObject *parent = 0);
+  explicit ImgData(int id,std::string, QObject *parent = 0);
   virtual ~ImgData();
 
-signals:
-  void Downloaded();
-  void Image(QPixmap pix);
-
-private slots:
-
+public slots:
+    void setThresHold(int bs,double C);
+    void imgFilter(state filter);
+    void Start();
+    void setFileHandler(FileHandler *f);
+    void Get();
 
 private:
   int cam_id;
@@ -44,14 +44,10 @@ private:
   FileHandler *filehandler=nullptr;
   image_saving_protocol p;
 
-public slots:
-    void setThresHold(int bs,double C);
-    void imgFilter(state filter);
-    void Start();
-    void setFileHandler(FileHandler *f);
-    void Get();
 signals:
-    void set_image_data(image_saving_protocol p);
+  void Downloaded();
+  void Image(QPixmap pix);
+  void set_image_data(image_saving_protocol p);
 };
 
 #endif  //IMGDATA_H

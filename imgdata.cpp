@@ -2,7 +2,7 @@
 #include <QtDebug>
 #include <QTime>
 
-ImgData::ImgData(int id, string url, QObject *parent) : QObject(parent)
+ImgData::ImgData(int id, std::string url, QObject *parent) : QObject(parent)
 {
     m_video_url = url;
     cam_id=id;
@@ -12,7 +12,7 @@ ImgData::~ImgData() { }
 
 void ImgData::Get()
 {
-    Mat frame;
+    cv::Mat frame;
     if(m_video.isOpened())
     {
         m_video>>frame;
@@ -27,7 +27,7 @@ void ImgData::Get()
                 break;}
 
                 case Gray:{
-                    cvtColor(frame,frame,COLOR_BGR2GRAY);
+                    cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     p.frame = frame;
                     bitwise_not(frame,frame);
@@ -35,8 +35,8 @@ void ImgData::Get()
                 break;}
 
                 case Threshold:{
-                    cvtColor(frame,frame,COLOR_BGR2GRAY);
-                    adaptiveThreshold(frame,frame,255,ADAPTIVE_THRESH_MEAN_C,THRESH_BINARY,m_block_size,m_C);
+                    cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
+                    adaptiveThreshold(frame,frame,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,m_block_size,m_C);
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     bitwise_not(frame,frame);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));

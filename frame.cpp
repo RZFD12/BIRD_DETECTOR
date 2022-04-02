@@ -26,7 +26,6 @@ void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     this->setPos(mapToScene(event->pos()));
     Q_UNUSED(event);
-
 }
 void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
