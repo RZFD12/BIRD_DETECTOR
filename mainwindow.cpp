@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     map->setSource(QUrl("qrc:/main.qml"));
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
     ui->gridLayout->addWidget(map);
+    this->canAddMarker = true;
     ui->lineEdit->setText("rtsp://admin:qwerty1234@169.254.111.243:554/ISAPI/Streaming/Channels/101");
     ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.111.244:554/ISAPI/Streaming/Channels/101");
     filehandler = new FileHandler();
@@ -224,24 +225,35 @@ void MainWindow::on_toolButton_2_pressed()// open
 
 void MainWindow::on_pushButton_clicked()
 {
-    firstLat = ui->doubleSpinBox->value ();
-    secondLat = ui->doubleSpinBox_4->value ();
-    firstLon = ui->doubleSpinBox_2->value ();
-    secondLon = ui->doubleSpinBox_3->value ();
-    QMetaObject::invokeMethod (map->rootObject (),"addMarker",
-                               Qt::DirectConnection,
-                               Q_ARG(QVariant,firstLat),
-                               Q_ARG(QVariant,firstLon));
-    QMetaObject::invokeMethod (map->rootObject (),"addMarker",
-                               Qt::DirectConnection,
-                               Q_ARG(QVariant,secondLat),
-                               Q_ARG(QVariant,secondLon));
+    if(this->canAddMarker)
+    {
+        firstLat = ui->doubleSpinBox->value ();
+        secondLat = ui->doubleSpinBox_4->value ();
+        firstLon = ui->doubleSpinBox_2->value ();
+        secondLon = ui->doubleSpinBox_3->value ();
+        QMetaObject::invokeMethod (map->rootObject (),"addMarker",
+                                   Qt::DirectConnection,
+                                   Q_ARG(QVariant,firstLat),
+                                   Q_ARG(QVariant,firstLon));
+        QMetaObject::invokeMethod (map->rootObject (),"addMarker",
+                                   Qt::DirectConnection,
+                                   Q_ARG(QVariant,secondLat),
+                                   Q_ARG(QVariant,secondLon));
+    }
+    this->canAddMarker = false;
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    QMetaObject::invokeMethod (map->rootObject (),"delMarkers",
-                               Qt::DirectConnection);
+    QMetaObject::invokeMethod (map->rootObject (),"delMarker",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,firstLat),
+                               Q_ARG(QVariant,firstLon));
+    QMetaObject::invokeMethod (map->rootObject (),"delMarker",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,secondLat),
+                               Q_ARG(QVariant,secondLon));
+    this->canAddMarker = true;
 }
 
 void MainWindow::on_pushButton_3_clicked()

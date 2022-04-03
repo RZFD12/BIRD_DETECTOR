@@ -49,8 +49,9 @@ Item {
                        })
         polygon.addCoordinate(coord)
     }
-    function delMarkers() {
+    function delMarker(baseLat, baseLon) {
         mymodel.clear()
-        //polygon.removeCoordinate(coordinate)
+        var coord = QtPositioning.coordinate(baseLat, baseLon)
+        polygon.removeCoordinate(coord)
     }
 }

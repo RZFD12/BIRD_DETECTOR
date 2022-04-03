@@ -14,6 +14,7 @@
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QtPositioning>
+#include <QPair>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -66,6 +67,7 @@ private:
     double firstLon;
     double secondLat;
     double secondLon;
+    bool canAddMarker;
 
 private slots:
     void on_nextButton_clicked();
