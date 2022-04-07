@@ -29,7 +29,7 @@ public:
     void setSmoothDots(int smooth);
     void clear();
     void start();
-    void add_data(QVector<double> &X,QVector<double> &Y,QVector<double> &Z);
+    void add_data(const QVector<float> &X,const QVector<float> &Y,const QVector<float> &Z);
 
 public Q_SLOTS:
     void changeStyle(int style);
