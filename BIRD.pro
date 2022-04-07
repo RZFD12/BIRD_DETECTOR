@@ -6,6 +6,7 @@ CONFIG += c++11
 
 SOURCES += \
     filehandler.cpp \
+    flatto3d.cpp \
     frame.cpp \
     imgdata.cpp \
     main.cpp \
@@ -14,6 +15,7 @@ SOURCES += \
 
 HEADERS += \
     filehandler.h \
+    flatto3d.h \
     frame.h \
     imgdata.h \
     mainwindow.h \
