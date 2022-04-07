@@ -491,7 +491,7 @@ void MainWindow::to_3d()
     }
     converter.Start(px,py,lx,ly);
     modifier->add_data(converter.getX(),converter.getY(),converter.getH3());
-    converter.clear_data();
+    converter.Clear();
 
 }
 
