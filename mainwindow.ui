@@ -307,7 +307,7 @@
         <x>330</x>
         <y>830</y>
         <width>231</width>
-        <height>121</height>
+        <height>161</height>
        </rect>
       </property>
       <property name="title">
@@ -319,7 +319,7 @@
          <x>140</x>
          <y>30</y>
          <width>84</width>
-         <height>83</height>
+         <height>111</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -347,6 +347,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox_2">
+          <property name="maximum">
+           <number>360</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="verticalLayoutWidget_2">
@@ -355,7 +362,7 @@
          <x>50</x>
          <y>30</y>
          <width>84</width>
-         <height>83</height>
+         <height>111</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -383,39 +390,56 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox">
+          <property name="maximum">
+           <number>360</number>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
-      <widget class="QLabel" name="label_7">
+      <widget class="QWidget" name="verticalLayoutWidget_3">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>60</y>
          <width>31</width>
-         <height>17</height>
+         <height>80</height>
         </rect>
        </property>
-       <property name="text">
-        <string>Lat</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_8">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>90</y>
-         <width>31</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Lon</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Lat</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Lon</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Rot</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
      <widget class="QPushButton" name="pushButton">
@@ -467,11 +491,22 @@
        <rect>
         <x>10</x>
         <y>9</y>
-        <width>1901</width>
+        <width>881</width>
         <height>971</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout"/>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>920</x>
+        <y>10</y>
+        <width>981</width>
+        <height>971</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2"/>
      </widget>
     </widget>
    </widget>

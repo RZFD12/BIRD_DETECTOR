@@ -15,6 +15,7 @@
 #include <QQmlContext>
 #include <QtPositioning>
 #include <QPair>
+#include <scatterdatamodifier.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -61,6 +62,7 @@ private:
     QTimer* frame_timer=nullptr;
     QTimer* video_timer=nullptr;
     QQuickWidget * map;
+    ScatterDataModifier *modifier;
     bool video_play=true;
     int frame_num=0;
     double firstLat;
@@ -85,6 +87,9 @@ private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
     void on_pushButton_3_clicked();
+    void on_spinBox_valueChanged(int arg1);
+    void on_spinBox_2_valueChanged(int arg1);
+    void initialize_3d_graph();
 
 signals:
     void thresHold(int bs,double C);

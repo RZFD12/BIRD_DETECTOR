@@ -14,23 +14,29 @@ Item {
             name: "osm"
         }
         center: QtPositioning.coordinate(56.3287, 44.002)
-        zoomLevel: 6
+        zoomLevel: 15
         activeMapType: supportedMapTypes[3]
         MapItemView {
             z: polygon.z + 1
             model: mymodel
-            delegate: MapCircle {
-                radius: 100000
+            delegate: MapPolygon {
+                //radius: 100000
                 opacity: 0.5
-                border.width: 3
+                border.width: 1
                 color: 'green'
-                center: QtPositioning.coordinate(model.coords.latitude,
-                                                 model.coords.longitude)
+                rotation: model.angle
+                path: [
+                            { latitude: model.coords.latitude+0.002, longitude: model.coords.longitude-0.006 },
+                            { latitude: model.coords.latitude, longitude: model.coords.longitude },
+                            { latitude: model.coords.latitude+0.002, longitude: model.coords.longitude+0.006}
+                        ]
+
             }
         }
         MapPolygon {
             id: polygon
             border.width: 0
+            //rotation: 50
         }
     }
     function moveMarker(index, baseLat, baseLon) {
@@ -41,17 +47,28 @@ Item {
         var path = polygon.path
         path[index] = coord
         polygon.path = path
+        map.center=QtPositioning.coordinate(baseLat,baseLon);
     }
-    function addMarker(baseLat, baseLon) {
+    function addMarker(baseLat, baseLon, angle) {
         var coord = QtPositioning.coordinate(baseLat, baseLon)
         mymodel.append({
-                           "coords": coord
+                           "coords": coord,
+                           "angle": angle
                        })
         polygon.addCoordinate(coord)
+        map.center=QtPositioning.coordinate(baseLat,baseLon);
     }
     function delMarker(baseLat, baseLon) {
         mymodel.clear()
         var coord = QtPositioning.coordinate(baseLat, baseLon)
         polygon.removeCoordinate(coord)
+    }
+
+    function rotate(index,angle){
+        mymodel.set(index, {
+                            "angle": angle
+                    })
+
+
     }
 }

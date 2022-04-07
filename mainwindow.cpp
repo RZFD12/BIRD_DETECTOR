@@ -7,6 +7,7 @@
 #include <QThread>
 #include <QFileDialog>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -47,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
         image_saving_protocol p;
         filehandler->matRead(p,frame_state::next);
     });
+    initialize_3d_graph();
 }
 
 MainWindow::~MainWindow()
@@ -234,11 +236,13 @@ void MainWindow::on_pushButton_clicked()
         QMetaObject::invokeMethod (map->rootObject (),"addMarker",
                                    Qt::DirectConnection,
                                    Q_ARG(QVariant,firstLat),
-                                   Q_ARG(QVariant,firstLon));
+                                   Q_ARG(QVariant,firstLon),
+                                   Q_ARG(QVariant,0));
         QMetaObject::invokeMethod (map->rootObject (),"addMarker",
                                    Qt::DirectConnection,
                                    Q_ARG(QVariant,secondLat),
-                                   Q_ARG(QVariant,secondLon));
+                                   Q_ARG(QVariant,secondLon),
+                                   Q_ARG(QVariant,0));
     }
     this->canAddMarker = false;
 }
@@ -273,3 +277,154 @@ void MainWindow::on_pushButton_3_clicked()
                                Q_ARG(QVariant,secondLat),
                                Q_ARG(QVariant,secondLon));
 }
+
+void MainWindow::on_spinBox_valueChanged(int arg1)// cam 1
+{
+    QMetaObject::invokeMethod (map->rootObject (),"rotate",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,0),
+                               Q_ARG(QVariant,arg1));
+
+}
+
+
+void MainWindow::on_spinBox_2_valueChanged(int arg1) //cam 2
+{
+    QMetaObject::invokeMethod (map->rootObject (),"rotate",
+                               Qt::DirectConnection,
+                               Q_ARG(QVariant,1),
+                               Q_ARG(QVariant,arg1));
+
+}
+
+void MainWindow::initialize_3d_graph()
+{
+
+    Q3DScatter *graph = new Q3DScatter();
+    QWidget *container = QWidget::createWindowContainer(graph);
+    //! [0]
+
+    if (!graph->hasContext()) {
+        QMessageBox msgBox;
+        msgBox.setText("Couldn't initialize the OpenGL context.");
+        msgBox.exec();
+
+    }
+
+
+    //! [1]
+    QWidget *widget = new QWidget;
+    QHBoxLayout *hLayout = new QHBoxLayout(widget);
+    QVBoxLayout *vLayout = new QVBoxLayout();
+    hLayout->addWidget(container, 1);
+    hLayout->addLayout(vLayout);
+    //! [1]
+
+    widget->setWindowTitle(QStringLiteral("A Cosine Wave"));
+
+    //! [4]
+    QComboBox *themeList = new QComboBox(widget);
+    themeList->addItem(QStringLiteral("Qt"));
+    themeList->addItem(QStringLiteral("Primary Colors"));
+    themeList->addItem(QStringLiteral("Digia"));
+    themeList->addItem(QStringLiteral("Stone Moss"));
+    themeList->addItem(QStringLiteral("Army Blue"));
+    themeList->addItem(QStringLiteral("Retro"));
+    themeList->addItem(QStringLiteral("Ebony"));
+    themeList->addItem(QStringLiteral("Isabelle"));
+    themeList->setCurrentIndex(6);
+
+    QPushButton *labelButton = new QPushButton(widget);
+    labelButton->setText(QStringLiteral("Change label style"));
+
+
+    QPushButton *cameraButton = new QPushButton(widget);
+    cameraButton->setText(QStringLiteral("Change camera preset"));
+
+    QPushButton *clearButton = new QPushButton(widget);
+    clearButton->setText(QStringLiteral("Clear"));
+
+    QPushButton *viewButton=new QPushButton(widget);
+    viewButton->setText("View in 3D");
+
+    QCheckBox *backgroundCheckBox = new QCheckBox(widget);
+    backgroundCheckBox->setText(QStringLiteral("Show background"));
+    backgroundCheckBox->setChecked(true);
+
+    QCheckBox *gridCheckBox = new QCheckBox(widget);
+    gridCheckBox->setText(QStringLiteral("Show grid"));
+    gridCheckBox->setChecked(true);
+
+
+
+
+    //! [4]
+
+    //! [5]
+    vLayout->addWidget(labelButton, 0, Qt::AlignTop);
+    vLayout->addWidget(cameraButton, 0, Qt::AlignTop);
+    vLayout->addWidget(viewButton,0,Qt::AlignTop);
+    vLayout->addWidget(clearButton, 0, Qt::AlignTop);
+    vLayout->addWidget(backgroundCheckBox);
+    vLayout->addWidget(gridCheckBox);
+
+
+
+    vLayout->addWidget(new QLabel(QStringLiteral("Change theme")));
+    vLayout->addWidget(themeList);
+
+
+
+
+    //! [5]
+
+    //! [2]
+    modifier = new ScatterDataModifier(graph);
+    //! [2]
+
+    //! [6]
+    QObject::connect(cameraButton, &QPushButton::clicked, modifier,
+                     &ScatterDataModifier::changePresetCamera);
+    QObject::connect(labelButton, &QPushButton::clicked, modifier,
+                     &ScatterDataModifier::changeLabelStyle);
+    QObject::connect(clearButton, &QPushButton::clicked, modifier,
+                     &ScatterDataModifier::clear);
+
+    QObject::connect(backgroundCheckBox, &QCheckBox::stateChanged, modifier,
+                     &ScatterDataModifier::setBackgroundEnabled);
+    QObject::connect(gridCheckBox, &QCheckBox::stateChanged, modifier,
+                     &ScatterDataModifier::setGridEnabled);
+   // QObject::connect(smoothCheckBox, &QCheckBox::stateChanged, modifier,
+     //                &ScatterDataModifier::setSmoothDots);
+
+    QObject::connect(modifier, &ScatterDataModifier::backgroundEnabledChanged,
+                     backgroundCheckBox, &QCheckBox::setChecked);
+    QObject::connect(modifier, &ScatterDataModifier::gridEnabledChanged,
+                     gridCheckBox, &QCheckBox::setChecked);
+   // QObject::connect(itemStyleList, SIGNAL(currentIndexChanged(int)), modifier,
+       //              SLOT(changeStyle(int)));
+
+    QObject::connect(themeList, SIGNAL(currentIndexChanged(int)), modifier,
+                     SLOT(changeTheme(int)));
+
+
+    QObject::connect(graph, &Q3DScatter::shadowQualityChanged, modifier,
+                     &ScatterDataModifier::shadowQualityUpdatedByVisual);
+
+
+
+
+    //! [6]
+
+    //! [3]
+
+    //ui->verticalLayout->addWidget(widget);
+
+    ui->gridLayout_2->addWidget(widget);
+    //widget->resize(800,500);
+    widget->show();
+
+    vLayout->setAlignment(Qt::AlignTop);
+
+}
+

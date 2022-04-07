@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.2
+** Created by: Qt User Interface Compiler version 5.15.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -24,6 +24,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
@@ -71,19 +72,26 @@ public:
     QLabel *label_6;
     QDoubleSpinBox *doubleSpinBox_4;
     QDoubleSpinBox *doubleSpinBox_3;
+    QSpinBox *spinBox_2;
     QWidget *verticalLayoutWidget_2;
     QVBoxLayout *verticalLayout_2;
     QLabel *label_5;
     QDoubleSpinBox *doubleSpinBox;
     QDoubleSpinBox *doubleSpinBox_2;
+    QSpinBox *spinBox;
+    QWidget *verticalLayoutWidget_3;
+    QVBoxLayout *verticalLayout_3;
     QLabel *label_7;
     QLabel *label_8;
+    QLabel *label_9;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
     QPushButton *pushButton_3;
     QWidget *tab_2;
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout;
+    QWidget *gridLayoutWidget_2;
+    QGridLayout *gridLayout_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -215,10 +223,10 @@ public:
         lineEdit_3->setGeometry(QRect(1640, 910, 211, 21));
         groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(330, 830, 231, 121));
+        groupBox_2->setGeometry(QRect(330, 830, 231, 161));
         verticalLayoutWidget = new QWidget(groupBox_2);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(140, 30, 84, 83));
+        verticalLayoutWidget->setGeometry(QRect(140, 30, 84, 111));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -240,9 +248,15 @@ public:
 
         verticalLayout->addWidget(doubleSpinBox_3);
 
+        spinBox_2 = new QSpinBox(verticalLayoutWidget);
+        spinBox_2->setObjectName(QString::fromUtf8("spinBox_2"));
+        spinBox_2->setMaximum(360);
+
+        verticalLayout->addWidget(spinBox_2);
+
         verticalLayoutWidget_2 = new QWidget(groupBox_2);
         verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
-        verticalLayoutWidget_2->setGeometry(QRect(50, 30, 84, 83));
+        verticalLayoutWidget_2->setGeometry(QRect(50, 30, 84, 111));
         verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -264,14 +278,36 @@ public:
 
         verticalLayout_2->addWidget(doubleSpinBox_2);
 
-        label_7 = new QLabel(groupBox_2);
+        spinBox = new QSpinBox(verticalLayoutWidget_2);
+        spinBox->setObjectName(QString::fromUtf8("spinBox"));
+        spinBox->setMaximum(360);
+
+        verticalLayout_2->addWidget(spinBox);
+
+        verticalLayoutWidget_3 = new QWidget(groupBox_2);
+        verticalLayoutWidget_3->setObjectName(QString::fromUtf8("verticalLayoutWidget_3"));
+        verticalLayoutWidget_3->setGeometry(QRect(10, 60, 31, 80));
+        verticalLayout_3 = new QVBoxLayout(verticalLayoutWidget_3);
+        verticalLayout_3->setObjectName(QString::fromUtf8("verticalLayout_3"));
+        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
+        label_7 = new QLabel(verticalLayoutWidget_3);
         label_7->setObjectName(QString::fromUtf8("label_7"));
-        label_7->setGeometry(QRect(10, 60, 31, 17));
         label_7->setAlignment(Qt::AlignCenter);
-        label_8 = new QLabel(groupBox_2);
+
+        verticalLayout_3->addWidget(label_7);
+
+        label_8 = new QLabel(verticalLayoutWidget_3);
         label_8->setObjectName(QString::fromUtf8("label_8"));
-        label_8->setGeometry(QRect(10, 90, 31, 17));
         label_8->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_3->addWidget(label_8);
+
+        label_9 = new QLabel(verticalLayoutWidget_3);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+        label_9->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_3->addWidget(label_9);
+
         pushButton = new QPushButton(tab);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(570, 850, 61, 21));
@@ -286,10 +322,16 @@ public:
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
         gridLayoutWidget = new QWidget(tab_2);
         gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(10, 9, 1901, 971));
+        gridLayoutWidget->setGeometry(QRect(10, 9, 881, 971));
         gridLayout = new QGridLayout(gridLayoutWidget);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         gridLayout->setContentsMargins(0, 0, 0, 0);
+        gridLayoutWidget_2 = new QWidget(tab_2);
+        gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
+        gridLayoutWidget_2->setGeometry(QRect(920, 10, 981, 971));
+        gridLayout_2 = new QGridLayout(gridLayoutWidget_2);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setContentsMargins(0, 0, 0, 0);
         tabWidget->addTab(tab_2, QString());
         MainWindow->setCentralWidget(centralwidget);
 
@@ -322,6 +364,7 @@ public:
         label_5->setText(QCoreApplication::translate("MainWindow", "Cam 1", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Lat", nullptr));
         label_8->setText(QCoreApplication::translate("MainWindow", "Lon", nullptr));
+        label_9->setText(QCoreApplication::translate("MainWindow", "Rot", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Apply", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         pushButton_3->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));

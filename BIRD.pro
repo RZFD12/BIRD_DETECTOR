@@ -1,4 +1,6 @@
 QT += core gui multimedia network multimediawidgets widgets quickwidgets positioning
+QT += datavisualization
+QT += charts
 
 CONFIG += c++11
 
@@ -7,13 +9,15 @@ SOURCES += \
     frame.cpp \
     imgdata.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    scatterdatamodifier.cpp
 
 HEADERS += \
     filehandler.h \
     frame.h \
     imgdata.h \
-    mainwindow.h
+    mainwindow.h \
+    scatterdatamodifier.h
 
 FORMS += \
     mainwindow.ui
