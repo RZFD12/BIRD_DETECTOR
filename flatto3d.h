@@ -9,6 +9,7 @@ class flatto3d : public QObject
 public:
     explicit flatto3d(QObject *parent = nullptr);
     void Start(QVector<int> px, QVector<int> py, QVector<int> lx, QVector<int> ly);
+    void Clear();
 
     float getRangeCam() const;
     void setRangeCam(float newRangeCam);
@@ -31,7 +32,8 @@ public:
 
     const QVector<float> &getH3() const;
 
-    void clear_data();
+    float getAngle() const;
+    void setAngle(float newAngle);
 
 private:
     float rangeCam=80;

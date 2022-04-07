@@ -119,7 +119,17 @@ const QVector<float> &flatto3d::getH3() const
     return h3;
 }
 
-void flatto3d::clear_data()
+float flatto3d::getAngle() const
+{
+    return angle;
+}
+
+void flatto3d::setAngle(float newAngle)
+{
+    angle = newAngle;
+}
+
+void flatto3d::Clear()
 {
     this->alphaprav.clear (); this->alphaprav.squeeze ();
     this->bettaprav.clear (); this->bettaprav.squeeze ();
