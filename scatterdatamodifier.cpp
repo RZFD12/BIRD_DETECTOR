@@ -95,7 +95,7 @@ void ScatterDataModifier::addData()
 
 }
 
-void ScatterDataModifier::add_data(QVector<double> &X, QVector<double> &Y, QVector<double> &Z){
+void ScatterDataModifier::add_data(const QVector<float> &X, const QVector<float> &Y, const QVector<float> &Z){
     //берем каждый 10 элемент
     int size=m_graph->seriesList().length();
     QScatter3DSeries * series=new QScatter3DSeries();
@@ -103,13 +103,12 @@ void ScatterDataModifier::add_data(QVector<double> &X, QVector<double> &Y, QVect
     series->setItemSize(0.2f);
     qDebug()<<size<<" size of data";
     for(int i=0;i<X.length();i++){
-        if(i==0 || i%10==0){
+
         QScatterDataItem* item3D=new QScatterDataItem;
         item3D->setPosition(QVector3D(X[i],Z[i],Y[i]));
         series->dataProxy()->addItem(*item3D);
-        }
 
-        else{}
+
     }
     series_vector.push_back(series);
     m_graph->addSeries(series);

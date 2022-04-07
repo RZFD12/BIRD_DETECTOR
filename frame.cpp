@@ -34,7 +34,7 @@ void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
     {
         this->setCursor(QCursor(Qt::ClosedHandCursor));
         Q_UNUSED(event);
-        this->deleteLater();
+        //this->deleteLater();
     }
 }
 

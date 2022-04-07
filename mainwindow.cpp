@@ -7,15 +7,21 @@
 #include <QThread>
 #include <QFileDialog>
 
+int frame_counter=0;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    leftCAM = new CamScene(ui->graphicsView);
-    rightCAM = new CamScene(ui->graphicsView_2);
+
+    leftCAM = new CamScene(camera::left,ui->graphicsView);
+
+    rightCAM = new CamScene(camera::right,ui->graphicsView_2);
+
     leftCAM->setBackgroundBrush(Qt::black);
+
     rightCAM->setBackgroundBrush(Qt::black);
     ui->graphicsView->setScene(leftCAM);
     ui->graphicsView_2->setScene(rightCAM);
@@ -65,6 +71,7 @@ void MainWindow::loadImgLeft(QPixmap piximg)
 {
     if(leftpix != nullptr){leftCAM->removeItem(leftpix); leftCAM->clear(); delete leftpix;}
     leftpix = leftCAM->addPixmap(piximg);
+    leftpix->setData(1,1);
     leftpix->setPos(-960,-540);
     leftCAM->update ();
 }
@@ -73,6 +80,7 @@ void MainWindow::loadImgRight(QPixmap piximg)
 {
     if(rightpix != nullptr){rightCAM->removeItem(rightpix);rightCAM->clear(); delete rightpix;}
     rightpix = rightCAM->addPixmap(piximg);
+    rightpix->setData(1,1);
     rightpix->setPos(-960,-540);
     rightCAM->update();
 }
@@ -124,6 +132,25 @@ void MainWindow::on_nextButton_clicked()
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::next);
     frame_num++;
+
+    leftframe[frame_counter].append(leftCAM->get_frame());
+
+    rigtframe[frame_counter].append(rightCAM->get_frame());
+
+    qDebug()<<rigtframe[frame_counter].last()->pos();
+
+    qDebug()<<rigtframe[frame_counter].length()<<" skoka framov";
+
+    to_3d();
+
+    leftCAM->clear_frames();
+
+    rightCAM->clear_frames();
+
+
+    //converter.
+
+    frame_counter++;
 }
 
 void MainWindow::on_playButton_clicked()
@@ -145,6 +172,7 @@ void MainWindow::on_prevButton_clicked()
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::previos);
     frame_num--;
+    frame_counter--;
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -183,22 +211,42 @@ void MainWindow::imageFilter()
     delete button;
 }
 
-CamScene::CamScene(QWidget *parent)
+CamScene::CamScene(camera cam, QWidget *parent)
 {
+    this->current_camera=cam;
 
+}
+
+QVector<FRAME *> CamScene::get_frame()
+{
+    return frames;
+}
+
+void CamScene::clear_frames()
+{
+    this->frames.clear();
 }
 
 void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QList<QGraphicsItem*> itemlist = this->items();
     bool item_under_mouse = true;
-    for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse()){item_under_mouse = true; break;}}
+    for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse() && it->data(1).toInt()==2){item_under_mouse = false; break;}}
     if(event->button() == Qt::LeftButton && item_under_mouse)
     {
         FRAME* F = new FRAME();
+        F->setData(1,2);
         F->setPos(event->scenePos().x(),event->scenePos().y());
         F->setZValue(0.2);
         this->addItem(F);
+        this->frames.push_back(F);
+    }
+
+    if(event->button()==Qt::RightButton){
+
+        for(int i=0;i<frames.length();i++){if(frames[i]->isUnderMouse()){frames[i]->deleteLater(); frames.remove(i);break;}else{continue;}}
+
+
     }
 }
 
@@ -425,6 +473,25 @@ void MainWindow::initialize_3d_graph()
     widget->show();
 
     vLayout->setAlignment(Qt::AlignTop);
+
+}
+
+void MainWindow::to_3d()
+{
+    QVector<int> px;
+    QVector<int> py;
+    QVector<int> lx;
+    QVector<int> ly;
+    for(int i=0;i<leftframe[frame_counter].length();i++){
+        px.append(rigtframe[frame_counter][i]->pos().x());
+        qDebug()<<px.last()<<"lst";
+        py.append(rigtframe[frame_counter][i]->pos().y());
+        lx.append(leftframe[frame_counter][i]->pos().x());
+        ly.append(leftframe[frame_counter][i]->pos().y());
+    }
+    converter.Start(px,py,lx,ly);
+    modifier->add_data(converter.getX(),converter.getY(),converter.getH3());
+    converter.clear_data();
 
 }
 

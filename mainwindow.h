@@ -14,8 +14,12 @@
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QtPositioning>
+
 #include <QPair>
+
 #include <scatterdatamodifier.h>
+
+#include <flatto3d.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,7 +29,18 @@ class CamScene :public QGraphicsScene
 {
     Q_OBJECT
 public:
-    CamScene(QWidget*parent=nullptr);
+
+    CamScene(camera cam,QWidget*parent=nullptr);
+
+    QVector<FRAME*> get_frame();
+
+    void clear_frames();
+
+private:
+    camera current_camera;
+
+    QVector<FRAME*> frames;
+
 
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
@@ -40,6 +55,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    friend CamScene;
+
 
 public slots:
     void loadImg();
@@ -70,6 +87,9 @@ private:
     double secondLat;
     double secondLon;
     bool canAddMarker;
+    QMap<int,QVector<FRAME*>> leftframe;
+    QMap<int,QVector<FRAME*>> rigtframe;
+    flatto3d converter;
 
 private slots:
     void on_nextButton_clicked();
@@ -90,6 +110,7 @@ private slots:
     void on_spinBox_valueChanged(int arg1);
     void on_spinBox_2_valueChanged(int arg1);
     void initialize_3d_graph();
+    void to_3d();
 
 signals:
     void thresHold(int bs,double C);
