@@ -51,10 +51,6 @@ void flatto3d::Start(QVector<int> &px, QVector<int> &py, QVector<int> &lx, QVect
             this->h3.append(this->h11[i]-this->h1[i]+1);
         }
     }
-}
-
-void flatto3d::Clear()
-{
     this->alphaprav.clear (); this->alphaprav.squeeze ();
     this->bettaprav.clear (); this->bettaprav.squeeze ();
     this->alphalev.clear (); this->alphalev.squeeze ();
