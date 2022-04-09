@@ -2,6 +2,7 @@
 #include <QtMath>
 
 #define pi 3.1415
+// проверка vscode
 
 flatto3d::flatto3d(QObject *parent)
     : QObject{parent}

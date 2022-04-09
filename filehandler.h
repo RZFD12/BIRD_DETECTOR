@@ -1,6 +1,5 @@
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
-
 #include <QObject>
 #include <QImage>
 #include <QFile>

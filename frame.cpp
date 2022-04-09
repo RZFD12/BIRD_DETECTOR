@@ -10,6 +10,8 @@ FRAME::~FRAME()
 
 }
 
+
+
 QRectF FRAME::boundingRect() const
 {
     return QRectF(-25,-25,50,50);
