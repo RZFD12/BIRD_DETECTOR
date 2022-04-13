@@ -38,7 +38,7 @@ public:
     QMap<camera,image_saving_protocol> Read(int numFrames);
     void setFileName(const QString &newFileName);
     void matRead(image_saving_protocol &read_protocol, frame_state state);
-    void Decode(std::vector<uint8_t> buff, int camera_id,image_saving_protocol& read_protocol);
+    void Decode(std::vector<uint8_t> buff, int camera_id);
     void start();
 
 private:

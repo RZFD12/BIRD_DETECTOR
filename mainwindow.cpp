@@ -139,7 +139,7 @@ void MainWindow::on_nextButton_clicked()
 
     leftframe.insert(frame_counter,leftCAM->get_frame());
 
-    rigtframe.insert(frame_counter,rightCAM->get_frame());
+    rightframe.insert(frame_counter,rightCAM->get_frame());
 
     to_3d();
 
@@ -184,7 +184,7 @@ void MainWindow::on_prevButton_clicked()
     for(int i=0;i<leftframe[frame_counter].length();++i){
 
         leftCAM->addItem(leftframe[frame_counter][i]);
-        rightCAM->addItem(rigtframe[frame_counter][i]);
+        rightCAM->addItem(rightframe[frame_counter][i]);
 
     }
 }
@@ -197,7 +197,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::addMixmap(QByteArray &data)
 {
-    QByteArray b2 = QByteArray::fromBase64(data);
+    //QByteArray b2 = QByteArray::fromBase64(data);
     QImage m = QImage::fromData(data);
     p.fromImage(m);
     leftCAM->addPixmap(p);
@@ -228,7 +228,7 @@ void MainWindow::imageFilter()
 CamScene::CamScene(camera cam, QWidget *parent)
 {
     this->current_camera=cam;
-
+    Q_UNUSED(parent);
 }
 
 QVector<FRAME *> CamScene::get_frame()
@@ -502,16 +502,14 @@ void MainWindow::to_3d()
     QVector<int> py;
     QVector<int> lx;
     QVector<int> ly;
-
     for(int i=0;i<leftframe[frame_counter].length();i++){
-        px.append(0-rigtframe[frame_counter][i]->pos().x());
-        py.append(0-rigtframe[frame_counter][i]->pos().y());
+        px.append(0-rightframe[frame_counter][i]->pos().x());
+        py.append(0-rightframe[frame_counter][i]->pos().y());
         lx.append(0-leftframe[frame_counter][i]->pos().x());
         ly.append(0-leftframe[frame_counter][i]->pos().y());
     }
     converter.Start(px,py,lx,ly);
-    modifier->add_data(converter.getX(),converter.getY(),converter.getH3());
+    modifier->add_data(converter.getX(),converter.getY(),converter.getH3(), QColor::colorNames ());
     converter.clear_data();
-
 }
 

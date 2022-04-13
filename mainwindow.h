@@ -87,7 +87,7 @@ private:
     double secondLon;
     bool canAddMarker;
     QMap<int,QVector<FRAME*>> leftframe;
-    QMap<int,QVector<FRAME*>> rigtframe;
+    QMap<int,QVector<FRAME*>> rightframe;
     flatto3d converter;
 
 private slots:

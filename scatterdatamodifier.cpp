@@ -87,7 +87,7 @@ void ScatterDataModifier::addData()
 #else
     //! [6]
     float limit = qSqrt(m_itemCount) / 2.0f;
-    for (float i = -limit; i < limit; i++) {
+    for (float i = -limit; i < limit;i++) {
         for (float j = -limit; j < limit; j++) {
             ptrToDataArray->setPosition(QVector3D(i + 0.5f,
                                                   qSin(qDegreesToRadians((i * j) / m_curveDivider)),
@@ -104,11 +104,11 @@ void ScatterDataModifier::addData()
 
 }
 
-void ScatterDataModifier::add_data(const QVector<float> &X, const QVector<float> &Y, const QVector<float> &Z){
+void ScatterDataModifier::add_data(const QVector<float> &X, const QVector<float> &Y, const QVector<float> &Z, QStringList color){
     //берем каждый 10 элемент
     int size=m_graph->seriesList().length();
     QScatter3DSeries * series=new QScatter3DSeries();
-    series->setBaseColor(QColor(qrand()%255,qrand()%255,qrand()%255));
+    series->setBaseColor(color.at (series_vector.length()));
     series->setItemSize(0.07f);
     qDebug()<<size<<" size of data";
     for(int i=0;i<X.length();i++){
@@ -117,13 +117,9 @@ void ScatterDataModifier::add_data(const QVector<float> &X, const QVector<float>
        // item3D->
         item3D->setPosition(QVector3D(X[i],Z[i],Y[i]));
         series->dataProxy()->addItem(*item3D);
-
-
     }
     series_vector.push_back(series);
     m_graph->addSeries(series);
-
-
 }
 
 //! [8]

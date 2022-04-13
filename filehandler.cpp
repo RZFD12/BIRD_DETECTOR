@@ -158,13 +158,13 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
         std::vector<uint8_t> buff1;
         buff1.resize(size);
         fs.read(reinterpret_cast<char*>(&buff1.front()),buff1.size());
-        Decode(buff1,fff,read_protocol);
+        Decode(buff1,fff);
         f++;
         //qDebug()<<read_protocol.CAMERA_ID;
     }
 }
 
-void FileHandler::Decode(std::vector<uint8_t> buff, int camera_id, image_saving_protocol & read_protocol)
+void FileHandler::Decode(std::vector<uint8_t> buff, int camera_id)
 {
     cv::Mat img;
    // QDateTime::

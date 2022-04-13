@@ -6,7 +6,7 @@
 #include <QtGui/QFont>
 #include <QVector>
 #include <QCheckBox>
-#include<QMessageBox>
+#include <QMessageBox>
 #include <QComboBox>
 
 using namespace QtDataVisualization;
@@ -29,7 +29,7 @@ public:
     void setSmoothDots(int smooth);
     void clear();
     void start();
-    void add_data(const QVector<float> &X,const QVector<float> &Y,const QVector<float> &Z);
+    void add_data(const QVector<float> &X, const QVector<float> &Y, const QVector<float> &Z, QStringList color);
 
 public Q_SLOTS:
     void changeStyle(int style);

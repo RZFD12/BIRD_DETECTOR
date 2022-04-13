@@ -3,6 +3,7 @@
 FRAME::FRAME(int num, QObject *parent)
 {
     this->number=num;
+    Q_UNUSED(parent);
 
 }
 FRAME::~FRAME()
@@ -48,4 +49,9 @@ void FRAME::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     this->setCursor(QCursor(Qt::ArrowCursor));
     Q_UNUSED(event);
+}
+
+int FRAME::getNumber() const
+{
+    return number;
 }
