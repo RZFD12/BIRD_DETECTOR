@@ -17,7 +17,7 @@ const float lowerCurveDivider = 0.75f;
 ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
     : m_graph(scatter),
       m_fontSize(40.0f),
-      m_style(QAbstract3DSeries::MeshSphere),
+      m_style(QAbstract3DSeries::MeshBevelCube),
       m_smooth(true),
       m_itemCount(lowerNumberOfItems),
       m_curveDivider(lowerCurveDivider)
@@ -47,6 +47,15 @@ ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
     //addData();
 
     //! [3]
+    //!
+    //!
+    //!
+    //!
+    //!
+    m_graph->axisX()->setTitle("X");
+    m_graph->axisY()->setTitle("Y");
+    m_graph->axisZ()->setTitle("Z");
+
 }
 
 ScatterDataModifier::~ScatterDataModifier()
@@ -100,11 +109,12 @@ void ScatterDataModifier::add_data(const QVector<float> &X, const QVector<float>
     int size=m_graph->seriesList().length();
     QScatter3DSeries * series=new QScatter3DSeries();
     series->setBaseColor(QColor(qrand()%255,qrand()%255,qrand()%255));
-    series->setItemSize(0.2f);
+    series->setItemSize(0.07f);
     qDebug()<<size<<" size of data";
     for(int i=0;i<X.length();i++){
 
         QScatterDataItem* item3D=new QScatterDataItem;
+       // item3D->
         item3D->setPosition(QVector3D(X[i],Z[i],Y[i]));
         series->dataProxy()->addItem(*item3D);
 

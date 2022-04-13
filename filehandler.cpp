@@ -3,6 +3,7 @@
 #include <QtDebug>
 #include <QByteArray>
 #include <QThread>
+#include <QDateTime>
 
 FileHandler::FileHandler(QObject *parent) : QObject(parent)
 {
@@ -40,6 +41,13 @@ bool FileHandler::Save(image_saving_protocol p)
         {
             for(ulong i=0;i<image_writing_buffer.size();++i)
             {
+                 ++frames_counter;
+                qDebug()<<frames_counter;
+
+                image_writing_buffer[i][0].NUMBER_OF_FRAMES=frames_counter;
+
+                image_writing_buffer[i][1].NUMBER_OF_FRAMES=frames_counter;
+
                 if(image_writing_buffer[i][0].CAMERA_ID==1)
                 {
                     matWrite(image_writing_buffer[i][0],FILE_INPUT);
@@ -50,6 +58,8 @@ bool FileHandler::Save(image_saving_protocol p)
                     matWrite(image_writing_buffer[i][1],FILE_INPUT);
                     matWrite(image_writing_buffer[i][0],FILE_INPUT);
                 }
+
+
             }
             FILE_INPUT.close();
             image_writing_buffer.clear();
@@ -75,7 +85,6 @@ void FileHandler::matWrite(const image_saving_protocol& saving_protocol, std::of
     param[1] = 2;                                               //default(95) 0-100
     imencode(".png", saving_protocol.frame, buff1, param);
     int a = buff1.size();
-    qDebug()<<"size="<<a;
     fs.write((char*)&a,sizeof(int));
     fs.write(reinterpret_cast<const char*>(buff1.data()),buff1.size());
 
@@ -88,6 +97,7 @@ void FileHandler::matWrite(const image_saving_protocol& saving_protocol, std::of
 
 std::vector<uint64> FileHandler::Data_Indexing()
 {
+
     std::vector<uint64> indexes;
     std::ifstream fs(m_fileName.toStdString(), std::ios::binary);
     QFile file;
@@ -148,19 +158,27 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
         std::vector<uint8_t> buff1;
         buff1.resize(size);
         fs.read(reinterpret_cast<char*>(&buff1.front()),buff1.size());
-        Decode(buff1,fff);
+        Decode(buff1,fff,read_protocol);
         f++;
         //qDebug()<<read_protocol.CAMERA_ID;
     }
 }
 
-void FileHandler::Decode(std::vector<uint8_t> buff,int camera_id)
+void FileHandler::Decode(std::vector<uint8_t> buff, int camera_id, image_saving_protocol & read_protocol)
 {
     cv::Mat img;
+   // QDateTime::
     img = imdecode(cv::Mat(buff),cv::IMREAD_UNCHANGED);
+
+    //cv::putText(img,"PROVERKA",cv::Point(10,300),cv::FONT_HERSHEY_SIMPLEX,2,cv::Scalar(200,30,30),2); Camera id
+    // time
+    // frame_number
+    // percent from all data
+
     //qDebug()<<img.channels()<<" chan";
     QImage qimg(img.data,img.cols,
                 img.rows,img.step,QImage::Format_Grayscale8);
+
     if(camera_id==1)
     {
         emit readImageleft(QPixmap::fromImage(qimg.rgbSwapped()));

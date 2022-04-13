@@ -35,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
     ui->gridLayout->addWidget(map);
     this->canAddMarker = true;
-    ui->lineEdit->setText("rtsp://admin:qwerty1234@169.254.111.243:554/ISAPI/Streaming/Channels/101");
-    ui->lineEdit_2->setText("rtsp://admin:qwerty1234@169.254.111.244:554/ISAPI/Streaming/Channels/101");
+    ui->lineEdit->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
+    ui->lineEdit_2->setText("rtsp://admin:qwerty1234@192.168.0.103:554/ISAPI/Streaming/Channels/101");
     filehandler = new FileHandler();
     QThread *file_handler_thread=new QThread();
     filehandler->moveToThread(file_handler_thread);
@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
         filehandler->matRead(p,frame_state::next);
     });
     initialize_3d_graph();
+
+    leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 MainWindow::~MainWindow()
@@ -69,16 +71,17 @@ void MainWindow::loadImg()
 
 void MainWindow::loadImgLeft(QPixmap piximg)
 {
-    if(leftpix != nullptr){leftCAM->removeItem(leftpix); leftCAM->clear(); delete leftpix;}
+    if(leftpix != nullptr){leftCAM->removeItem(leftpix); /*leftCAM->clear(); */delete leftpix;}
     leftpix = leftCAM->addPixmap(piximg);
     leftpix->setData(1,1);
     leftpix->setPos(-960,-540);
     leftCAM->update ();
+    //piximg.save("saving_img.png","PNG");
 }
 
 void MainWindow::loadImgRight(QPixmap piximg)
 {
-    if(rightpix != nullptr){rightCAM->removeItem(rightpix);rightCAM->clear(); delete rightpix;}
+    if(rightpix != nullptr){rightCAM->removeItem(rightpix);/*rightCAM->clear();*/ delete rightpix;}
     rightpix = rightCAM->addPixmap(piximg);
     rightpix->setData(1,1);
     rightpix->setPos(-960,-540);
@@ -129,28 +132,32 @@ void MainWindow::on_lineEdit_2_editingFinished() //right
 
 void MainWindow::on_nextButton_clicked()
 {
+
+    if(leftCAM->get_frame().length()>0){
+
+
+
+    leftframe.insert(frame_counter,leftCAM->get_frame());
+
+    rigtframe.insert(frame_counter,rightCAM->get_frame());
+
+    to_3d();
+
+    //leftCAM->clear_frames();
+
+    //rightCAM->clear_frames();
+
+
+    //converter.
+    }
+
+    frame_counter++;
+
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::next);
     frame_num++;
 
-    leftframe[frame_counter].append(leftCAM->get_frame());
 
-    rigtframe[frame_counter].append(rightCAM->get_frame());
-
-    qDebug()<<rigtframe[frame_counter].last()->pos();
-
-    qDebug()<<rigtframe[frame_counter].length()<<" skoka framov";
-
-    to_3d();
-
-    leftCAM->clear_frames();
-
-    rightCAM->clear_frames();
-
-
-    //converter.
-
-    frame_counter++;
 }
 
 void MainWindow::on_playButton_clicked()
@@ -173,6 +180,13 @@ void MainWindow::on_prevButton_clicked()
     filehandler->matRead(p,frame_state::previos);
     frame_num--;
     frame_counter--;
+
+    for(int i=0;i<leftframe[frame_counter].length();++i){
+
+        leftCAM->addItem(leftframe[frame_counter][i]);
+        rightCAM->addItem(rigtframe[frame_counter][i]);
+
+    }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
@@ -234,34 +248,35 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse() && it->data(1).toInt()==2){item_under_mouse = false; break;}}
     if(event->button() == Qt::LeftButton && item_under_mouse)
     {
-        FRAME* F = new FRAME();
+        FRAME* F = new FRAME(frames.length()+1);
         F->setData(1,2);
         F->setPos(event->scenePos().x(),event->scenePos().y());
         F->setZValue(0.2);
         this->addItem(F);
         this->frames.push_back(F);
+        qDebug()<<event->scenePos();
     }
 
     if(event->button()==Qt::RightButton){
 
         for(int i=0;i<frames.length();i++){if(frames[i]->isUnderMouse()){frames[i]->deleteLater(); frames.remove(i);break;}else{continue;}}
-
-
     }
 }
 
-void CamScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
 
-}
 
 void MainWindow::on_toolButton_pressed()// save
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                                                   "./record",
                                                   tr("Vids (*.bin)"));
-    ui->lineEdit_3->setText(fileName);
-    filehandler->setFileName(fileName);
+    if(!fileName.isEmpty()){
+
+        ui->lineEdit_3->setText(fileName);
+
+        filehandler->setFileName(fileName);
+
+    }
 }
 
 void MainWindow::on_toolButton_2_pressed()// open
@@ -269,8 +284,13 @@ void MainWindow::on_toolButton_2_pressed()// open
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                       "./record",
                                                       tr("Vids (*.bin)"));
-    ui->lineEdit_4->setText(fileName);
-    filehandler->setFileName(fileName);
+    if(!fileName.isEmpty()){
+
+        ui->lineEdit_4->setText(fileName);
+
+        filehandler->setFileName(fileName);
+
+    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -482,16 +502,16 @@ void MainWindow::to_3d()
     QVector<int> py;
     QVector<int> lx;
     QVector<int> ly;
+
     for(int i=0;i<leftframe[frame_counter].length();i++){
-        px.append(rigtframe[frame_counter][i]->pos().x());
-        qDebug()<<px.last()<<"lst";
-        py.append(rigtframe[frame_counter][i]->pos().y());
-        lx.append(leftframe[frame_counter][i]->pos().x());
-        ly.append(leftframe[frame_counter][i]->pos().y());
+        px.append(0-rigtframe[frame_counter][i]->pos().x());
+        py.append(0-rigtframe[frame_counter][i]->pos().y());
+        lx.append(0-leftframe[frame_counter][i]->pos().x());
+        ly.append(0-leftframe[frame_counter][i]->pos().y());
     }
     converter.Start(px,py,lx,ly);
     modifier->add_data(converter.getX(),converter.getY(),converter.getH3());
-    converter.Clear();
+    converter.clear_data();
 
 }
 

@@ -66,6 +66,14 @@ public:
     QLineEdit *lineEdit_2;
     QLineEdit *lineEdit_4;
     QLineEdit *lineEdit_3;
+    QWidget *tab_2;
+    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout;
+    QWidget *gridLayoutWidget_2;
+    QGridLayout *gridLayout_2;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
+    QPushButton *pushButton;
     QGroupBox *groupBox_2;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
@@ -84,14 +92,6 @@ public:
     QLabel *label_7;
     QLabel *label_8;
     QLabel *label_9;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QWidget *tab_2;
-    QWidget *gridLayoutWidget;
-    QGridLayout *gridLayout;
-    QWidget *gridLayoutWidget_2;
-    QGridLayout *gridLayout_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -221,9 +221,33 @@ public:
         lineEdit_3 = new QLineEdit(tab);
         lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
         lineEdit_3->setGeometry(QRect(1640, 910, 211, 21));
-        groupBox_2 = new QGroupBox(tab);
+        tabWidget->addTab(tab, QString());
+        tab_2 = new QWidget();
+        tab_2->setObjectName(QString::fromUtf8("tab_2"));
+        gridLayoutWidget = new QWidget(tab_2);
+        gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
+        gridLayoutWidget->setGeometry(QRect(10, 9, 881, 811));
+        gridLayout = new QGridLayout(gridLayoutWidget);
+        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+        gridLayout->setContentsMargins(0, 0, 0, 0);
+        gridLayoutWidget_2 = new QWidget(tab_2);
+        gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
+        gridLayoutWidget_2->setGeometry(QRect(920, 10, 981, 811));
+        gridLayout_2 = new QGridLayout(gridLayoutWidget_2);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        gridLayout_2->setContentsMargins(0, 0, 0, 0);
+        pushButton_2 = new QPushButton(tab_2);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        pushButton_2->setGeometry(QRect(250, 880, 61, 21));
+        pushButton_3 = new QPushButton(tab_2);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        pushButton_3->setGeometry(QRect(250, 920, 61, 21));
+        pushButton = new QPushButton(tab_2);
+        pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(250, 840, 61, 21));
+        groupBox_2 = new QGroupBox(tab_2);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(330, 830, 231, 161));
+        groupBox_2->setGeometry(QRect(10, 820, 231, 161));
         verticalLayoutWidget = new QWidget(groupBox_2);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
         verticalLayoutWidget->setGeometry(QRect(140, 30, 84, 111));
@@ -308,36 +332,12 @@ public:
 
         verticalLayout_3->addWidget(label_9);
 
-        pushButton = new QPushButton(tab);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(570, 850, 61, 21));
-        pushButton_2 = new QPushButton(tab);
-        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(570, 890, 61, 21));
-        pushButton_3 = new QPushButton(tab);
-        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        pushButton_3->setGeometry(QRect(570, 930, 61, 21));
-        tabWidget->addTab(tab, QString());
-        tab_2 = new QWidget();
-        tab_2->setObjectName(QString::fromUtf8("tab_2"));
-        gridLayoutWidget = new QWidget(tab_2);
-        gridLayoutWidget->setObjectName(QString::fromUtf8("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(10, 9, 881, 971));
-        gridLayout = new QGridLayout(gridLayoutWidget);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        gridLayoutWidget_2 = new QWidget(tab_2);
-        gridLayoutWidget_2->setObjectName(QString::fromUtf8("gridLayoutWidget_2"));
-        gridLayoutWidget_2->setGeometry(QRect(920, 10, 981, 971));
-        gridLayout_2 = new QGridLayout(gridLayoutWidget_2);
-        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-        gridLayout_2->setContentsMargins(0, 0, 0, 0);
         tabWidget->addTab(tab_2, QString());
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -359,16 +359,16 @@ public:
         RGB->setText(QCoreApplication::translate("MainWindow", "RGB", nullptr));
         GRAY->setText(QCoreApplication::translate("MainWindow", "GRAY", nullptr));
         THRESH->setText(QCoreApplication::translate("MainWindow", "THRESHOLD", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "Apply", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "Cam position", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "Cam 2", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "Cam 1", nullptr));
         label_7->setText(QCoreApplication::translate("MainWindow", "Lat", nullptr));
         label_8->setText(QCoreApplication::translate("MainWindow", "Lon", nullptr));
         label_9->setText(QCoreApplication::translate("MainWindow", "Rot", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "Apply", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
     } // retranslateUi
 

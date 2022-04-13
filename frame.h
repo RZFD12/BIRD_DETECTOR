@@ -11,9 +11,11 @@
 class FRAME:public QObject,public QGraphicsItem
 {
     Q_OBJECT
+    Q_INTERFACES(QGraphicsItem)
 public:
-    explicit FRAME(QObject *parent = 0);
-        ~FRAME();
+    explicit FRAME(int num,QObject *parent = 0);
+
+    ~FRAME();
 private:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -21,6 +23,8 @@ private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void setBrush();
+
+    int number;
 };
 
 #endif // FRAME_H

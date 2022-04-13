@@ -24,7 +24,7 @@ Item {
                 opacity: 0.5
                 border.width: 1
                 color: 'green'
-								transformOrigin: "Bottom"
+                transformOrigin: "Bottom" //map.fromCoordinate(QtPositioning.coordinate(model.coords.latitude, model.coords.longitude)) //QtPositioning.coordinate(model.coords.latitude, model.coords.longitude).to
                 rotation: model.angle
                 path: [
                             { latitude: model.coords.latitude+0.002, longitude: model.coords.longitude-0.006 },

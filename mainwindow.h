@@ -14,11 +14,8 @@
 #include <QQuickItem>
 #include <QQmlContext>
 #include <QtPositioning>
-
 #include <QPair>
-
 #include <scatterdatamodifier.h>
-
 #include <flatto3d.h>
 
 QT_BEGIN_NAMESPACE
@@ -36,6 +33,8 @@ public:
 
     void clear_frames();
 
+
+
 private:
     camera current_camera;
 
@@ -45,7 +44,7 @@ private:
 private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
     //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+   // void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
 
 class MainWindow : public QMainWindow
