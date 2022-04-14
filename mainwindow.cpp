@@ -27,6 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView_2->setScene(rightCAM);
     leftCAM->setSceneRect(-2000,-2000,4000,4000);
     rightCAM->setSceneRect(-2000,-2000,4000,4000);
+    ui->prevButton->hide ();
+    ui->playButton->hide ();
+    ui->nextButton->hide ();
+    ui->horizontalSlider_3->hide ();
+    ui->horizontalSlider_3->setMinimum (0);
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
@@ -57,6 +62,34 @@ MainWindow::MainWindow(QWidget *parent)
     initialize_3d_graph();
 
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
+    if(ImgGetLeft == nullptr)
+    {
+        ImgGetLeft = new ImgData(1,ui->lineEdit->text().toStdString());
+        //ImgGetLeft->setFileHandler(this->filehandler);
+        QThread *lthread = new QThread(this);
+        ImgGetLeft->moveToThread(lthread);
+        connect(ImgGetLeft,&ImgData::Image,this,&MainWindow::loadImgLeft);
+        connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
+        connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
+        connect(frame_timer,&QTimer::timeout,ImgGetLeft,&ImgData::Get);
+        connect(ImgGetLeft,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+        connect(lthread,&QThread::started,ImgGetLeft,&ImgData::Start);
+        lthread->start();
+        frame_timer->start();
+    }
+    if(ImgGetRight == nullptr)
+    {
+        ImgGetRight = new ImgData(2,ui->lineEdit_2->text().toStdString());
+        QThread *rthread = new QThread(this);
+        ImgGetRight->moveToThread(rthread);
+        connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
+        connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
+        connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
+        connect(frame_timer,&QTimer::timeout,ImgGetRight,&ImgData::Get);
+        connect(ImgGetRight,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+        connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
+        rthread->start();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -94,48 +127,46 @@ void MainWindow::IndexingStatus(QPoint p)
     ui->progressBar->setValue(p.y());
 }
 
-void MainWindow::on_lineEdit_editingFinished()// left
-{
-    if(ImgGetLeft == nullptr)
-    {
-        ImgGetLeft = new ImgData(1,ui->lineEdit->text().toStdString());
-        ImgGetLeft->setFileHandler(this->filehandler);
-        QThread *lthread = new QThread(this);
-        ImgGetLeft->moveToThread(lthread);
-        connect(ImgGetLeft,&ImgData::Image,this,&MainWindow::loadImgLeft);
-        connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
-        connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
-        connect(frame_timer,&QTimer::timeout,ImgGetLeft,&ImgData::Get);
-        connect(ImgGetLeft,&ImgData::set_image_data,filehandler,&FileHandler::Save);
-        connect(lthread,&QThread::started,ImgGetLeft,&ImgData::Start);
-        lthread->start();
-        frame_timer->start();
-    }
-}
+//void MainWindow::on_lineEdit_editingFinished()// left
+//{
+//    if(ImgGetLeft == nullptr)
+//    {
+//        ImgGetLeft = new ImgData(1,ui->lineEdit->text().toStdString());
+//        ImgGetLeft->setFileHandler(this->filehandler);
+//        QThread *lthread = new QThread(this);
+//        ImgGetLeft->moveToThread(lthread);
+//        connect(ImgGetLeft,&ImgData::Image,this,&MainWindow::loadImgLeft);
+//        connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
+//        connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
+//        connect(frame_timer,&QTimer::timeout,ImgGetLeft,&ImgData::Get);
+//        connect(ImgGetLeft,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+//        connect(lthread,&QThread::started,ImgGetLeft,&ImgData::Start);
+//        lthread->start();
+//        frame_timer->start();
+//    }
+//}
 
-void MainWindow::on_lineEdit_2_editingFinished() //right
-{
-    if(ImgGetRight == nullptr)
-    {
-        ImgGetRight = new ImgData(2,ui->lineEdit_2->text().toStdString());
-        QThread *rthread = new QThread(this);
-        ImgGetRight->moveToThread(rthread);
-        connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
-        connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
-        connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
-        connect(frame_timer,&QTimer::timeout,ImgGetRight,&ImgData::Get);
-        connect(ImgGetRight,&ImgData::set_image_data,filehandler,&FileHandler::Save);
-        connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
-        rthread->start();
-    }
-}
+//void MainWindow::on_lineEdit_2_editingFinished() //right
+//{
+//    if(ImgGetRight == nullptr)
+//    {
+//        ImgGetRight = new ImgData(2,ui->lineEdit_2->text().toStdString());
+//        QThread *rthread = new QThread(this);
+//        ImgGetRight->moveToThread(rthread);
+//        connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
+//        connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
+//        connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
+//        connect(frame_timer,&QTimer::timeout,ImgGetRight,&ImgData::Get);
+//        connect(ImgGetRight,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+//        connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
+//        rthread->start();
+//    }
+//}
 
 void MainWindow::on_nextButton_clicked()
 {
 
     if(leftCAM->get_frame().length()>0){
-
-
 
     leftframe.insert(frame_counter,leftCAM->get_frame());
 
@@ -276,6 +307,11 @@ void MainWindow::on_toolButton_pressed()// save
 
         filehandler->setFileName(fileName);
 
+        ui->prevButton->hide ();
+        ui->playButton->hide ();
+        ui->nextButton->hide ();
+        ui->horizontalSlider_3->hide ();
+
     }
 }
 
@@ -289,6 +325,10 @@ void MainWindow::on_toolButton_2_pressed()// open
         ui->lineEdit_4->setText(fileName);
 
         filehandler->setFileName(fileName);
+        ui->prevButton->show ();
+        ui->playButton->show ();
+        ui->nextButton->show ();
+        ui->horizontalSlider_3->show ();
 
     }
 }
@@ -511,5 +551,16 @@ void MainWindow::to_3d()
     converter.Start(px,py,lx,ly);
     modifier->add_data(converter.getX(),converter.getY(),converter.getH3(), QColor::colorNames ());
     converter.clear_data();
+}
+
+void MainWindow::sliderMove(int value)
+{
+
+}
+
+
+void MainWindow::on_horizontalSlider_3_valueChanged(int value)
+{
+    emit playerBar (value);
 }
 

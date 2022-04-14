@@ -126,6 +126,7 @@ std::vector<uint64> FileHandler::Data_Indexing()
             //status=qMakePair<uint64,uint64>(static_cast<int>(file_size/1000),static_cast<int>(def_size/1000));
             status.setY(static_cast<quint32>(def_size/1000));
             emit Status(status);
+
             //QThread::msleep(50);
             //qDebug()<<status.second;
             //qDebug()<<status.y();

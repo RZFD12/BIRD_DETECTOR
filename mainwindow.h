@@ -96,8 +96,8 @@ private slots:
     void on_prevButton_clicked();
     void keyPressEvent(QKeyEvent *event);
     void addMixmap(QByteArray &data);
-    void on_lineEdit_editingFinished();
-    void on_lineEdit_2_editingFinished();
+//    void on_lineEdit_editingFinished();
+//    void on_lineEdit_2_editingFinished();
     void on_horizontalSlider_valueChanged(int value);
     void on_horizontalSlider_2_valueChanged(int value);
     void imageFilter();
@@ -110,9 +110,12 @@ private slots:
     void on_spinBox_2_valueChanged(int arg1);
     void initialize_3d_graph();
     void to_3d();
+    void sliderMove(int value);
+    void on_horizontalSlider_3_valueChanged(int value);
 
 signals:
     void thresHold(int bs,double C);
     void imgFilter(state filter);
+    void playerBar(int value);
 };
 #endif // MAINWINDOW_H

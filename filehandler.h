@@ -60,7 +60,7 @@ private:
 signals:
     void readImageleft(QPixmap p);
     void readImageRight(QPixmap p);
-    void Status(QPoint p);   
+    void Status(QPoint p);
 };
 
 #endif // FILEHANDLER_H

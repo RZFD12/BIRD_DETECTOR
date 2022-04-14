@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.0
+** Created by: Qt User Interface Compiler version 5.15.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -41,11 +41,6 @@ public:
     QProgressBar *progressBar;
     QGraphicsView *graphicsView_2;
     QLabel *label;
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout;
-    QToolButton *prevButton;
-    QToolButton *playButton;
-    QToolButton *nextButton;
     QToolButton *toolButton;
     QLineEdit *lineEdit;
     QToolButton *toolButton_2;
@@ -66,6 +61,14 @@ public:
     QLineEdit *lineEdit_2;
     QLineEdit *lineEdit_4;
     QLineEdit *lineEdit_3;
+    QWidget *verticalLayoutWidget_4;
+    QVBoxLayout *verticalLayout_4;
+    QSlider *horizontalSlider_3;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QToolButton *prevButton;
+    QToolButton *playButton;
+    QToolButton *nextButton;
     QWidget *tab_2;
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout;
@@ -115,28 +118,6 @@ public:
         label = new QLabel(tab);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(980, 800, 41, 21));
-        horizontalLayoutWidget = new QWidget(tab);
-        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(860, 840, 201, 41));
-        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-        horizontalLayout->setSpacing(0);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        prevButton = new QToolButton(horizontalLayoutWidget);
-        prevButton->setObjectName(QString::fromUtf8("prevButton"));
-
-        horizontalLayout->addWidget(prevButton);
-
-        playButton = new QToolButton(horizontalLayoutWidget);
-        playButton->setObjectName(QString::fromUtf8("playButton"));
-
-        horizontalLayout->addWidget(playButton);
-
-        nextButton = new QToolButton(horizontalLayoutWidget);
-        nextButton->setObjectName(QString::fromUtf8("nextButton"));
-
-        horizontalLayout->addWidget(nextButton);
-
         toolButton = new QToolButton(tab);
         toolButton->setObjectName(QString::fromUtf8("toolButton"));
         toolButton->setGeometry(QRect(1860, 910, 41, 20));
@@ -221,6 +202,45 @@ public:
         lineEdit_3 = new QLineEdit(tab);
         lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
         lineEdit_3->setGeometry(QRect(1640, 910, 211, 21));
+        verticalLayoutWidget_4 = new QWidget(tab);
+        verticalLayoutWidget_4->setObjectName(QString::fromUtf8("verticalLayoutWidget_4"));
+        verticalLayoutWidget_4->setGeometry(QRect(460, 840, 1001, 41));
+        verticalLayout_4 = new QVBoxLayout(verticalLayoutWidget_4);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        horizontalSlider_3 = new QSlider(verticalLayoutWidget_4);
+        horizontalSlider_3->setObjectName(QString::fromUtf8("horizontalSlider_3"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(horizontalSlider_3->sizePolicy().hasHeightForWidth());
+        horizontalSlider_3->setSizePolicy(sizePolicy);
+        horizontalSlider_3->setOrientation(Qt::Horizontal);
+
+        verticalLayout_4->addWidget(horizontalSlider_3, 0, Qt::AlignVCenter);
+
+        horizontalLayoutWidget = new QWidget(tab);
+        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(860, 890, 201, 41));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout->setSpacing(0);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        prevButton = new QToolButton(horizontalLayoutWidget);
+        prevButton->setObjectName(QString::fromUtf8("prevButton"));
+
+        horizontalLayout->addWidget(prevButton);
+
+        playButton = new QToolButton(horizontalLayoutWidget);
+        playButton->setObjectName(QString::fromUtf8("playButton"));
+
+        horizontalLayout->addWidget(playButton);
+
+        nextButton = new QToolButton(horizontalLayoutWidget);
+        nextButton->setObjectName(QString::fromUtf8("nextButton"));
+
+        horizontalLayout->addWidget(nextButton);
+
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
@@ -250,7 +270,7 @@ public:
         groupBox_2->setGeometry(QRect(10, 820, 231, 161));
         verticalLayoutWidget = new QWidget(groupBox_2);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(140, 30, 84, 111));
+        verticalLayoutWidget->setGeometry(QRect(140, 30, 84, 115));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -280,7 +300,7 @@ public:
 
         verticalLayoutWidget_2 = new QWidget(groupBox_2);
         verticalLayoutWidget_2->setObjectName(QString::fromUtf8("verticalLayoutWidget_2"));
-        verticalLayoutWidget_2->setGeometry(QRect(50, 30, 84, 111));
+        verticalLayoutWidget_2->setGeometry(QRect(50, 30, 84, 115));
         verticalLayout_2 = new QVBoxLayout(verticalLayoutWidget_2);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -337,7 +357,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -347,9 +367,6 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
-        prevButton->setText(QCoreApplication::translate("MainWindow", "prev", nullptr));
-        playButton->setText(QCoreApplication::translate("MainWindow", "play", nullptr));
-        nextButton->setText(QCoreApplication::translate("MainWindow", "next", nullptr));
         toolButton->setText(QCoreApplication::translate("MainWindow", "save", nullptr));
         toolButton_2->setText(QCoreApplication::translate("MainWindow", "open", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "RTSP", nullptr));
@@ -359,6 +376,9 @@ public:
         RGB->setText(QCoreApplication::translate("MainWindow", "RGB", nullptr));
         GRAY->setText(QCoreApplication::translate("MainWindow", "GRAY", nullptr));
         THRESH->setText(QCoreApplication::translate("MainWindow", "THRESHOLD", nullptr));
+        prevButton->setText(QCoreApplication::translate("MainWindow", "prev", nullptr));
+        playButton->setText(QCoreApplication::translate("MainWindow", "play", nullptr));
+        nextButton->setText(QCoreApplication::translate("MainWindow", "next", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         pushButton_3->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
