@@ -16,9 +16,10 @@ public:
     explicit FRAME(int num,QObject *parent = 0);
     ~FRAME();
     int getNumber() const;
+    QRectF boundingRect() const;
 
 private:
-    QRectF boundingRect() const;
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

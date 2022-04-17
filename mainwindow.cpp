@@ -7,7 +7,7 @@
 #include <QThread>
 #include <QFileDialog>
 #include <QVector3D>
-
+#include <QUuid>
 int frame_counter = 0;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -126,8 +126,54 @@ void MainWindow::IndexingStatus(QPoint p)
 
 void MainWindow::PixMapCut()
 {
-    auto it = leftframe.find(frame_counter);
-    auto it1 = rightframe.find(frame_counter);
+    QPixmap leftPix=leftCAM->getCurrentPixMap();
+    QPixmap rightPix=rightCAM->getCurrentPixMap();
+
+    QMap<int,QVector<FRAME*>> ::iterator it;
+
+    QVector<FRAME*>::iterator itFrame;
+
+    it=leftframe.find(frame_counter);
+
+    if(it!=leftframe.end()){
+
+        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++){
+
+            QPixmap templ=leftPix.copy(
+                       960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
+                       540+(*itFrame)->pos().y()-(*itFrame)->boundingRect().height()/2,
+                        (*itFrame)->boundingRect().width(),
+                        (*itFrame)->boundingRect().height());
+
+            QUuid name=QUuid::createUuid();
+
+            templ.save("./template_images/"+name.toString()+".jpg","JPG");
+        }
+
+
+
+    }
+
+
+    it=rightframe.find(frame_counter);
+
+    if(it!=rightframe.end()){
+
+        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++){
+
+            QPixmap templ=rightPix.copy(
+                        960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
+                        540+(*itFrame)->pos().y()-(*itFrame)->boundingRect().height()/2,
+                        (*itFrame)->boundingRect().width(),
+                        (*itFrame)->boundingRect().height());
+
+
+            QUuid name=QUuid::createUuid();
+
+            templ.save("./template_images/"+name.toString()+".jpg","JPG");
+        }
+    }
+
 }
 
 void MainWindow::setTheme(QString themeName)
