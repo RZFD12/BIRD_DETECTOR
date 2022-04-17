@@ -8,3 +8,8 @@ release
 debug
 object_script.BIRD.Release
 object_script.BIRD.Debug
+.qmake.stash
+Makefile
+Makefile.Debug
+Makefile.Release
+qml_qmlcache.qrc
