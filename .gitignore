@@ -1,5 +1,8 @@
 *.pro.user
 *.bin
 *.json
+*.idx
+release/BIRD.exe
+release/BIRD.exe
 *.exe
 *.o
