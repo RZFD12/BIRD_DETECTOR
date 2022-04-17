@@ -30,7 +30,7 @@ public:
     void Clear();
 
 private:
-    float rangeCam=0.0;
+    float rangeCam=2.64;
     float angle=0.0;
     float tetayprav=0.053089;
     float tetaxprav=0.054808;

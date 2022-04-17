@@ -100,9 +100,10 @@ void MainWindow::loadImg()
 void MainWindow::loadImgLeft(QPixmap piximg)
 {
     if(leftpix != nullptr){leftCAM->removeItem(leftpix); /*leftCAM->clear(); */delete leftpix;}
-    leftpix = leftCAM->addPixmap(piximg);
+    leftpix = leftCAM->addPixmap(piximg);    
     leftpix->setData(1,1);
     leftpix->setPos(-960,-540);
+    leftCAM->setCurrentPixMap(piximg);
     leftCAM->update ();
     //piximg.save("saving_img.png","PNG");
 }
@@ -113,6 +114,7 @@ void MainWindow::loadImgRight(QPixmap piximg)
     rightpix = rightCAM->addPixmap(piximg);
     rightpix->setData(1,1);
     rightpix->setPos(-960,-540);
+    rightCAM->setCurrentPixMap(piximg);
     rightCAM->update();
 }
 
@@ -120,6 +122,19 @@ void MainWindow::IndexingStatus(QPoint p)
 {
     ui->progressBar->setMaximum(p.x());
     ui->progressBar->setValue(p.y());
+}
+
+void MainWindow::PixMapCut()
+{
+    auto it = leftframe.find(frame_counter);
+    auto it1 = rightframe.find(frame_counter);
+}
+
+void MainWindow::setTheme(QString themeName)
+{
+    QFile file(QString("./themes/") + themeName + QString(".qss"));
+    file.open(QFile::ReadOnly);
+    qApp->setStyleSheet(QString::fromLatin1(file.readAll()));
 }
 
 //void MainWindow::on_lineEdit_editingFinished()// left
@@ -165,6 +180,7 @@ void MainWindow::on_toolButtonNext_clicked()
         leftframe.insert(frame_counter,leftCAM->getFrame());
         rightframe.insert(frame_counter,rightCAM->getFrame());
         To3D();
+        PixMapCut();
     }
     frame_counter++;
     image_saving_protocol p;
@@ -285,6 +301,16 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
             else continue;
         }
     }
+}
+
+const QPixmap &CamScene::getCurrentPixMap()
+{
+    return currentPixMap;
+}
+
+void CamScene::setCurrentPixMap(const QPixmap &newCurrentPixMap)
+{
+    currentPixMap = newCurrentPixMap;
 }
 
 void MainWindow::on_toolButtonSave_pressed()// save
@@ -499,5 +525,10 @@ void MainWindow::on_doubleSpinBoxRange_valueChanged(double arg1)
 void MainWindow::on_doubleSpinBoxAngle_valueChanged(double arg1)
 {
     converter.setAngle(arg1);
+}
+
+void MainWindow::on_comboBoxTheme_textActivated(const QString &arg1)
+{
+    setTheme(arg1);
 }
 

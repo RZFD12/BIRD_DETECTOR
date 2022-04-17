@@ -8,7 +8,8 @@
 #include <QImage>
 #include <QPixmap>
 
-struct color{
+struct color
+{
     quint8 H;
     quint8 S;
     quint8 V;

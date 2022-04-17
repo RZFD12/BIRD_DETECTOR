@@ -2,6 +2,9 @@
 *.bin
 *.json
 *.idx
-release
 *.exe
 *.o
+release
+debug
+object_script.BIRD.Release
+object_script.BIRD.Debug

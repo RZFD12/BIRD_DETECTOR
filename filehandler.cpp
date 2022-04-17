@@ -19,6 +19,10 @@ void FileHandler::setFileName(const QString &newFileName)
 
 bool FileHandler::Save(image_saving_protocol p)
 {
+    std::vector<int> param(2);
+    param[0] = cv::IMWRITE_JPEG_QUALITY;
+    param[1] = 90;                                                                               //default(95) 0-100
+    imencode(".jpg", p.frame, p.imgbuff, param);
     if(current_stream_buffer.size()==0)
     {
         current_stream_buffer.push_back(p);
@@ -69,19 +73,18 @@ void FileHandler::matWrite(const image_saving_protocol& saving_protocol, std::of
     // INFORMATION
     fs.write((char*)&saving_protocol.CAMERA_ID,sizeof(unsigned int));
     fs.write((char*)&saving_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
-    fs.write((char*)&saving_protocol.tsec,sizeof (unsigned int));
-    fs.write((char*)&saving_protocol.tusec,sizeof(unsigned int));
+    fs.write((char*)&saving_protocol.tmsec,sizeof (uint64));
 
     // IMAGE
-    std::vector<uchar> buff;                                                                    //buffer for coding
-    std::vector<uint8_t> buff1;
-    std::vector<int> param(2);
-    param[0] = cv::IMWRITE_JPEG_QUALITY;
-    param[1] = 90;                                                                               //default(95) 0-100
-    imencode(".jpg", saving_protocol.frame, buff1, param);
-    int a = buff1.size();
+//    std::vector<uchar> buff;                                                                    //buffer for coding
+//    std::vector<uint8_t> buff1;
+//    std::vector<int> param(2);
+//    param[0] = cv::IMWRITE_JPEG_QUALITY;
+//    param[1] = 90;                                                                               //default(95) 0-100
+//    imencode(".jpg", saving_protocol.frame, buff1, param);
+    int a = saving_protocol.imgbuff.size();
     fs.write((char*)&a,sizeof(int));
-    fs.write(reinterpret_cast<const char*>(buff1.data()),buff1.size());
+    fs.write(reinterpret_cast<const char*>(saving_protocol.imgbuff.data()),saving_protocol.imgbuff.size());
 
     //PADDING
     //int padding=850000-buff1.size();
@@ -108,8 +111,7 @@ std::vector<uint64> FileHandler::Data_Indexing()
         {
             fs.read((char*)&read_protocol.CAMERA_ID,sizeof(unsigned int));
             fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
-            fs.read((char*)&read_protocol.tsec,sizeof (unsigned int));
-            fs.read((char*)&read_protocol.tusec,sizeof(unsigned int));
+            fs.read((char*)&read_protocol.tmsec,sizeof (uint64));
             int size;
             fs.read((char*)&size,sizeof(int));
             std::vector<uint8_t> buff1;
@@ -146,8 +148,7 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
         fs.read((char*)&fff,sizeof(unsigned int));
         //qDebug()<<read_protocol.CAMERA_ID;
         fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
-        fs.read((char*)&read_protocol.tsec,sizeof (unsigned int));
-        fs.read((char*)&read_protocol.tusec,sizeof(unsigned int));
+        fs.read((char*)&read_protocol.tmsec,sizeof (uint64));
         int size;
         fs.read((char*)&size,sizeof(int));
         std::vector<uint8_t> buff1;

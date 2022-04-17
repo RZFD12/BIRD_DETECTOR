@@ -44,10 +44,8 @@ void ImgData::Get()
             }
             p.CAMERA_ID = cam_id;
             p.NUMBER_OF_FRAMES = 1;
-            //p.tmsec = std::chrono::duration_cast<std::chrono::milliseconds>
-            //(std::chrono::system_clock::now().time_since_epoch()).count();
-            p.tsec=0;
-            p.tusec = 0;
+            p.tmsec = std::chrono::duration_cast<std::chrono::milliseconds>
+            (std::chrono::system_clock::now().time_since_epoch()).count();
             emit set_image_data(p);
         }
         else{qDebug()<<"empty";}

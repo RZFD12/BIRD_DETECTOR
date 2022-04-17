@@ -16,10 +16,9 @@ struct image_saving_protocol
 {
     unsigned int CAMERA_ID;
     unsigned int NUMBER_OF_FRAMES;
-    unsigned int tsec;
-    unsigned int tusec;
+    uint64 tmsec;
     cv::Mat frame;
-    QVector<QPoint> VEC;
+    std::vector<uint8_t> imgbuff;
 };
 
 enum camera {left,right};

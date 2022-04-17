@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="qml.qrc">
-    <normaloff>:/images/mainwindow.png</normaloff>:/images/mainwindow.png</iconset>
+    <normaloff>:/images/images/mainwindow.png</normaloff>:/images/images/mainwindow.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -154,7 +154,7 @@
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="flat">
-       <bool>true</bool>
+       <bool>false</bool>
       </property>
       <widget class="QWidget" name="formLayoutWidget">
        <property name="geometry">
@@ -272,101 +272,6 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="frame">
-      <property name="geometry">
-       <rect>
-        <x>450</x>
-        <y>830</y>
-        <width>1021</width>
-        <height>111</height>
-       </rect>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QWidget" name="verticalLayoutWidget_4">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>1001</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item alignment="Qt::AlignVCenter">
-         <widget class="QSlider" name="horizontalSliderPlayer">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="horizontalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>410</x>
-         <y>60</y>
-         <width>201</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QToolButton" name="toolButtonPrev">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>prev</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="toolButtonPlay">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>play</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="toolButtonNext">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>next</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
      <widget class="QLabel" name="labelAngle">
       <property name="geometry">
        <rect>
@@ -414,6 +319,9 @@
       <property name="maximum">
        <double>1000.000000000000000</double>
       </property>
+      <property name="value">
+       <double>2.640000000000000</double>
+      </property>
      </widget>
      <widget class="QDoubleSpinBox" name="doubleSpinBoxAngle">
       <property name="geometry">
@@ -428,24 +336,97 @@
        <double>180.000000000000000</double>
       </property>
      </widget>
-     <zorder>frame</zorder>
-     <zorder>progressBar</zorder>
-     <zorder>graphicsViewCamRight</zorder>
-     <zorder>labelProtocolRight</zorder>
-     <zorder>toolButtonSave</zorder>
-     <zorder>lineEditRtspLeft</zorder>
-     <zorder>toolButtonOpen</zorder>
-     <zorder>labelProtocolLeft</zorder>
-     <zorder>graphicsViewCamLeft</zorder>
-     <zorder>groupBox</zorder>
-     <zorder>lineEditRtspRight</zorder>
-     <zorder>lineEditOpen</zorder>
-     <zorder>lineEditSave</zorder>
-     <zorder>horizontalLayoutWidget_2</zorder>
-     <zorder>labelAngle</zorder>
-     <zorder>labelRange</zorder>
-     <zorder>doubleSpinBoxRange</zorder>
-     <zorder>doubleSpinBoxAngle</zorder>
+     <widget class="QWidget" name="horizontalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>860</x>
+        <y>890</y>
+        <width>201</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QToolButton" name="toolButtonPrev">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>prev</string>
+         </property>
+         <property name="icon">
+          <iconset resource="qml.qrc">
+           <normaloff>:/images/images/go-previous-symbolic.symbolic.png</normaloff>:/images/images/go-previous-symbolic.symbolic.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButtonPlay">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>play</string>
+         </property>
+         <property name="icon">
+          <iconset resource="qml.qrc">
+           <normaloff>:/images/images/pp.png</normaloff>:/images/images/pp.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButtonNext">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>next</string>
+         </property>
+         <property name="icon">
+          <iconset resource="qml.qrc">
+           <normaloff>:/images/images/go-next-symbolic.symbolic.png</normaloff>:/images/images/go-next-symbolic.symbolic.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_4">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>840</y>
+        <width>741</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item alignment="Qt::AlignVCenter">
+        <widget class="QSlider" name="horizontalSliderPlayer">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -676,6 +657,42 @@
         </item>
        </layout>
       </widget>
+     </widget>
+     <widget class="QComboBox" name="comboBoxTheme">
+      <property name="geometry">
+       <rect>
+        <x>1800</x>
+        <y>840</y>
+        <width>101</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Ubuntu</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>MaterialDark</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="labelTheme">
+      <property name="geometry">
+       <rect>
+        <x>1740</x>
+        <y>840</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Theme</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
      </widget>
     </widget>
    </widget>

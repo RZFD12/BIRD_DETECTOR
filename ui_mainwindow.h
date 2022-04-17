@@ -12,9 +12,9 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFormLayout>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
@@ -63,19 +63,18 @@ public:
     QRadioButton *RGB;
     QRadioButton *GRAY;
     QRadioButton *THRESH;
-    QFrame *frame;
-    QWidget *verticalLayoutWidget_4;
-    QVBoxLayout *verticalLayout_4;
-    QSlider *horizontalSliderPlayer;
+    QLabel *labelAngle;
+    QLabel *labelRange;
+    QDoubleSpinBox *doubleSpinBoxRange;
+    QDoubleSpinBox *doubleSpinBoxAngle;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QToolButton *toolButtonPrev;
     QToolButton *toolButtonPlay;
     QToolButton *toolButtonNext;
-    QLabel *labelAngle;
-    QLabel *labelRange;
-    QDoubleSpinBox *doubleSpinBoxRange;
-    QDoubleSpinBox *doubleSpinBoxAngle;
+    QWidget *verticalLayoutWidget_4;
+    QVBoxLayout *verticalLayout_4;
+    QSlider *horizontalSliderPlayer;
     QWidget *tab_2;
     QWidget *gridLayoutWidget;
     QGridLayout *gridLayout;
@@ -102,6 +101,8 @@ public:
     QLabel *labelLat;
     QLabel *labelLon;
     QLabel *labelRot;
+    QComboBox *comboBoxTheme;
+    QLabel *labelTheme;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -110,7 +111,7 @@ public:
         MainWindow->setWindowModality(Qt::NonModal);
         MainWindow->resize(1920, 1080);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/images/mainwindow.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/images/images/mainwindow.png"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
@@ -150,7 +151,7 @@ public:
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
         groupBox->setGeometry(QRect(20, 830, 291, 121));
         groupBox->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
-        groupBox->setFlat(true);
+        groupBox->setFlat(false);
         formLayoutWidget = new QWidget(groupBox);
         formLayoutWidget->setObjectName(QString::fromUtf8("formLayoutWidget"));
         formLayoutWidget->setGeometry(QRect(10, 30, 271, 52));
@@ -213,59 +214,6 @@ public:
 
         horizontalLayout_2->addWidget(THRESH);
 
-        frame = new QFrame(tab);
-        frame->setObjectName(QString::fromUtf8("frame"));
-        frame->setGeometry(QRect(450, 830, 1021, 111));
-        frame->setFrameShape(QFrame::StyledPanel);
-        frame->setFrameShadow(QFrame::Raised);
-        verticalLayoutWidget_4 = new QWidget(frame);
-        verticalLayoutWidget_4->setObjectName(QString::fromUtf8("verticalLayoutWidget_4"));
-        verticalLayoutWidget_4->setGeometry(QRect(10, 10, 1001, 41));
-        verticalLayout_4 = new QVBoxLayout(verticalLayoutWidget_4);
-        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
-        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
-        horizontalSliderPlayer = new QSlider(verticalLayoutWidget_4);
-        horizontalSliderPlayer->setObjectName(QString::fromUtf8("horizontalSliderPlayer"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(horizontalSliderPlayer->sizePolicy().hasHeightForWidth());
-        horizontalSliderPlayer->setSizePolicy(sizePolicy);
-        horizontalSliderPlayer->setOrientation(Qt::Horizontal);
-
-        verticalLayout_4->addWidget(horizontalSliderPlayer, 0, Qt::AlignVCenter);
-
-        horizontalLayoutWidget = new QWidget(frame);
-        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(410, 60, 201, 41));
-        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-        horizontalLayout->setSpacing(0);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        toolButtonPrev = new QToolButton(horizontalLayoutWidget);
-        toolButtonPrev->setObjectName(QString::fromUtf8("toolButtonPrev"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(toolButtonPrev->sizePolicy().hasHeightForWidth());
-        toolButtonPrev->setSizePolicy(sizePolicy1);
-
-        horizontalLayout->addWidget(toolButtonPrev);
-
-        toolButtonPlay = new QToolButton(horizontalLayoutWidget);
-        toolButtonPlay->setObjectName(QString::fromUtf8("toolButtonPlay"));
-        sizePolicy1.setHeightForWidth(toolButtonPlay->sizePolicy().hasHeightForWidth());
-        toolButtonPlay->setSizePolicy(sizePolicy1);
-
-        horizontalLayout->addWidget(toolButtonPlay);
-
-        toolButtonNext = new QToolButton(horizontalLayoutWidget);
-        toolButtonNext->setObjectName(QString::fromUtf8("toolButtonNext"));
-        sizePolicy1.setHeightForWidth(toolButtonNext->sizePolicy().hasHeightForWidth());
-        toolButtonNext->setSizePolicy(sizePolicy1);
-
-        horizontalLayout->addWidget(toolButtonNext);
-
         labelAngle = new QLabel(tab);
         labelAngle->setObjectName(QString::fromUtf8("labelAngle"));
         labelAngle->setGeometry(QRect(330, 880, 39, 21));
@@ -279,29 +227,69 @@ public:
         doubleSpinBoxRange->setGeometry(QRect(370, 850, 71, 21));
         doubleSpinBoxRange->setDecimals(4);
         doubleSpinBoxRange->setMaximum(1000.000000000000000);
+        doubleSpinBoxRange->setValue(2.640000000000000);
         doubleSpinBoxAngle = new QDoubleSpinBox(tab);
         doubleSpinBoxAngle->setObjectName(QString::fromUtf8("doubleSpinBoxAngle"));
         doubleSpinBoxAngle->setGeometry(QRect(370, 880, 71, 21));
         doubleSpinBoxAngle->setMaximum(180.000000000000000);
+        horizontalLayoutWidget = new QWidget(tab);
+        horizontalLayoutWidget->setObjectName(QString::fromUtf8("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(860, 890, 201, 41));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout->setSpacing(0);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        toolButtonPrev = new QToolButton(horizontalLayoutWidget);
+        toolButtonPrev->setObjectName(QString::fromUtf8("toolButtonPrev"));
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(toolButtonPrev->sizePolicy().hasHeightForWidth());
+        toolButtonPrev->setSizePolicy(sizePolicy);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/images/images/go-previous-symbolic.symbolic.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonPrev->setIcon(icon1);
+
+        horizontalLayout->addWidget(toolButtonPrev);
+
+        toolButtonPlay = new QToolButton(horizontalLayoutWidget);
+        toolButtonPlay->setObjectName(QString::fromUtf8("toolButtonPlay"));
+        sizePolicy.setHeightForWidth(toolButtonPlay->sizePolicy().hasHeightForWidth());
+        toolButtonPlay->setSizePolicy(sizePolicy);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/images/images/pp.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonPlay->setIcon(icon2);
+
+        horizontalLayout->addWidget(toolButtonPlay);
+
+        toolButtonNext = new QToolButton(horizontalLayoutWidget);
+        toolButtonNext->setObjectName(QString::fromUtf8("toolButtonNext"));
+        sizePolicy.setHeightForWidth(toolButtonNext->sizePolicy().hasHeightForWidth());
+        toolButtonNext->setSizePolicy(sizePolicy);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/images/images/go-next-symbolic.symbolic.png"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButtonNext->setIcon(icon3);
+
+        horizontalLayout->addWidget(toolButtonNext);
+
+        verticalLayoutWidget_4 = new QWidget(tab);
+        verticalLayoutWidget_4->setObjectName(QString::fromUtf8("verticalLayoutWidget_4"));
+        verticalLayoutWidget_4->setGeometry(QRect(590, 840, 741, 41));
+        verticalLayout_4 = new QVBoxLayout(verticalLayoutWidget_4);
+        verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(0, 0, 0, 0);
+        horizontalSliderPlayer = new QSlider(verticalLayoutWidget_4);
+        horizontalSliderPlayer->setObjectName(QString::fromUtf8("horizontalSliderPlayer"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(horizontalSliderPlayer->sizePolicy().hasHeightForWidth());
+        horizontalSliderPlayer->setSizePolicy(sizePolicy1);
+        horizontalSliderPlayer->setOrientation(Qt::Horizontal);
+
+        verticalLayout_4->addWidget(horizontalSliderPlayer, 0, Qt::AlignVCenter);
+
         tabWidget->addTab(tab, QString());
-        frame->raise();
-        progressBar->raise();
-        graphicsViewCamRight->raise();
-        labelProtocolRight->raise();
-        toolButtonSave->raise();
-        lineEditRtspLeft->raise();
-        toolButtonOpen->raise();
-        labelProtocolLeft->raise();
-        graphicsViewCamLeft->raise();
-        groupBox->raise();
-        lineEditRtspRight->raise();
-        lineEditOpen->raise();
-        lineEditSave->raise();
-        horizontalLayoutWidget_2->raise();
-        labelAngle->raise();
-        labelRange->raise();
-        doubleSpinBoxRange->raise();
-        doubleSpinBoxAngle->raise();
         tab_2 = new QWidget();
         tab_2->setObjectName(QString::fromUtf8("tab_2"));
         gridLayoutWidget = new QWidget(tab_2);
@@ -420,6 +408,15 @@ public:
 
         verticalLayout_3->addWidget(labelRot);
 
+        comboBoxTheme = new QComboBox(tab_2);
+        comboBoxTheme->addItem(QString());
+        comboBoxTheme->addItem(QString());
+        comboBoxTheme->setObjectName(QString::fromUtf8("comboBoxTheme"));
+        comboBoxTheme->setGeometry(QRect(1800, 840, 101, 22));
+        labelTheme = new QLabel(tab_2);
+        labelTheme->setObjectName(QString::fromUtf8("labelTheme"));
+        labelTheme->setGeometry(QRect(1740, 840, 51, 21));
+        labelTheme->setAlignment(Qt::AlignCenter);
         tabWidget->addTab(tab_2, QString());
         MainWindow->setCentralWidget(centralwidget);
 
@@ -444,11 +441,11 @@ public:
         RGB->setText(QCoreApplication::translate("MainWindow", "RGB", nullptr));
         GRAY->setText(QCoreApplication::translate("MainWindow", "GRAY", nullptr));
         THRESH->setText(QCoreApplication::translate("MainWindow", "THRESHOLD", nullptr));
+        labelAngle->setText(QCoreApplication::translate("MainWindow", "Angle", nullptr));
+        labelRange->setText(QCoreApplication::translate("MainWindow", "Range", nullptr));
         toolButtonPrev->setText(QCoreApplication::translate("MainWindow", "prev", nullptr));
         toolButtonPlay->setText(QCoreApplication::translate("MainWindow", "play", nullptr));
         toolButtonNext->setText(QCoreApplication::translate("MainWindow", "next", nullptr));
-        labelAngle->setText(QCoreApplication::translate("MainWindow", "Angle", nullptr));
-        labelRange->setText(QCoreApplication::translate("MainWindow", "Range", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("MainWindow", "Tab 1", nullptr));
         pushButtonDelete->setText(QCoreApplication::translate("MainWindow", "Delete", nullptr));
         pushButtonMove->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
@@ -459,6 +456,10 @@ public:
         labelLat->setText(QCoreApplication::translate("MainWindow", "Lat", nullptr));
         labelLon->setText(QCoreApplication::translate("MainWindow", "Lon", nullptr));
         labelRot->setText(QCoreApplication::translate("MainWindow", "Rot", nullptr));
+        comboBoxTheme->setItemText(0, QCoreApplication::translate("MainWindow", "Ubuntu", nullptr));
+        comboBoxTheme->setItemText(1, QCoreApplication::translate("MainWindow", "MaterialDark", nullptr));
+
+        labelTheme->setText(QCoreApplication::translate("MainWindow", "Theme", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Tab 2", nullptr));
     } // retranslateUi
 

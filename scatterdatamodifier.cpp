@@ -22,7 +22,7 @@ ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
      m_itemCount(lowerNumberOfItems),
      m_curveDivider(lowerCurveDivider)
 {
-    m_graph->activeTheme()->setType(Q3DTheme::ThemeEbony);
+    m_graph->activeTheme()->setType(Q3DTheme::ThemeStoneMoss);
     QFont font = m_graph->activeTheme()->font();
     font.setPointSize(m_fontSize);
     m_graph->activeTheme()->setFont(font);
@@ -83,7 +83,9 @@ void ScatterDataModifier::AddData(const QVector<QVector3D> &Vec3D, QStringList c
         series->setItemSize(0.15f);
         series->setBaseColor(color.at(i));
         QScatterDataItem* item3D=new QScatterDataItem;        
-        item3D->setPosition(Vec3D[i]);
+        item3D->setX(Vec3D[i].x());
+        item3D->setY(Vec3D[i].z());
+        item3D->setZ(Vec3D[i].y());
         series->dataProxy()->addItem(*item3D);
         series_vector.push_back(series);
         m_graph->addSeries(series);

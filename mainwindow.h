@@ -29,12 +29,15 @@ class CamScene :public QGraphicsScene
 public:
     CamScene(camera cam,QWidget*parent=nullptr);
     QVector<FRAME*> getFrame();
-    void clearFrames();
+    void clearFrames();    
+    const QPixmap &getCurrentPixMap();
+    void setCurrentPixMap(const QPixmap &newCurrentPixMap);
 
 private:
     camera current_camera;
     QVector<FRAME*> frames;
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    QPixmap currentPixMap;
 //    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
@@ -81,6 +84,8 @@ private:
     QMap<int,QVector<FRAME*>> leftframe;
     QMap<int,QVector<FRAME*>> rightframe;
     flatto3d converter;
+    void PixMapCut();
+    void setTheme(QString themeName);
 
 private slots:
     void on_toolButtonNext_clicked();
@@ -104,6 +109,7 @@ private slots:
     void To3D();
     void on_doubleSpinBoxRange_valueChanged(double arg1);
     void on_doubleSpinBoxAngle_valueChanged(double arg1);
+    void on_comboBoxTheme_textActivated(const QString &arg1);
 
 signals:
     void thresHold(int bs,double C);

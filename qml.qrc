@@ -3,6 +3,12 @@
         <file>main.qml</file>
     </qresource>
     <qresource prefix="/images">
-        <file>mainwindow.png</file>
+        <file>images/go-down-symbolic.symbolic.png</file>
+        <file>images/go-next-symbolic.symbolic.png</file>
+        <file>images/go-previous-symbolic.symbolic.png</file>
+        <file>images/go-up-symbolic.symbolic.png</file>
+        <file>images/mainwindow.png</file>
+        <file>images/object-select-symbolic.symbolic.png</file>
+        <file>images/pp.png</file>
     </qresource>
 </RCC>
