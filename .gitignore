@@ -2,7 +2,6 @@
 *.bin
 *.json
 *.idx
-release/BIRD.exe
-release/BIRD.exe
+release
 *.exe
 *.o
