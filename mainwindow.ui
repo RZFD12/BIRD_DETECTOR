@@ -31,7 +31,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -518,7 +518,7 @@
         <item>
          <widget class="QLabel" name="labelCamRight">
           <property name="text">
-           <string>Cam 2</string>
+           <string>Cam Right</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -573,7 +573,7 @@
         <item>
          <widget class="QLabel" name="labelCamLeft">
           <property name="text">
-           <string>Cam 1</string>
+           <string>Cam Left</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>

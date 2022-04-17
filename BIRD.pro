@@ -2,8 +2,6 @@ QT += core gui multimedia network multimediawidgets widgets quickwidgets positio
 QT += datavisualization
 QT += charts
 
-CONFIG += c++11
-
 SOURCES += \
     filehandler.cpp \
     flatto3d.cpp \

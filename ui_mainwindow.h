@@ -422,7 +422,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -451,8 +451,8 @@ public:
         pushButtonMove->setText(QCoreApplication::translate("MainWindow", "Move", nullptr));
         pushButtonApply->setText(QCoreApplication::translate("MainWindow", "Apply", nullptr));
         groupBox_2->setTitle(QCoreApplication::translate("MainWindow", "Cam position", nullptr));
-        labelCamRight->setText(QCoreApplication::translate("MainWindow", "Cam 2", nullptr));
-        labelCamLeft->setText(QCoreApplication::translate("MainWindow", "Cam 1", nullptr));
+        labelCamRight->setText(QCoreApplication::translate("MainWindow", "Cam Right", nullptr));
+        labelCamLeft->setText(QCoreApplication::translate("MainWindow", "Cam Left", nullptr));
         labelLat->setText(QCoreApplication::translate("MainWindow", "Lat", nullptr));
         labelLon->setText(QCoreApplication::translate("MainWindow", "Lon", nullptr));
         labelRot->setText(QCoreApplication::translate("MainWindow", "Rot", nullptr));
