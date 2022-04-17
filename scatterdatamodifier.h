@@ -17,7 +17,6 @@ class ScatterDataModifier : public QObject
 public:
     explicit ScatterDataModifier(Q3DScatter *scatter);
     ~ScatterDataModifier();
-
     void addData();
     void changeStyle();
     void changePresetCamera();
@@ -29,7 +28,7 @@ public:
     void setSmoothDots(int smooth);
     void clear();
     void start();
-    void add_data(const QVector<float> &X, const QVector<float> &Y, const QVector<float> &Z, QStringList color);
+    void AddData(const QVector<QVector3D> &Vec3D, QStringList color);
 
 public Q_SLOTS:
     void changeStyle(int style);

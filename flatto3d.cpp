@@ -9,15 +9,16 @@ flatto3d::flatto3d(QObject *parent)
 
 }
 
-void flatto3d::Start(QVector<int> px, QVector<int> py, QVector<int> lx, QVector<int> ly)
+void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
 {
-    for (int i=0;i<px.length ();i++)
+    for (int i=0;i<r.length ();i++)
     {
-        this->alphaprav.append((px[i])*this->tetaxprav);
-        this->bettaprav.append((py[i])*this->tetayprav*2*pi/360);
-        this->alphalev.append((lx[i])*this->tetaxlev);
-        this->bettalev.append((ly[i])*this->tetaylev*2*pi/360);
-        if (px[i]<=this->videoHalfWidth)
+        this->vec3D.push_back(QVector3D());
+        this->alphaprav.append((r[i].rx())*this->tetaxprav);
+        this->bettaprav.append((r[i].ry())*this->tetayprav*2*pi/360);
+        this->alphalev.append((l[i].rx())*this->tetaxlev);
+        this->bettalev.append((l[i].ry())*this->tetaylev*2*pi/360);
+        if (r[i].rx() <= this->videoHalfWidth)
         {
             this->alpha1.append((90-this->alphaprav[i])*2*pi/360);
         }
@@ -25,7 +26,7 @@ void flatto3d::Start(QVector<int> px, QVector<int> py, QVector<int> lx, QVector<
         {
             this->alpha1.append((90+this->alphaprav[i])*2*pi/360);
         }
-        if (lx[i]<=this->videoHalfWidth)
+        if (l[i].rx() <= this->videoHalfWidth)
         {
             this->alpha2.append((90+this->alphalev[i])*2*pi/360);
         }
@@ -38,20 +39,22 @@ void flatto3d::Start(QVector<int> px, QVector<int> py, QVector<int> lx, QVector<
         this->x2.append(this->rangeCam*sin(this->alpha1[i])/sin(this->gamma[i])*cos(this->angle*2*pi/360));
         this->h1.append(tan(this->bettaprav[i])*this->x1[i]);
         this->h2.append(tan(this->bettalev[i])*this->x2[i]);
-        this->x.append(this->rangeCam*tan(this->alpha1[i])/(tan(this->alpha1[i])+tan(this->alpha2[i])));
-        this->y.append(tan(this->alpha2[i])*this->x[i]);
+        //this->x.append(this->rangeCam*tan(this->alpha1[i])/(tan(this->alpha1[i])+tan(this->alpha2[i])));
+        this->vec3D[i].setX(this->rangeCam*tan(this->alpha1[i])/(tan(this->alpha1[i])+tan(this->alpha2[i])));
         //this->y.append(tan(this->alpha2[i])*this->x[i]);
+        this->vec3D[i].setY(tan(this->alpha2[i])*this->vec3D[i].x());
         this->h11.append(tan(this->angle*2*pi/360)*this->x1[i]);
-        if (py[i]<=this->videoHalfHeight)
+        if (r[i].ry() <= this->videoHalfHeight)
         {
-            this->h3.append(this->h1[i]+this->h11[i]+1.5);
+            //this->h.append(this->h1[i]+this->h11[i]+1.5);
+            this->vec3D[i].setZ(this->h1[i]+this->h11[i]+1.5);
         }
         else
         {
-            this->h3.append(this->h11[i]-this->h1[i]+1.5);
+            //this->h.append(this->h11[i]-this->h1[i]+1.5);
+            this->vec3D[i].setZ(this->h11[i]-this->h1[i]+1.5);
         }
     }
-
 }
 
 float flatto3d::getRangeCam() const
@@ -62,6 +65,16 @@ float flatto3d::getRangeCam() const
 void flatto3d::setRangeCam(float newRangeCam)
 {
     rangeCam = newRangeCam;
+}
+
+float flatto3d::getAngle() const
+{
+    return angle;
+}
+
+void flatto3d::setAngle(float newAngle)
+{
+    angle = newAngle;
 }
 
 float flatto3d::getTetaxprav() const
@@ -104,22 +117,22 @@ void flatto3d::setTetaylev(float newTetaylev)
     tetaylev = newTetaylev;
 }
 
-const QVector<float> &flatto3d::getX() const
-{
-    return x;
-}
+//const QVector<float> &flatto3d::getX() const
+//{
+//    return x;
+//}
 
-const QVector<float> &flatto3d::getY() const
-{
-    return y;
-}
+//const QVector<float> &flatto3d::getY() const
+//{
+//    return y;
+//}
 
-const QVector<float> &flatto3d::getH3() const
-{
-    return h3;
-}
+//const QVector<float> &flatto3d::getH() const
+//{
+//    return h;
+//}
 
-void flatto3d::clear_data()
+void flatto3d::Clear()
 {
     this->alphaprav.clear (); this->alphaprav.squeeze ();
     this->bettaprav.clear (); this->bettaprav.squeeze ();
@@ -132,8 +145,14 @@ void flatto3d::clear_data()
     this->x2.clear (); this->x2.squeeze ();
     this->h1.clear (); this->h1.squeeze ();
     this->h2.clear (); this->h2.squeeze ();
-    this->x.clear (); this->x.squeeze ();
-    this->y.clear (); this->y.squeeze ();
+    //this->x.clear (); this->x.squeeze ();
+    //this->y.clear (); this->y.squeeze ();
     this->h11.clear (); this->h11.squeeze ();
-    this->h3.clear (); this->h3.squeeze ();
+    //this->h.clear (); this->h.squeeze ();
+    this->vec3D.clear(); this->vec3D.squeeze();
+}
+
+const QVector<QVector3D> &flatto3d::getVec3D() const
+{
+    return vec3D;
 }

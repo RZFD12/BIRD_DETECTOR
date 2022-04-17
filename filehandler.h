@@ -19,11 +19,8 @@ struct image_saving_protocol
     unsigned int tsec;
     unsigned int tusec;
     cv::Mat frame;
-
     QVector<QPoint> VEC;
 };
-
-
 
 enum camera {left,right};
 enum frame_state {next,previos};

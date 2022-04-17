@@ -14,7 +14,6 @@ class FRAME:public QObject,public QGraphicsItem
     Q_INTERFACES(QGraphicsItem)
 public:
     explicit FRAME(int num,QObject *parent = 0);
-
     ~FRAME();
     int getNumber() const;
 
@@ -25,7 +24,6 @@ private:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void setBrush();
-
     int number;
 };
 

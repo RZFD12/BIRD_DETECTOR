@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +14,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Birds</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="qml.qrc">
+    <normaloff>:/images/mainwindow.png</normaloff>:/images/mainwindow.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -43,7 +50,7 @@
        <number>0</number>
       </property>
      </widget>
-     <widget class="QGraphicsView" name="graphicsView_2">
+     <widget class="QGraphicsView" name="graphicsViewCamRight">
       <property name="geometry">
        <rect>
         <x>970</x>
@@ -53,7 +60,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="labelProtocolRight">
       <property name="geometry">
        <rect>
         <x>980</x>
@@ -66,7 +73,7 @@
        <string>RTSP</string>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton">
+     <widget class="QToolButton" name="toolButtonSave">
       <property name="geometry">
        <rect>
         <x>1860</x>
@@ -79,7 +86,7 @@
        <string>save</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit">
+     <widget class="QLineEdit" name="lineEditRtspLeft">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -89,7 +96,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton_2">
+     <widget class="QToolButton" name="toolButtonOpen">
       <property name="geometry">
        <rect>
         <x>1860</x>
@@ -102,7 +109,7 @@
        <string>open</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_2">
+     <widget class="QLabel" name="labelProtocolLeft">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -115,7 +122,7 @@
        <string>RTSP</string>
       </property>
      </widget>
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="QGraphicsView" name="graphicsViewCamLeft">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -137,7 +144,7 @@
         <x>20</x>
         <y>830</y>
         <width>291</width>
-        <height>101</height>
+        <height>121</height>
        </rect>
       </property>
       <property name="title">
@@ -155,19 +162,19 @@
          <x>10</x>
          <y>30</y>
          <width>271</width>
-         <height>42</height>
+         <height>52</height>
         </rect>
        </property>
        <layout class="QFormLayout" name="formLayout">
         <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
+         <widget class="QLabel" name="labelC">
           <property name="text">
            <string>C</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSlider" name="horizontalSlider_2">
+         <widget class="QSlider" name="horizontalSliderC">
           <property name="minimum">
            <number>3</number>
           </property>
@@ -180,14 +187,14 @@
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="labelBlsize">
           <property name="text">
            <string>Block_size</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QSlider" name="horizontalSlider">
+         <widget class="QSlider" name="horizontalSliderBlsize">
           <property name="minimum">
            <number>3</number>
           </property>
@@ -201,51 +208,18 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="horizontalLayoutWidget_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>70</y>
-         <width>271</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QRadioButton" name="RGB">
-          <property name="text">
-           <string>RGB</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="GRAY">
-          <property name="text">
-           <string>GRAY</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QRadioButton" name="THRESH">
-          <property name="text">
-           <string>THRESHOLD</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_2">
+     <widget class="QLineEdit" name="lineEditRtspRight">
       <property name="geometry">
        <rect>
         <x>1030</x>
-        <y>800</y>
+        <y>801</y>
         <width>881</width>
-        <height>21</height>
+        <height>20</height>
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_4">
+     <widget class="QLineEdit" name="lineEditOpen">
       <property name="geometry">
        <rect>
         <x>1640</x>
@@ -255,7 +229,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="lineEdit_3">
+     <widget class="QLineEdit" name="lineEditSave">
       <property name="geometry">
        <rect>
         <x>1640</x>
@@ -265,67 +239,213 @@
        </rect>
       </property>
      </widget>
-     <widget class="QWidget" name="verticalLayoutWidget_4">
+     <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>460</x>
-        <y>840</y>
-        <width>1001</width>
-        <height>41</height>
+        <x>30</x>
+        <y>910</y>
+        <width>271</width>
+        <height>31</height>
        </rect>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item alignment="Qt::AlignVCenter">
-        <widget class="QSlider" name="horizontalSlider_3">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QRadioButton" name="RGB">
+         <property name="text">
+          <string>RGB</string>
          </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="GRAY">
+         <property name="text">
+          <string>GRAY</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="THRESH">
+         <property name="text">
+          <string>THRESHOLD</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="horizontalLayoutWidget">
+     <widget class="QFrame" name="frame">
       <property name="geometry">
        <rect>
-        <x>860</x>
-        <y>890</y>
-        <width>201</width>
-        <height>41</height>
+        <x>450</x>
+        <y>830</y>
+        <width>1021</width>
+        <height>111</height>
        </rect>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>0</number>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QWidget" name="verticalLayoutWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>1001</width>
+         <height>41</height>
+        </rect>
        </property>
-       <item>
-        <widget class="QToolButton" name="prevButton">
-         <property name="text">
-          <string>prev</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="playButton">
-         <property name="text">
-          <string>play</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QToolButton" name="nextButton">
-         <property name="text">
-          <string>next</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item alignment="Qt::AlignVCenter">
+         <widget class="QSlider" name="horizontalSliderPlayer">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>60</y>
+         <width>201</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QToolButton" name="toolButtonPrev">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>prev</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButtonPlay">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>play</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButtonNext">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>next</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
+     <widget class="QLabel" name="labelAngle">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>880</y>
+        <width>39</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Angle</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="labelRange">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>850</y>
+        <width>39</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Range</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="doubleSpinBoxRange">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>850</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="decimals">
+       <number>4</number>
+      </property>
+      <property name="maximum">
+       <double>1000.000000000000000</double>
+      </property>
+     </widget>
+     <widget class="QDoubleSpinBox" name="doubleSpinBoxAngle">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>880</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <double>180.000000000000000</double>
+      </property>
+     </widget>
+     <zorder>frame</zorder>
+     <zorder>progressBar</zorder>
+     <zorder>graphicsViewCamRight</zorder>
+     <zorder>labelProtocolRight</zorder>
+     <zorder>toolButtonSave</zorder>
+     <zorder>lineEditRtspLeft</zorder>
+     <zorder>toolButtonOpen</zorder>
+     <zorder>labelProtocolLeft</zorder>
+     <zorder>graphicsViewCamLeft</zorder>
+     <zorder>groupBox</zorder>
+     <zorder>lineEditRtspRight</zorder>
+     <zorder>lineEditOpen</zorder>
+     <zorder>lineEditSave</zorder>
+     <zorder>horizontalLayoutWidget_2</zorder>
+     <zorder>labelAngle</zorder>
+     <zorder>labelRange</zorder>
+     <zorder>doubleSpinBoxRange</zorder>
+     <zorder>doubleSpinBoxAngle</zorder>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -353,7 +473,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2"/>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="pushButtonDelete">
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -366,7 +486,7 @@
        <string>Delete</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="pushButtonMove">
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -379,7 +499,7 @@
        <string>Move</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="pushButtonApply">
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -410,12 +530,12 @@
          <x>140</x>
          <y>30</y>
          <width>84</width>
-         <height>115</height>
+         <height>111</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="labelCamRight">
           <property name="text">
            <string>Cam 2</string>
           </property>
@@ -425,21 +545,33 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+         <widget class="QDoubleSpinBox" name="doubleSpinBoxLatRight">
           <property name="decimals">
            <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+         <widget class="QDoubleSpinBox" name="doubleSpinBoxLonRight">
           <property name="decimals">
            <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox_2">
+         <widget class="QSpinBox" name="spinBoxRotRight">
           <property name="maximum">
            <number>360</number>
           </property>
@@ -453,12 +585,12 @@
          <x>50</x>
          <y>30</y>
          <width>84</width>
-         <height>115</height>
+         <height>111</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QLabel" name="label_5">
+         <widget class="QLabel" name="labelCamLeft">
           <property name="text">
            <string>Cam 1</string>
           </property>
@@ -468,21 +600,33 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <widget class="QDoubleSpinBox" name="doubleSpinBoxLatLeft">
           <property name="decimals">
            <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <widget class="QDoubleSpinBox" name="doubleSpinBoxLonLeft">
           <property name="decimals">
            <number>4</number>
+          </property>
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinBox">
+         <widget class="QSpinBox" name="spinBoxRotLeft">
           <property name="maximum">
            <number>360</number>
           </property>
@@ -495,13 +639,13 @@
         <rect>
          <x>10</x>
          <y>60</y>
-         <width>31</width>
-         <height>80</height>
+         <width>41</width>
+         <height>81</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QLabel" name="label_7">
+         <widget class="QLabel" name="labelLat">
           <property name="text">
            <string>Lat</string>
           </property>
@@ -511,7 +655,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="labelLon">
           <property name="text">
            <string>Lon</string>
           </property>
@@ -521,7 +665,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_9">
+         <widget class="QLabel" name="labelRot">
           <property name="text">
            <string>Rot</string>
           </property>
@@ -537,6 +681,8 @@
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="qml.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -15,6 +15,7 @@
 #include <QQmlContext>
 #include <QtPositioning>
 #include <QPair>
+
 #include <scatterdatamodifier.h>
 #include <flatto3d.h>
 
@@ -26,25 +27,16 @@ class CamScene :public QGraphicsScene
 {
     Q_OBJECT
 public:
-
     CamScene(camera cam,QWidget*parent=nullptr);
-
-    QVector<FRAME*> get_frame();
-
-    void clear_frames();
-
-
+    QVector<FRAME*> getFrame();
+    void clearFrames();
 
 private:
     camera current_camera;
-
     QVector<FRAME*> frames;
-
-
-private:
     void mousePressEvent(QGraphicsSceneMouseEvent * event);
-    //void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-   // void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+//    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+//    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
 
 class MainWindow : public QMainWindow
@@ -81,6 +73,7 @@ private:
     ScatterDataModifier *modifier;
     bool video_play=true;
     int frame_num=0;
+    static int frame_counter;
     double firstLat;
     double firstLon;
     double secondLat;
@@ -91,31 +84,30 @@ private:
     flatto3d converter;
 
 private slots:
-    void on_nextButton_clicked();
-    void on_playButton_clicked();
-    void on_prevButton_clicked();
+    void on_toolButtonNext_clicked();
+    void on_toolButtonPlay_clicked();
+    void on_toolButtonPrev_clicked();
     void keyPressEvent(QKeyEvent *event);
     void addMixmap(QByteArray &data);
 //    void on_lineEdit_editingFinished();
 //    void on_lineEdit_2_editingFinished();
-    void on_horizontalSlider_valueChanged(int value);
-    void on_horizontalSlider_2_valueChanged(int value);
+    void on_horizontalSliderBlsize_valueChanged(int value);
+    void on_horizontalSliderC_valueChanged(int value);
     void imageFilter();
-    void on_toolButton_pressed();
-    void on_toolButton_2_pressed();
-    void on_pushButton_clicked();
-    void on_pushButton_2_clicked();
-    void on_pushButton_3_clicked();
-    void on_spinBox_valueChanged(int arg1);
-    void on_spinBox_2_valueChanged(int arg1);
-    void initialize_3d_graph();
-    void to_3d();
-    void sliderMove(int value);
-    void on_horizontalSlider_3_valueChanged(int value);
+    void on_toolButtonSave_pressed();
+    void on_toolButtonOpen_pressed();
+    void on_pushButtonApply_clicked();
+    void on_pushButtonDelete_clicked();
+    void on_pushButtonMove_clicked();
+    void on_spinBoxRotLeft_valueChanged(int arg1);
+    void on_spinBoxRotRight_valueChanged(int arg1);
+    void init3DGraph();
+    void To3D();
+    void on_doubleSpinBoxRange_valueChanged(double arg1);
+    void on_doubleSpinBoxAngle_valueChanged(double arg1);
 
 signals:
     void thresHold(int bs,double C);
     void imgFilter(state filter);
-    void playerBar(int value);
 };
 #endif // MAINWINDOW_H

@@ -4,7 +4,6 @@ FRAME::FRAME(int num, QObject *parent)
 {
     this->number=num;
     Q_UNUSED(parent);
-
 }
 FRAME::~FRAME()
 {
@@ -25,14 +24,12 @@ void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     pen.setWidth(3);
     painter->setPen(pen);
     painter->drawPoint(0,0);
-
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
 void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     this->setPos(mapToScene(event->pos()));
-    //Q_UNUSED(event);
 }
 void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -40,8 +37,6 @@ void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if (event->button() & Qt::RightButton)
     {
         this->setCursor(QCursor(Qt::ClosedHandCursor));
-        //Q_UNUSED(event);
-        //this->deleteLater();
     }
 }
 

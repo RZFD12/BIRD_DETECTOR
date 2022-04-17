@@ -6,32 +6,27 @@
 #include <QGraphicsPixmapItem>
 #include <QThread>
 #include <QFileDialog>
-
-int frame_counter=0;
-
+#include <QVector3D>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-    leftCAM = new CamScene(camera::left,ui->graphicsView);
-
-    rightCAM = new CamScene(camera::right,ui->graphicsView_2);
-
+    this->frame_counter = 0;
+    leftCAM = new CamScene(camera::left,ui->graphicsViewCamLeft);
+    rightCAM = new CamScene(camera::right,ui->graphicsViewCamRight);
     leftCAM->setBackgroundBrush(Qt::black);
-
     rightCAM->setBackgroundBrush(Qt::black);
-    ui->graphicsView->setScene(leftCAM);
-    ui->graphicsView_2->setScene(rightCAM);
+    ui->graphicsViewCamLeft->setScene(leftCAM);
+    ui->graphicsViewCamRight->setScene(rightCAM);
     leftCAM->setSceneRect(-2000,-2000,4000,4000);
     rightCAM->setSceneRect(-2000,-2000,4000,4000);
-    ui->prevButton->hide ();
-    ui->playButton->hide ();
-    ui->nextButton->hide ();
-    ui->horizontalSlider_3->hide ();
-    ui->horizontalSlider_3->setMinimum (0);
+    ui->toolButtonPrev->hide ();
+    ui->toolButtonPlay->hide ();
+    ui->toolButtonNext->hide ();
+    ui->horizontalSliderPlayer->hide ();
+    ui->horizontalSliderPlayer->setMinimum (0);
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
@@ -40,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
     ui->gridLayout->addWidget(map);
     this->canAddMarker = true;
-    ui->lineEdit->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
-    ui->lineEdit_2->setText("rtsp://admin:qwerty1234@192.168.0.103:554/ISAPI/Streaming/Channels/101");
+    ui->lineEditRtspLeft->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
+    ui->lineEditRtspRight->setText("rtsp://admin:qwerty1234@192.168.0.103:554/ISAPI/Streaming/Channels/101");
     filehandler = new FileHandler();
     QThread *file_handler_thread=new QThread();
     filehandler->moveToThread(file_handler_thread);
@@ -59,12 +54,11 @@ MainWindow::MainWindow(QWidget *parent)
         image_saving_protocol p;
         filehandler->matRead(p,frame_state::next);
     });
-    initialize_3d_graph();
-
+    init3DGraph();
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
     if(ImgGetLeft == nullptr)
     {
-        ImgGetLeft = new ImgData(1,ui->lineEdit->text().toStdString());
+        ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
         //ImgGetLeft->setFileHandler(this->filehandler);
         QThread *lthread = new QThread(this);
         ImgGetLeft->moveToThread(lthread);
@@ -79,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     if(ImgGetRight == nullptr)
     {
-        ImgGetRight = new ImgData(2,ui->lineEdit_2->text().toStdString());
+        ImgGetRight = new ImgData(2,ui->lineEditRtspRight->text().toStdString());
         QThread *rthread = new QThread(this);
         ImgGetRight->moveToThread(rthread);
         connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
@@ -163,35 +157,21 @@ void MainWindow::IndexingStatus(QPoint p)
 //    }
 //}
 
-void MainWindow::on_nextButton_clicked()
+void MainWindow::on_toolButtonNext_clicked()
 {
-
-    if(leftCAM->get_frame().length()>0){
-
-    leftframe.insert(frame_counter,leftCAM->get_frame());
-
-    rightframe.insert(frame_counter,rightCAM->get_frame());
-
-    to_3d();
-
-    //leftCAM->clear_frames();
-
-    //rightCAM->clear_frames();
-
-
-    //converter.
+    if(leftCAM->getFrame().length()>0)
+    {
+        leftframe.insert(frame_counter,leftCAM->getFrame());
+        rightframe.insert(frame_counter,rightCAM->getFrame());
+        To3D();
     }
-
     frame_counter++;
-
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::next);
     frame_num++;
-
-
 }
 
-void MainWindow::on_playButton_clicked()
+void MainWindow::on_toolButtonPlay_clicked()
 {
     if(video_play)
     {
@@ -205,25 +185,23 @@ void MainWindow::on_playButton_clicked()
     }
 }
 
-void MainWindow::on_prevButton_clicked()     
+void MainWindow::on_toolButtonPrev_clicked()
 {
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::previos);
     frame_num--;
     frame_counter--;
-
-    for(int i=0;i<leftframe[frame_counter].length();++i){
-
+    for(int i=0;i<leftframe[frame_counter].length();++i)
+    {
         leftCAM->addItem(leftframe[frame_counter][i]);
         rightCAM->addItem(rightframe[frame_counter][i]);
-
     }
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Minus){ui->graphicsView->scale(0.5,0.5);ui->graphicsView_2->scale(0.5,0.5);}
-    if(event->key() == Qt::Key_Plus){ui->graphicsView->scale(2,2);ui->graphicsView_2->scale(2,2);}
+    if(event->key() == Qt::Key_Minus){ui->graphicsViewCamLeft->scale(0.5,0.5);ui->graphicsViewCamRight->scale(0.5,0.5);}
+    if(event->key() == Qt::Key_Plus){ui->graphicsViewCamLeft->scale(2,2);ui->graphicsViewCamRight->scale(2,2);}
 }
 
 void MainWindow::addMixmap(QByteArray &data)
@@ -235,23 +213,22 @@ void MainWindow::addMixmap(QByteArray &data)
     leftCAM->update();
 }
 
-void MainWindow::on_horizontalSlider_valueChanged(int value)// bs
+void MainWindow::on_horizontalSliderBlsize_valueChanged(int value)// bs
 {
-    emit thresHold(value,static_cast<double>(ui->horizontalSlider_2->value()));
+    emit thresHold(value,static_cast<double>(ui->horizontalSliderC->value()));
 }
 
-void MainWindow::on_horizontalSlider_2_valueChanged(int value) //c
-{
-    int bs = ui->horizontalSlider->value();
-    emit thresHold(bs,static_cast<double>(value));
+void MainWindow::on_horizontalSliderC_valueChanged(int value) //c
+{ 
+    emit thresHold(ui->horizontalSliderBlsize->value(),static_cast<double>(value));
 }
 
 void MainWindow::imageFilter()
 {
     QRadioButton *button=qobject_cast<QRadioButton*>(QObject::sender());
-    if(button == ui->RGB){emit imgFilter(state::RGB);}
-    else if (button == ui->GRAY){emit imgFilter(state::Gray);}
-    else if (button == ui->THRESH) {emit imgFilter(state::Threshold);}
+    if(button == ui->RGB) emit imgFilter(state::RGB);
+    else if (button == ui->GRAY) emit imgFilter(state::Gray);
+    else if (button == ui->THRESH) emit imgFilter(state::Threshold);
     button=nullptr;
     delete button;
 }
@@ -262,12 +239,12 @@ CamScene::CamScene(camera cam, QWidget *parent)
     Q_UNUSED(parent);
 }
 
-QVector<FRAME *> CamScene::get_frame()
+QVector<FRAME *> CamScene::getFrame()
 {
     return frames;
 }
 
-void CamScene::clear_frames()
+void CamScene::clearFrames()
 {
     this->frames.clear();
 }
@@ -276,7 +253,14 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QList<QGraphicsItem*> itemlist = this->items();
     bool item_under_mouse = true;
-    for(const auto it:qAsConst(itemlist)){if(it->isUnderMouse() && it->data(1).toInt()==2){item_under_mouse = false; break;}}
+    for(const auto it:qAsConst(itemlist))
+    {
+        if(it->isUnderMouse() && it->data(1).toInt()==2)
+        {
+            item_under_mouse = false;
+            break;
+        }
+    }
     if(event->button() == Qt::LeftButton && item_under_mouse)
     {
         FRAME* F = new FRAME(frames.length()+1);
@@ -285,62 +269,63 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         F->setZValue(0.2);
         this->addItem(F);
         this->frames.push_back(F);
-        qDebug()<<event->scenePos();
+        //qDebug()<<event->scenePos();
     }
-
-    if(event->button()==Qt::RightButton){
-
-        for(int i=0;i<frames.length();i++){if(frames[i]->isUnderMouse()){frames[i]->deleteLater(); frames.remove(i);break;}else{continue;}}
+    if(event->button()==Qt::RightButton)
+    {
+        for(int i=0;i<frames.length();i++)
+        {
+            if(frames[i]->isUnderMouse())
+            {
+                frames[i]->deleteLater();
+                frames.remove(i);
+                break;
+            }
+            else continue;
+        }
     }
 }
 
-
-
-void MainWindow::on_toolButton_pressed()// save
+void MainWindow::on_toolButtonSave_pressed()// save
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                                                   "./record",
                                                   tr("Vids (*.bin)"));
-    if(!fileName.isEmpty()){
-
-        ui->lineEdit_3->setText(fileName);
-
+    if(!fileName.isEmpty())
+    {
+        ui->lineEditSave->setText(fileName);
         filehandler->setFileName(fileName);
-
-        ui->prevButton->hide ();
-        ui->playButton->hide ();
-        ui->nextButton->hide ();
-        ui->horizontalSlider_3->hide ();
-
+        ui->toolButtonPrev->hide ();
+        ui->toolButtonPlay->hide ();
+        ui->toolButtonNext->hide ();
+        ui->horizontalSliderPlayer->hide ();
     }
 }
 
-void MainWindow::on_toolButton_2_pressed()// open
+void MainWindow::on_toolButtonOpen_pressed()// open
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                       "./record",
                                                       tr("Vids (*.bin)"));
-    if(!fileName.isEmpty()){
-
-        ui->lineEdit_4->setText(fileName);
-
+    if(!fileName.isEmpty())
+    {
+        ui->lineEditOpen->setText(fileName);
         filehandler->setFileName(fileName);
-        ui->prevButton->show ();
-        ui->playButton->show ();
-        ui->nextButton->show ();
-        ui->horizontalSlider_3->show ();
-
+        ui->toolButtonPrev->show ();
+        ui->toolButtonPlay->show ();
+        ui->toolButtonNext->show ();
+        ui->horizontalSliderPlayer->show ();
     }
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButtonApply_clicked()
 {
     if(this->canAddMarker)
     {
-        firstLat = ui->doubleSpinBox->value ();
-        secondLat = ui->doubleSpinBox_4->value ();
-        firstLon = ui->doubleSpinBox_2->value ();
-        secondLon = ui->doubleSpinBox_3->value ();
+        firstLat = ui->doubleSpinBoxLatLeft->value ();
+        secondLat = ui->doubleSpinBoxLatRight->value ();
+        firstLon = ui->doubleSpinBoxLonLeft->value ();
+        secondLon = ui->doubleSpinBoxLonRight->value ();
         QMetaObject::invokeMethod (map->rootObject (),"addMarker",
                                    Qt::DirectConnection,
                                    Q_ARG(QVariant,firstLat),
@@ -355,7 +340,7 @@ void MainWindow::on_pushButton_clicked()
     this->canAddMarker = false;
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButtonDelete_clicked()
 {
     QMetaObject::invokeMethod (map->rootObject (),"delMarker",
                                Qt::DirectConnection,
@@ -368,12 +353,12 @@ void MainWindow::on_pushButton_2_clicked()
     this->canAddMarker = true;
 }
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_pushButtonMove_clicked()
 {
-    firstLat = ui->doubleSpinBox->value ();
-    secondLat = ui->doubleSpinBox_4->value ();
-    firstLon = ui->doubleSpinBox_2->value ();
-    secondLon = ui->doubleSpinBox_3->value ();
+    firstLat = ui->doubleSpinBoxLatLeft->value ();
+    secondLat = ui->doubleSpinBoxLatRight->value ();
+    firstLon = ui->doubleSpinBoxLonLeft->value ();
+    secondLon = ui->doubleSpinBoxLonRight->value ();
     QMetaObject::invokeMethod (map->rootObject (),"moveMarker",
                                Qt::DirectConnection,
                                Q_ARG(QVariant,0),
@@ -386,7 +371,7 @@ void MainWindow::on_pushButton_3_clicked()
                                Q_ARG(QVariant,secondLon));
 }
 
-void MainWindow::on_spinBox_valueChanged(int arg1)// cam 1
+void MainWindow::on_spinBoxRotLeft_valueChanged(int arg1)// cam left
 {
     QMetaObject::invokeMethod (map->rootObject (),"rotate",
                                Qt::DirectConnection,
@@ -395,8 +380,7 @@ void MainWindow::on_spinBox_valueChanged(int arg1)// cam 1
 
 }
 
-
-void MainWindow::on_spinBox_2_valueChanged(int arg1) //cam 2
+void MainWindow::on_spinBoxRotRight_valueChanged(int arg1) //cam right
 {
     QMetaObject::invokeMethod (map->rootObject (),"rotate",
                                Qt::DirectConnection,
@@ -405,32 +389,23 @@ void MainWindow::on_spinBox_2_valueChanged(int arg1) //cam 2
 
 }
 
-void MainWindow::initialize_3d_graph()
+void MainWindow::init3DGraph()
 {
-
     Q3DScatter *graph = new Q3DScatter();
     QWidget *container = QWidget::createWindowContainer(graph);
-    //! [0]
-
-    if (!graph->hasContext()) {
+    if (!graph->hasContext())
+    {
         QMessageBox msgBox;
         msgBox.setText("Couldn't initialize the OpenGL context.");
         msgBox.exec();
 
     }
-
-
-    //! [1]
     QWidget *widget = new QWidget;
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
     QVBoxLayout *vLayout = new QVBoxLayout();
     hLayout->addWidget(container, 1);
     hLayout->addLayout(vLayout);
-    //! [1]
-
     widget->setWindowTitle(QStringLiteral("A Cosine Wave"));
-
-    //! [4]
     QComboBox *themeList = new QComboBox(widget);
     themeList->addItem(QStringLiteral("Qt"));
     themeList->addItem(QStringLiteral("Primary Colors"));
@@ -440,127 +415,88 @@ void MainWindow::initialize_3d_graph()
     themeList->addItem(QStringLiteral("Retro"));
     themeList->addItem(QStringLiteral("Ebony"));
     themeList->addItem(QStringLiteral("Isabelle"));
-    themeList->setCurrentIndex(6);
-
+    themeList->setCurrentIndex(3);
     QPushButton *labelButton = new QPushButton(widget);
     labelButton->setText(QStringLiteral("Change label style"));
-
-
     QPushButton *cameraButton = new QPushButton(widget);
     cameraButton->setText(QStringLiteral("Change camera preset"));
-
     QPushButton *clearButton = new QPushButton(widget);
     clearButton->setText(QStringLiteral("Clear"));
-
     QPushButton *viewButton=new QPushButton(widget);
     viewButton->setText("View in 3D");
-
     QCheckBox *backgroundCheckBox = new QCheckBox(widget);
     backgroundCheckBox->setText(QStringLiteral("Show background"));
     backgroundCheckBox->setChecked(true);
-
     QCheckBox *gridCheckBox = new QCheckBox(widget);
     gridCheckBox->setText(QStringLiteral("Show grid"));
     gridCheckBox->setChecked(true);
-
-
-
-
-    //! [4]
-
-    //! [5]
     vLayout->addWidget(labelButton, 0, Qt::AlignTop);
     vLayout->addWidget(cameraButton, 0, Qt::AlignTop);
     vLayout->addWidget(viewButton,0,Qt::AlignTop);
     vLayout->addWidget(clearButton, 0, Qt::AlignTop);
     vLayout->addWidget(backgroundCheckBox);
     vLayout->addWidget(gridCheckBox);
-
-
-
     vLayout->addWidget(new QLabel(QStringLiteral("Change theme")));
     vLayout->addWidget(themeList);
-
-
-
-
-    //! [5]
-
-    //! [2]
     modifier = new ScatterDataModifier(graph);
-    //! [2]
-
-    //! [6]
     QObject::connect(cameraButton, &QPushButton::clicked, modifier,
                      &ScatterDataModifier::changePresetCamera);
     QObject::connect(labelButton, &QPushButton::clicked, modifier,
                      &ScatterDataModifier::changeLabelStyle);
     QObject::connect(clearButton, &QPushButton::clicked, modifier,
                      &ScatterDataModifier::clear);
-
     QObject::connect(backgroundCheckBox, &QCheckBox::stateChanged, modifier,
                      &ScatterDataModifier::setBackgroundEnabled);
     QObject::connect(gridCheckBox, &QCheckBox::stateChanged, modifier,
                      &ScatterDataModifier::setGridEnabled);
    // QObject::connect(smoothCheckBox, &QCheckBox::stateChanged, modifier,
      //                &ScatterDataModifier::setSmoothDots);
-
     QObject::connect(modifier, &ScatterDataModifier::backgroundEnabledChanged,
                      backgroundCheckBox, &QCheckBox::setChecked);
     QObject::connect(modifier, &ScatterDataModifier::gridEnabledChanged,
                      gridCheckBox, &QCheckBox::setChecked);
    // QObject::connect(itemStyleList, SIGNAL(currentIndexChanged(int)), modifier,
        //              SLOT(changeStyle(int)));
-
     QObject::connect(themeList, SIGNAL(currentIndexChanged(int)), modifier,
                      SLOT(changeTheme(int)));
-
-
     QObject::connect(graph, &Q3DScatter::shadowQualityChanged, modifier,
                      &ScatterDataModifier::shadowQualityUpdatedByVisual);
-
-
-
-
-    //! [6]
-
-    //! [3]
-
     //ui->verticalLayout->addWidget(widget);
-
     ui->gridLayout_2->addWidget(widget);
     //widget->resize(800,500);
     widget->show();
-
     vLayout->setAlignment(Qt::AlignTop);
-
 }
 
-void MainWindow::to_3d()
+void MainWindow::To3D()
 {
-    QVector<int> px;
-    QVector<int> py;
-    QVector<int> lx;
-    QVector<int> ly;
-    for(int i=0;i<leftframe[frame_counter].length();i++){
-        px.append(0-rightframe[frame_counter][i]->pos().x());
-        py.append(0-rightframe[frame_counter][i]->pos().y());
-        lx.append(0-leftframe[frame_counter][i]->pos().x());
-        ly.append(0-leftframe[frame_counter][i]->pos().y());
+    QVector<QPoint> R;
+    QVector<QPoint> L;
+    for(int i=0;i<leftframe[frame_counter].length();i++)
+    {
+        R.push_back(QPoint());
+        L.push_back(QPoint());
+        //px.append(0-rightframe[frame_counter][i]->pos().x());
+        R[i].setX(0-rightframe[frame_counter][i]->pos().x());
+        //py.append(0-rightframe[frame_counter][i]->pos().y());
+        R[i].setY(0-rightframe[frame_counter][i]->pos().y());
+        //lx.append(0-leftframe[frame_counter][i]->pos().x());
+        L[i].setX(0-leftframe[frame_counter][i]->pos().x());
+        //ly.append(0-leftframe[frame_counter][i]->pos().y());
+        L[i].setY(0-leftframe[frame_counter][i]->pos().y());
     }
-    converter.Start(px,py,lx,ly);
-    modifier->add_data(converter.getX(),converter.getY(),converter.getH3(), QColor::colorNames ());
-    converter.clear_data();
+    converter.Start(R, L);
+    modifier->AddData(converter.getVec3D(), QColor::colorNames ());
+    converter.Clear();
 }
 
-void MainWindow::sliderMove(int value)
+void MainWindow::on_doubleSpinBoxRange_valueChanged(double arg1)
 {
-
+    converter.setRangeCam(arg1);
 }
 
-
-void MainWindow::on_horizontalSlider_3_valueChanged(int value)
+void MainWindow::on_doubleSpinBoxAngle_valueChanged(double arg1)
 {
-    emit playerBar (value);
+    converter.setAngle(arg1);
 }
 
