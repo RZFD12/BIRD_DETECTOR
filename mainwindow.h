@@ -73,7 +73,6 @@ private:
     ScatterDataModifier *modifier;
     bool video_play=true;
     int frame_num=0;
-    static int frame_counter;
     double firstLat;
     double firstLon;
     double secondLat;

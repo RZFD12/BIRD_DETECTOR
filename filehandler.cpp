@@ -76,8 +76,8 @@ void FileHandler::matWrite(const image_saving_protocol& saving_protocol, std::of
     std::vector<uchar> buff;                                                                    //buffer for coding
     std::vector<uint8_t> buff1;
     std::vector<int> param(2);
-    param[0] = cv::IMWRITE_PNG_COMPRESSION;
-    param[1] = 2;                                                                               //default(95) 0-100
+    param[0] = cv::IMWRITE_JPEG_QUALITY;
+    param[1] = 90;                                                                               //default(95) 0-100
     imencode(".jpg", saving_protocol.frame, buff1, param);
     int a = buff1.size();
     fs.write((char*)&a,sizeof(int));

@@ -8,12 +8,13 @@
 #include <QFileDialog>
 #include <QVector3D>
 
+int frame_counter = 0;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->frame_counter = 0;
     leftCAM = new CamScene(camera::left,ui->graphicsViewCamLeft);
     rightCAM = new CamScene(camera::right,ui->graphicsViewCamRight);
     leftCAM->setBackgroundBrush(Qt::black);
