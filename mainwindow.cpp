@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEditRtspLeft->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
     ui->lineEditRtspRight->setText("rtsp://admin:qwerty1234@192.168.0.103:554/ISAPI/Streaming/Channels/101");
     filehandler = new FileHandler();
-    QThread *file_handler_thread=new QThread();
+    file_handler_thread = new QThread();
     filehandler->moveToThread(file_handler_thread);
     connect(filehandler,&FileHandler::Status,this,&MainWindow::IndexingStatus);
     connect(file_handler_thread,&QThread::started,filehandler,&FileHandler::start);
@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
         //ImgGetLeft->setFileHandler(this->filehandler);
-        QThread *lthread = new QThread(this);
+        lthread = new QThread(this);
         ImgGetLeft->moveToThread(lthread);
         connect(ImgGetLeft,&ImgData::Image,this,&MainWindow::loadImgLeft);
         connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
     if(ImgGetRight == nullptr)
     {
         ImgGetRight = new ImgData(2,ui->lineEditRtspRight->text().toStdString());
-        QThread *rthread = new QThread(this);
+        rthread = new QThread(this);
         ImgGetRight->moveToThread(rthread);
         connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
         connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
@@ -128,52 +128,36 @@ void MainWindow::PixMapCut()
 {
     QPixmap leftPix=leftCAM->getCurrentPixMap();
     QPixmap rightPix=rightCAM->getCurrentPixMap();
-
     QMap<int,QVector<FRAME*>> ::iterator it;
-
     QVector<FRAME*>::iterator itFrame;
-
     it=leftframe.find(frame_counter);
-
-    if(it!=leftframe.end()){
-
-        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++){
-
+    if(it!=leftframe.end())
+    {
+        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
+        {
             QPixmap templ=leftPix.copy(
                        960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
                        540+(*itFrame)->pos().y()-(*itFrame)->boundingRect().height()/2,
                         (*itFrame)->boundingRect().width(),
                         (*itFrame)->boundingRect().height());
-
             QUuid name=QUuid::createUuid();
-
             templ.save("./template_images/"+name.toString()+".jpg","JPG");
         }
-
-
-
     }
-
-
     it=rightframe.find(frame_counter);
-
-    if(it!=rightframe.end()){
-
-        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++){
-
+    if(it!=rightframe.end())
+    {
+        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
+        {
             QPixmap templ=rightPix.copy(
                         960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
                         540+(*itFrame)->pos().y()-(*itFrame)->boundingRect().height()/2,
                         (*itFrame)->boundingRect().width(),
                         (*itFrame)->boundingRect().height());
-
-
             QUuid name=QUuid::createUuid();
-
             templ.save("./template_images/"+name.toString()+".jpg","JPG");
         }
     }
-
 }
 
 void MainWindow::setTheme(QString themeName)

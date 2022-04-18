@@ -72,6 +72,9 @@ private:
     FileHandler*filehandler=nullptr;
     QTimer* frame_timer=nullptr;
     QTimer* video_timer=nullptr;
+    QThread *lthread;
+    QThread *rthread;
+    QThread *file_handler_thread;
     QQuickWidget * map;
     ScatterDataModifier *modifier;
     bool video_play=true;
