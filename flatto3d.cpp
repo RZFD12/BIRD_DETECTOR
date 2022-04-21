@@ -152,12 +152,12 @@ void flatto3d::Clear()
     this->vec3D.clear(); this->vec3D.squeeze();
 }
 
-int flatto3d::getBtwangle() const
+float flatto3d::getBtwangle() const
 {
     return btwangle;
 }
 
-void flatto3d::setBtwangle(int newBtwangle)
+void flatto3d::setBtwangle(float newBtwangle)
 {
     btwangle = newBtwangle;
 }

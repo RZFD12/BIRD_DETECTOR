@@ -29,8 +29,8 @@ public:
     const QVector<QVector3D> &getVec3D() const;
     void Clear();
 
-    int getBtwangle() const;
-    void setBtwangle(int newBtwangle);
+    float getBtwangle() const;
+    void setBtwangle(float newBtwangle);
 
 private:
     float rangeCam=2.64;
