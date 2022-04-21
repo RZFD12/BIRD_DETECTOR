@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
         image_saving_protocol p;
         filehandler->matRead(p,frame_state::next);
+        ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()+1);
     });
     init3DGraph();
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -215,6 +216,7 @@ void MainWindow::on_toolButtonNext_clicked()
     frame_counter++;
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::next);
+    ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()+1);
     frame_num++;
 }
 
@@ -236,6 +238,7 @@ void MainWindow::on_toolButtonPrev_clicked()
 {
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::previos);
+    ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()-1);
     frame_num--;
     frame_counter--;
     for(int i=0;i<leftframe[frame_counter].length();++i)
@@ -368,6 +371,7 @@ void MainWindow::on_toolButtonOpen_pressed()// open
     {
         ui->lineEditOpen->setText(fileName);
         filehandler->setFileName(fileName);
+        ui->horizontalSliderPlayer->setMaximum(filehandler->getFrameByteIndex().size());
         ui->toolButtonPrev->show ();
         ui->toolButtonPlay->show ();
         ui->toolButtonNext->show ();
@@ -562,3 +566,8 @@ void MainWindow::on_comboBoxTheme_textActivated(const QString &arg1)
     setTheme(arg1);
 }
 
+
+void MainWindow::on_spinBoxBAngle_valueChanged(int arg1)
+{
+    converter.setBtwangle(arg1);
+}

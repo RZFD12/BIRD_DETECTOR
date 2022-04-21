@@ -13,7 +13,7 @@ FileHandler::FileHandler(QObject *parent) : QObject(parent)
 void FileHandler::setFileName(const QString &newFileName)
 {
     m_fileName = newFileName;
-    m_file.setFileName (newFileName);
+    m_file.setFileName(newFileName);
     FrameByteIndex=Data_Indexing();
 }
 
@@ -186,6 +186,11 @@ void FileHandler::Decode(std::vector<uint8_t> buff, int camera_id)
 void FileHandler::start()
 {
 
+}
+
+const std::vector<uint64> &FileHandler::getFrameByteIndex() const
+{
+    return FrameByteIndex;
 }
 
 QMap<camera,image_saving_protocol> FileHandler::Read(int numFrames)

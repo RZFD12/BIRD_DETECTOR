@@ -20,19 +20,19 @@ void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
         this->bettalev.append((l[i].ry())*this->tetaylev*2*pi/360);
         if (r[i].rx() <= this->videoHalfWidth)
         {
-            this->alpha1.append((90-this->alphaprav[i])*2*pi/360);
+            this->alpha1.append((this->btwangle-this->alphaprav[i])*2*pi/360);
         }
         else
         {
-            this->alpha1.append((90+this->alphaprav[i])*2*pi/360);
+            this->alpha1.append((this->btwangle+this->alphaprav[i])*2*pi/360);
         }
         if (l[i].rx() <= this->videoHalfWidth)
         {
-            this->alpha2.append((90+this->alphalev[i])*2*pi/360);
+            this->alpha2.append((this->btwangle+this->alphalev[i])*2*pi/360);
         }
         else
         {
-            this->alpha2.append((90-this->alphalev[i])*2*pi/360);
+            this->alpha2.append((this->btwangle-this->alphalev[i])*2*pi/360);
         }
         this->gamma.append(pi-(this->alpha1[i]+this->alpha2[i]));
         this->x1.append(this->rangeCam*sin(this->alpha2[i])/sin(this->gamma[i])*cos(this->angle*2*pi/360));
@@ -150,6 +150,16 @@ void flatto3d::Clear()
     this->h11.clear (); this->h11.squeeze ();
     //this->h.clear (); this->h.squeeze ();
     this->vec3D.clear(); this->vec3D.squeeze();
+}
+
+int flatto3d::getBtwangle() const
+{
+    return btwangle;
+}
+
+void flatto3d::setBtwangle(int newBtwangle)
+{
+    btwangle = newBtwangle;
 }
 
 const QVector<QVector3D> &flatto3d::getVec3D() const

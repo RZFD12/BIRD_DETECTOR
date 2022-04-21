@@ -37,6 +37,8 @@ public:
     void Decode(std::vector<uint8_t> buff, int camera_id);
     void start();
 
+    const std::vector<uint64> &getFrameByteIndex() const;
+
 private:
     QString m_fileName;
     QFile m_file;
