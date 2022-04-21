@@ -35,7 +35,7 @@ public:
 private:
     float rangeCam=2.64;
     float angle=0.0;
-    int btwangle = 0;
+    float btwangle = 0.0;
     float tetayprav=0.053089;
     float tetaxprav=0.054808;
     float tetaylev=0.053089;

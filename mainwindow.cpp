@@ -566,8 +566,8 @@ void MainWindow::on_comboBoxTheme_textActivated(const QString &arg1)
     setTheme(arg1);
 }
 
-
-void MainWindow::on_spinBoxBAngle_valueChanged(int arg1)
+void MainWindow::on_doubleSpinBoxBAngle_valueChanged(double arg1)
 {
     converter.setBtwangle(arg1);
 }
+
