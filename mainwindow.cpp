@@ -58,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
     init3DGraph();
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
+
     if(ImgGetLeft == nullptr)
     {
         ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
@@ -69,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
         connect(frame_timer,&QTimer::timeout,ImgGetLeft,&ImgData::Get);
         connect(ImgGetLeft,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+        connect(this,&MainWindow::image_cut,ImgGetLeft,&ImgData::img_cut);
         connect(lthread,&QThread::started,ImgGetLeft,&ImgData::Start);
         lthread->start();
         frame_timer->start();
@@ -83,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
         connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
         connect(frame_timer,&QTimer::timeout,ImgGetRight,&ImgData::Get);
         connect(ImgGetRight,&ImgData::set_image_data,filehandler,&FileHandler::Save);
+        connect(this,&MainWindow::image_cut,ImgGetRight,&ImgData::img_cut);
         connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
         rthread->start();
     }
@@ -569,5 +572,11 @@ void MainWindow::on_comboBoxTheme_textActivated(const QString &arg1)
 void MainWindow::on_doubleSpinBoxBAngle_valueChanged(double arg1)
 {
     converter.setBtwangle(arg1);
+}
+
+
+void MainWindow::on_verticalSlider_valueChanged(int value)
+{
+    image_cut(1080-value);
 }
 

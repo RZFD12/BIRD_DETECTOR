@@ -10,9 +10,39 @@ ImgData::ImgData(int id, std::string url, QObject *parent) : QObject(parent)
 
 ImgData::~ImgData() { }
 
+void CreateCenterMark(cv::Mat &frame){
+
+
+    cv::Point vertical1(960,0);
+    cv::Point vertical2(960,1080);
+
+    cv::Point horizontal1(0,540);
+    cv::Point horizontal2(1920,540);
+
+    cv::line(frame,vertical1,vertical2,cv::Scalar(255,0,0)); // vertical
+
+    cv::line(frame,horizontal1,horizontal2,cv::Scalar(0,0,255)); // horizontal
+
+
+}
+
+cv::Mat ImgData::cropped(cv::Mat &frame){
+
+    cv::Rect cutRect(0,0,1920,this->cut_pix);
+
+    cv::Mat CFFTM=frame(cutRect);
+
+    cv::line(frame,cv::Point(0,this->cut_pix), cv::Point(1920,this->cut_pix),cv::Scalar(0,255,0),2);
+
+    return CFFTM;
+}
+
+
+
 void ImgData::Get()
 {
     cv::Mat frame;
+
     if(m_video.isOpened())
     {
         m_video>>frame;
@@ -23,14 +53,19 @@ void ImgData::Get()
                 case RGB:{
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_RGB888);
                     //bitwise_not(frame,frame);
+                    p.frame = frame;
+                    CreateCenterMark(frame);
+                   // cut_line(frame);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
 
                 case Gray:{
                     cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
-                    p.frame = frame;
                     bitwise_not(frame,frame);
+                    CreateCenterMark(frame);
+                   // cut_line(frame);
+                    p.frame = frame;
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
 
@@ -39,6 +74,9 @@ void ImgData::Get()
                     adaptiveThreshold(frame,frame,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,m_block_size,m_C);
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     bitwise_not(frame,frame);
+                    CreateCenterMark(frame);
+                    //cut_line(frame);
+                    p.frame = frame;
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
             }
@@ -50,6 +88,11 @@ void ImgData::Get()
         }
         else{qDebug()<<"empty";}
     }
+}
+
+void ImgData::img_cut(int pix_pos)
+{
+    this->cut_pix=pix_pos;
 }
 
 void ImgData::setThresHold(int bs, double C)

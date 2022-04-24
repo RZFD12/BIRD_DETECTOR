@@ -90,6 +90,7 @@ private:
     void PixMapCut();
     void setTheme(QString themeName);
 
+
 private slots:
     void on_toolButtonNext_clicked();
     void on_toolButtonPlay_clicked();
@@ -115,8 +116,11 @@ private slots:
     void on_comboBoxTheme_textActivated(const QString &arg1);
     void on_doubleSpinBoxBAngle_valueChanged(double arg1);
 
+    void on_verticalSlider_valueChanged(int value);
+
 signals:
     void thresHold(int bs,double C);
     void imgFilter(state filter);
+    void image_cut(int height_pos);
 };
 #endif // MAINWINDOW_H

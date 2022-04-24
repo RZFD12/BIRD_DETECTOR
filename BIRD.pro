@@ -9,7 +9,8 @@ SOURCES += \
     imgdata.cpp \
     main.cpp \
     mainwindow.cpp \
-    scatterdatamodifier.cpp
+    scatterdatamodifier.cpp \
+    template_reader.cpp
 
 HEADERS += \
     filehandler.h \
@@ -17,7 +18,8 @@ HEADERS += \
     frame.h \
     imgdata.h \
     mainwindow.h \
-    scatterdatamodifier.h
+    scatterdatamodifier.h \
+    template_reader.h
 
 FORMS += \
     mainwindow.ui

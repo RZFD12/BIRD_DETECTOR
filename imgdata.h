@@ -33,6 +33,7 @@ public slots:
     void Start();
     void setFileHandler(FileHandler *f);
     void Get();
+    void img_cut(int pix_pos);
 
 private:
   int cam_id;
@@ -44,6 +45,9 @@ private:
   int m_b=qRegisterMetaType<state>("state");
   FileHandler *filehandler=nullptr;
   image_saving_protocol p;
+  int cut_pix;
+private:
+  cv::Mat cropped(cv::Mat &frame);
 
 signals:
   void Downloaded();
