@@ -13,3 +13,4 @@ Makefile
 Makefile.Debug
 Makefile.Release
 qml_qmlcache.qrc
+ui_mainwindow.h
