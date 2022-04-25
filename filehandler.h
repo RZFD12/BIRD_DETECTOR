@@ -11,7 +11,6 @@
 #include <opencv2/opencv.hpp>
 #include <QPoint>
 
-
 struct image_saving_protocol
 {
     unsigned int CAMERA_ID;
@@ -36,7 +35,6 @@ public:
     void matRead(image_saving_protocol &read_protocol, frame_state state);
     void Decode(std::vector<uint8_t> buff, int camera_id);
     void start();
-
     const std::vector<uint64> &getFrameByteIndex() const;
 
 private:

@@ -1,12 +1,13 @@
 #ifndef IMGDATA_H
 #define IMGDATA_H
 
-#include <filehandler.h>
 #include <QObject>
 #include <QByteArray>
 #include <QTimer>
 #include <QImage>
 #include <QPixmap>
+
+#include <filehandler.h>
 
 struct color
 {

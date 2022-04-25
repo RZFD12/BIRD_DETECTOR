@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <opencv2/opencv.hpp>
+
 enum template_type {BPLA,BIRD};
 
 class template_reader : public QObject

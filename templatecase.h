@@ -1,5 +1,6 @@
 #ifndef TEMPLATECASE_H
 #define TEMPLATECASE_H
+
 #include <QWidget>
 #include <opencv2/opencv.hpp>
 #include <QCheckBox>
@@ -16,7 +17,7 @@ class myLabel : public QLabel
 {
     Q_OBJECT
 public:
-    myLabel(cv::Mat frame, QWidget * parent = 0 );
+    myLabel(cv::Mat frame, QWidget *parent = nullptr);
     ~myLabel(){}
     QCheckBox *box;
     QVBoxLayout *Vbox;
@@ -26,7 +27,7 @@ public slots:
     void slotClicked();
     void unclecked();
 protected:
-    void mousePressEvent (QMouseEvent * event ) ;
+    void mousePressEvent (QMouseEvent *event) ;
 };
 
 

@@ -28,20 +28,19 @@ public:
 //    const QVector<float> &getH() const;
     const QVector<QVector3D> &getVec3D() const;
     void Clear();
-
     float getBtwangle() const;
     void setBtwangle(float newBtwangle);
 
 private:
-    float rangeCam=1.39;
-    float angle=0.0;
+    float rangeCam = 1.39;
+    float angle = 0.0;
     float btwangle = 0.0;
-    float tetayprav=0.053089;
-    float tetaxprav=0.054808;
-    float tetaylev=0.053089;
-    float tetaxlev=0.054808;
-    int videoHalfWidth=960;
-    int videoHalfHeight=540;
+    float tetayprav = 0.053089;
+    float tetaxprav = 0.054808;
+    float tetaylev = 0.053089;
+    float tetaxlev = 0.054808;
+    int videoHalfWidth = 960;
+    int videoHalfHeight = 540;
     QVector<float>alphaprav;
     QVector<float>bettaprav;
     QVector<float>alphalev;
@@ -53,10 +52,7 @@ private:
     QVector<float>x2;
     QVector<float>h1;
     QVector<float>h2;
-    /*QVector<float>x;
-    QVector<float>y*/;
     QVector<float>h11;
-    //QVector<float>h;
     QVector<QVector3D> vec3D;
 
 signals:

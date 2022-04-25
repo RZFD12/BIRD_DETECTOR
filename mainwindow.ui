@@ -65,7 +65,7 @@
        <rect>
         <x>970</x>
         <y>800</y>
-        <width>41</width>
+        <width>31</width>
         <height>21</height>
        </rect>
       </property>
@@ -89,9 +89,9 @@
      <widget class="QLineEdit" name="lineEditRtspLeft">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>50</x>
         <y>800</y>
-        <width>881</width>
+        <width>901</width>
         <height>21</height>
        </rect>
       </property>
@@ -114,7 +114,7 @@
        <rect>
         <x>10</x>
         <y>800</y>
-        <width>47</width>
+        <width>31</width>
         <height>21</height>
        </rect>
       </property>
@@ -213,7 +213,7 @@
         <rect>
          <x>10</x>
          <y>90</y>
-         <width>195</width>
+         <width>200</width>
          <height>31</height>
         </rect>
        </property>
@@ -245,9 +245,9 @@
      <widget class="QLineEdit" name="lineEditRtspRight">
       <property name="geometry">
        <rect>
-        <x>1030</x>
+        <x>1010</x>
         <y>801</y>
-        <width>881</width>
+        <width>901</width>
         <height>20</height>
        </rect>
       </property>
@@ -373,8 +373,8 @@
       <property name="geometry">
        <rect>
         <x>480</x>
-        <y>840</y>
-        <width>141</width>
+        <y>830</y>
+        <width>131</width>
         <height>101</height>
        </rect>
       </property>
@@ -468,10 +468,10 @@
      <widget class="QWidget" name="gridLayoutWidget_3">
       <property name="geometry">
        <rect>
-        <x>1300</x>
+        <x>1310</x>
         <y>830</y>
-        <width>611</width>
-        <height>221</height>
+        <width>601</width>
+        <height>151</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3"/>

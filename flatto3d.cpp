@@ -1,6 +1,8 @@
-#include "flatto3d.h"
 #include <QtMath>
 #include <QtDebug>
+
+#include "flatto3d.h"
+
 #define pi 3.1415
 
 flatto3d::flatto3d(QObject *parent)
@@ -18,9 +20,9 @@ void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
         this->bettaprav.append((r[i].y())*this->tetayprav*2*pi/360);
         this->alphalev.append(abs((l[i]. x())*this->tetaxlev));
         this->bettalev.append((l[i]. y())*this->tetaylev*2*pi/360);
-        qDebug()<<r[i];
-        qDebug()<<alphaprav[i] <<"prav";
-        qDebug()<<alphalev[i] <<" lev";
+//        qDebug()<<r[i];
+//        qDebug()<<alphaprav[i] <<"prav";
+//        qDebug()<<alphalev[i] <<" lev";
         if (r[i].x() <=0)
         {
             this->alpha1.append((this->btwangle-this->alphaprav[i])*2*pi/360);
@@ -163,7 +165,7 @@ float flatto3d::getBtwangle() const
 void flatto3d::setBtwangle(float newBtwangle)
 {
     btwangle = newBtwangle;
-    qDebug()<<newBtwangle;
+//    qDebug()<<newBtwangle;
 }
 
 const QVector<QVector3D> &flatto3d::getVec3D() const

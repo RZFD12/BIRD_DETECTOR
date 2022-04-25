@@ -1,5 +1,3 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <QImage>
 #include <QMediaPlayer>
 #include <QTimer>
@@ -8,6 +6,10 @@
 #include <QFileDialog>
 #include <QVector3D>
 #include <QUuid>
+
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
 int frame_counter = 0;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -74,19 +76,11 @@ MainWindow::MainWindow(QWidget *parent)
     });
     init3DGraph();
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
-
-
     reader=new template_reader();
-
     QVector<cv::Mat> TMP=reader->templates(template_type::BIRD);
-
     tmpcase=new TemplateCase();
-
     tmpcase->set_template(TMP);
-
     ui->gridLayout_3->addWidget(tmpcase);
-
-
     if(ImgGetLeft == nullptr)
     {
         ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
@@ -614,6 +608,5 @@ void MainWindow::on_doubleSpinBoxBAngle_valueChanged(double arg1)
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     image_cut(1080-value);
-    qDebug()<<1080-value;
+    //qDebug()<<1080-value;
 }
-

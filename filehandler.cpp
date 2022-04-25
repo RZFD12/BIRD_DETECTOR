@@ -1,9 +1,10 @@
-#include "filehandler.h"
 #include <QDataStream>
 #include <QtDebug>
 #include <QByteArray>
 #include <QThread>
 #include <QDateTime>
+
+#include "filehandler.h"
 
 FileHandler::FileHandler(QObject *parent) : QObject(parent)
 {

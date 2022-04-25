@@ -10,39 +10,27 @@ ImgData::ImgData(int id, std::string url, QObject *parent) : QObject(parent)
 
 ImgData::~ImgData() { }
 
-void CreateCenterMark(cv::Mat &frame){
-
-
+void CreateCenterMark(cv::Mat &frame)
+{
     cv::Point vertical1(960,0);
     cv::Point vertical2(960,1080);
-
     cv::Point horizontal1(0,540);
     cv::Point horizontal2(1920,540);
-
     cv::line(frame,vertical1,vertical2,cv::Scalar(255,0,0)); // vertical
-
     cv::line(frame,horizontal1,horizontal2,cv::Scalar(0,0,255)); // horizontal
-
-
 }
 
-cv::Mat ImgData::cropped(cv::Mat &frame){
-
+cv::Mat ImgData::cropped(cv::Mat &frame)
+{
     cv::Rect cutRect(0,0,1920,this->cut_pix);
-
     cv::Mat CFFTM=frame(cutRect);
-
     cv::line(frame,cv::Point(0,this->cut_pix), cv::Point(1920,this->cut_pix),cv::Scalar(0,255,0),2);
-
     return CFFTM;
 }
-
-
 
 void ImgData::Get()
 {
     cv::Mat frame;
-
     if(m_video.isOpened())
     {
         m_video>>frame;

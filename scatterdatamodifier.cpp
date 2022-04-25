@@ -1,4 +1,3 @@
-#include "scatterdatamodifier.h"
 #include <QtDataVisualization/qscatterdataproxy.h>
 #include <QtDataVisualization/qvalue3daxis.h>
 #include <QtDataVisualization/q3dscene.h>
@@ -8,6 +7,9 @@
 #include <QtCore/qmath.h>
 #include <QtCore/qrandom.h>
 #include <QtWidgets/QComboBox>
+
+#include "scatterdatamodifier.h"
+
 using namespace QtDataVisualization;
 
 //#define RANDOM_SCATTER // Uncomment this to switch to random scatter

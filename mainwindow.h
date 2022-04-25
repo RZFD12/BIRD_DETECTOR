@@ -1,8 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <frame.h>
-#include "imgdata.h"
 #include <QMainWindow>
 #include <QGraphicsSceneEvent>
 #include <QGraphicsScene>
@@ -16,6 +14,9 @@
 #include <QtPositioning>
 #include <QPair>
 #include <QGraphicsEffect>
+
+#include <frame.h>
+#include <imgdata.h>
 #include <scatterdatamodifier.h>
 #include <flatto3d.h>
 #include <templatecase.h>
@@ -29,7 +30,7 @@ class CamScene :public QGraphicsScene
 {
     Q_OBJECT
 public:
-    CamScene(camera cam,QWidget*parent=nullptr);
+    CamScene(camera cam, QWidget *parent = nullptr);
     QVector<FRAME*> getFrame();
     void clearFrames();    
     const QPixmap &getCurrentPixMap();
