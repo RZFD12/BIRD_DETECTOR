@@ -33,7 +33,7 @@ public:
     void setBtwangle(float newBtwangle);
 
 private:
-    float rangeCam=2.64;
+    float rangeCam=1.39;
     float angle=0.0;
     float btwangle = 0.0;
     float tetayprav=0.053089;

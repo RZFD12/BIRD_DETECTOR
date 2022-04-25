@@ -10,7 +10,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     scatterdatamodifier.cpp \
-    template_reader.cpp
+    template_reader.cpp \
+    templatecase.cpp
 
 HEADERS += \
     filehandler.h \
@@ -19,10 +20,12 @@ HEADERS += \
     imgdata.h \
     mainwindow.h \
     scatterdatamodifier.h \
-    template_reader.h
+    template_reader.h \
+    templatecase.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    templatecase.ui
 
 win32{
     INCLUDEPATH += $$(OPENCV_SDK_DIR)\include

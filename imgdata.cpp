@@ -55,6 +55,7 @@ void ImgData::Get()
                     //bitwise_not(frame,frame);
                     p.frame = frame;
                     CreateCenterMark(frame);
+                    cv::Mat ff=cropped(frame);
                    // cut_line(frame);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
@@ -65,6 +66,7 @@ void ImgData::Get()
                     bitwise_not(frame,frame);
                     CreateCenterMark(frame);
                    // cut_line(frame);
+                    cv::Mat ff=cropped(frame);
                     p.frame = frame;
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
@@ -75,6 +77,7 @@ void ImgData::Get()
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     bitwise_not(frame,frame);
                     CreateCenterMark(frame);
+                    cv::Mat ff=cropped(frame);
                     //cut_line(frame);
                     p.frame = frame;
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));

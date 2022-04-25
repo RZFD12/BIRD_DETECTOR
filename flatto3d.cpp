@@ -1,6 +1,6 @@
 #include "flatto3d.h"
 #include <QtMath>
-
+#include <QtDebug>
 #define pi 3.1415
 
 flatto3d::flatto3d(QObject *parent)
@@ -14,11 +14,14 @@ void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
     for (int i=0;i<r.length ();i++)
     {
         this->vec3D.push_back(QVector3D());
-        this->alphaprav.append((r[i].rx())*this->tetaxprav);
-        this->bettaprav.append((r[i].ry())*this->tetayprav*2*pi/360);
-        this->alphalev.append((l[i].rx())*this->tetaxlev);
-        this->bettalev.append((l[i].ry())*this->tetaylev*2*pi/360);
-        if (r[i].rx() <= this->videoHalfWidth)
+        this->alphaprav.append(abs((r[i].x())*this->tetaxprav));
+        this->bettaprav.append((r[i].y())*this->tetayprav*2*pi/360);
+        this->alphalev.append(abs((l[i]. x())*this->tetaxlev));
+        this->bettalev.append((l[i]. y())*this->tetaylev*2*pi/360);
+        qDebug()<<r[i];
+        qDebug()<<alphaprav[i] <<"prav";
+        qDebug()<<alphalev[i] <<" lev";
+        if (r[i].x() <=0)
         {
             this->alpha1.append((this->btwangle-this->alphaprav[i])*2*pi/360);
         }
@@ -26,7 +29,7 @@ void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
         {
             this->alpha1.append((this->btwangle+this->alphaprav[i])*2*pi/360);
         }
-        if (l[i].rx() <= this->videoHalfWidth)
+        if (l[i].x() <=0)
         {
             this->alpha2.append((this->btwangle+this->alphalev[i])*2*pi/360);
         }
@@ -160,6 +163,7 @@ float flatto3d::getBtwangle() const
 void flatto3d::setBtwangle(float newBtwangle)
 {
     btwangle = newBtwangle;
+    qDebug()<<newBtwangle;
 }
 
 const QVector<QVector3D> &flatto3d::getVec3D() const

@@ -15,10 +15,10 @@
 #include <QQmlContext>
 #include <QtPositioning>
 #include <QPair>
-#include <QGraphicsEffect>
-
 #include <scatterdatamodifier.h>
 #include <flatto3d.h>
+#include <templatecase.h>
+#include <template_reader.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -88,15 +88,12 @@ private:
     QMap<int,QVector<FRAME*>> leftframe;
     QMap<int,QVector<FRAME*>> rightframe;
     flatto3d converter;
+    TemplateCase *tmpcase;
+    template_reader *reader;
+
+
     void PixMapCut();
     void setTheme(QString themeName);
-    QGraphicsOpacityEffect* opacityPrev;
-    QGraphicsOpacityEffect* opacityPlay;
-    QGraphicsOpacityEffect* opacityNext;
-    QGraphicsOpacityEffect* opacityPlayer;
-    float hiddenOpacity = 0.2;
-    float defaultOpacity = 1.0;
-    QMap<int, uint64> frameMap;
 
 
 private slots:
@@ -123,6 +120,7 @@ private slots:
     void on_doubleSpinBoxAngle_valueChanged(double arg1);
     void on_comboBoxTheme_textActivated(const QString &arg1);
     void on_doubleSpinBoxBAngle_valueChanged(double arg1);
+
     void on_verticalSlider_valueChanged(int value);
 
 signals:
