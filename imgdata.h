@@ -35,6 +35,9 @@ public slots:
     void setFileHandler(FileHandler *f);
     void Get();
     void img_cut(int pix_pos);
+public:
+    void SetIncludedNumList(QList<int> *lst);
+    void SetTemplatesImages(QVector<cv::Mat> *vec);
 
 private:
   int cam_id;
@@ -47,9 +50,15 @@ private:
   FileHandler *filehandler=nullptr;
   image_saving_protocol p;
   int cut_pix;
+
+  QVector<cv::Mat> *ImagesForTempMatch=nullptr;
+  QList <int> *includednum=nullptr;
+
 private:
   cv::Mat cropped(cv::Mat &frame);
-
+  QVector<cv::Mat>   matchingResult(cv::Mat &frame     /*<---cutting image */);
+  QVector<cv::Point> ResultPoint(const QVector<cv::Mat> &matchicngResultframes );
+  void matchrectangle(QVector<cv::Point> &points,cv::Mat frame);
 signals:
   void Downloaded();
   void Image(QPixmap pix);

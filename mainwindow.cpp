@@ -84,6 +84,10 @@ MainWindow::MainWindow(QWidget *parent)
     if(ImgGetLeft == nullptr)
     {
         ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
+
+        ImgGetLeft->SetIncludedNumList(tmpcase->includedtmp());
+        ImgGetLeft->SetTemplatesImages(reader->tmp());
+
         //ImgGetLeft->setFileHandler(this->filehandler);
         lthread = new QThread(this);
         ImgGetLeft->moveToThread(lthread);
@@ -100,6 +104,8 @@ MainWindow::MainWindow(QWidget *parent)
     if(ImgGetRight == nullptr)
     {
         ImgGetRight = new ImgData(2,ui->lineEditRtspRight->text().toStdString());
+        ImgGetRight->SetIncludedNumList(tmpcase->includedtmp());
+        ImgGetRight->SetTemplatesImages(reader->tmp());
         rthread = new QThread(this);
         ImgGetRight->moveToThread(rthread);
         connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);

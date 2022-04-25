@@ -30,5 +30,11 @@ QVector<cv::Mat> template_reader::templates(template_type type)
     {
 
     }
-    return vec;
+    this->tmp_images=vec;
+    return tmp_images;
+}
+
+QVector<cv::Mat> * template_reader::tmp()
+{
+    return &tmp_images;
 }

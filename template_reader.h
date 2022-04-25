@@ -13,6 +13,9 @@ class template_reader : public QObject
 public:
     explicit template_reader(QObject *parent = nullptr);
     QVector<cv::Mat> templates(template_type type);
+    QVector<cv::Mat> *tmp();
+public:
+    QVector<cv::Mat> tmp_images;
 signals:
 
 };

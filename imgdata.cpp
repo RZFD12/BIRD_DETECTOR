@@ -28,6 +28,55 @@ cv::Mat ImgData::cropped(cv::Mat &frame)
     return CFFTM;
 }
 
+QVector<cv::Mat> ImgData::matchingResult(cv::Mat &frame)
+{
+    QVector<cv::Mat> resultVector;
+
+    for(int i=0;i<includednum->length();i++){
+
+        int NumTmp=(*includednum)[i];
+
+        cv:: Mat result;
+
+        cv::matchTemplate(frame,(*ImagesForTempMatch)[NumTmp],result,cv::TM_SQDIFF_NORMED);
+
+        normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+
+        resultVector.push_back(result);
+    }
+
+    return resultVector;
+
+}
+
+QVector<cv::Point> ImgData::ResultPoint( const QVector<cv::Mat> &matchicngResultframes)
+{
+    QVector<cv::Point> objectpoints;
+
+    double minVal, maxVal;
+    cv::Point  minLoc, maxLoc, matchLoc;
+
+    for(int i=0;i<matchicngResultframes.length();i++){
+
+        cv::minMaxLoc(matchicngResultframes[i],&minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
+
+        matchLoc = minLoc;
+
+        objectpoints.push_back(matchLoc);
+    }
+
+    return objectpoints;
+}
+
+void ImgData::matchrectangle(QVector<cv::Point> &points, cv::Mat frame)
+{
+    for(int i=0;i<points.length();i++){
+
+        cv::rectangle(frame, points[i], cv::Point( points[i].x+50 , points[i].y+50 ), CV_RGB(255, 255, 255),3);
+    }
+
+}
+
 void ImgData::Get()
 {
     cv::Mat frame;
@@ -39,35 +88,47 @@ void ImgData::Get()
             switch(m_FrameFilter)
             {
                 case RGB:{
-                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_RGB888);
+
                     //bitwise_not(frame,frame);
-                    p.frame = frame;
+
                     CreateCenterMark(frame);
-                    cv::Mat ff=cropped(frame);
-                   // cut_line(frame);
+
+                    cv::Mat cropp=cropped(frame); //cutting
+                    QVector<cv::Point> points=ResultPoint(matchingResult(cropp));
+                    matchrectangle(points,frame);
+
+                    p.frame = frame;
+                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_RGB888);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
 
                 case Gray:{
                     cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
-                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     bitwise_not(frame,frame);
                     CreateCenterMark(frame);
-                   // cut_line(frame);
-                    cv::Mat ff=cropped(frame);
+
+                    cv::Mat cropp=cropped(frame); // cutting
+                    QVector<cv::Point> points=ResultPoint(matchingResult(cropp));
+                    matchrectangle(points,frame);
+
                     p.frame = frame;
+                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
 
                 case Threshold:{
                     cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
                     adaptiveThreshold(frame,frame,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,m_block_size,m_C);
-                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
+
                     bitwise_not(frame,frame);
                     CreateCenterMark(frame);
-                    cv::Mat ff=cropped(frame);
-                    //cut_line(frame);
+
+                    cv::Mat cropp=cropped(frame); //cutting
+                    QVector<cv::Point> points=ResultPoint(matchingResult(cropp));
+                    matchrectangle(points,frame);
+
                     p.frame = frame;
+                    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
                 break;}
             }
@@ -84,6 +145,16 @@ void ImgData::Get()
 void ImgData::img_cut(int pix_pos)
 {
     this->cut_pix=pix_pos;
+}
+
+void ImgData::SetIncludedNumList(QList<int> *lst)
+{
+    includednum=lst;
+}
+
+void ImgData::SetTemplatesImages(QVector<cv::Mat> *vec)
+{
+    ImagesForTempMatch=vec;
 }
 
 void ImgData::setThresHold(int bs, double C)

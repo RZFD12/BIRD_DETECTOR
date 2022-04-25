@@ -9,6 +9,8 @@
 #include <QMouseEvent>
 #include <QGridLayout>
 
+enum tmp_state{include,exclude};
+
 namespace Ui {
 class TemplateCase;
 }
@@ -17,12 +19,14 @@ class myLabel : public QLabel
 {
     Q_OBJECT
 public:
-    myLabel(cv::Mat frame, QWidget *parent = nullptr);
+    myLabel(cv::Mat frame, int pos, QWidget *parent = nullptr);
     ~myLabel(){}
     QCheckBox *box;
     QVBoxLayout *Vbox;
+    int position;
 signals:
     void clicked();
+    void MyState(int pos,tmp_state st);
 public slots:
     void slotClicked();
     void unclecked();
@@ -40,9 +44,13 @@ public:
     ~TemplateCase();
     void set_template(QVector<cv::Mat> &templastes);
     QGridLayout layout;
+public:
+    void labels_state(int num, tmp_state state);
+    QList<int> *includedtmp ();
 
 private:
     Ui::TemplateCase *ui;
+    QList<int> IncludedTempNum;
 };
 
 #endif // TEMPLATECASE_H
