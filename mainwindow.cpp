@@ -23,10 +23,26 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsViewCamRight->setScene(rightCAM);
     leftCAM->setSceneRect(-2000,-2000,4000,4000);
     rightCAM->setSceneRect(-2000,-2000,4000,4000);
-    ui->toolButtonPrev->hide ();
-    ui->toolButtonPlay->hide ();
-    ui->toolButtonNext->hide ();
-    ui->horizontalSliderPlayer->hide ();
+    opacityPrev = new QGraphicsOpacityEffect(this);
+    opacityPrev->setOpacity(this->hiddenOpacity);
+    ui->toolButtonPrev->setDisabled(true);
+    ui->toolButtonPrev->setGraphicsEffect(opacityPrev);
+    ui->toolButtonPrev->setAutoFillBackground(true);
+    opacityPlay = new QGraphicsOpacityEffect(this);
+    opacityPlay->setOpacity(this->hiddenOpacity);
+    ui->toolButtonPlay->setDisabled(true);
+    ui->toolButtonPlay->setGraphicsEffect(opacityPlay);
+    ui->toolButtonPlay->setAutoFillBackground(true);
+    opacityNext = new QGraphicsOpacityEffect(this);
+    opacityNext->setOpacity(this->hiddenOpacity);
+    ui->toolButtonNext->setDisabled(true);
+    ui->toolButtonNext->setGraphicsEffect(opacityNext);
+    ui->toolButtonNext->setAutoFillBackground(true);
+    opacityPlayer = new QGraphicsOpacityEffect(this);
+    opacityPlayer->setOpacity(this->hiddenOpacity);
+    ui->horizontalSliderPlayer->setDisabled(true);
+    ui->horizontalSliderPlayer->setGraphicsEffect(opacityPlayer);
+    ui->horizontalSliderPlayer->setAutoFillBackground(true);
     ui->horizontalSliderPlayer->setMinimum (0);
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
@@ -370,10 +386,14 @@ void MainWindow::on_toolButtonSave_pressed()// save
     {
         ui->lineEditSave->setText(fileName);
         filehandler->setFileName(fileName);
-        ui->toolButtonPrev->hide ();
-        ui->toolButtonPlay->hide ();
-        ui->toolButtonNext->hide ();
-        ui->horizontalSliderPlayer->hide ();
+        ui->toolButtonPrev->setDisabled(true);
+        opacityPrev->setOpacity(this->hiddenOpacity);
+        ui->toolButtonPlay->setDisabled(true);
+        opacityPlay->setOpacity(this->hiddenOpacity);
+        ui->toolButtonNext->setDisabled(true);
+        opacityNext->setOpacity(this->hiddenOpacity);
+        ui->horizontalSliderPlayer->setDisabled(true);
+        opacityPlayer->setOpacity(this->hiddenOpacity);
     }
 }
 
@@ -387,10 +407,14 @@ void MainWindow::on_toolButtonOpen_pressed()// open
         ui->lineEditOpen->setText(fileName);
         filehandler->setFileName(fileName);
         ui->horizontalSliderPlayer->setMaximum(filehandler->getFrameByteIndex().size());
-        ui->toolButtonPrev->show ();
-        ui->toolButtonPlay->show ();
-        ui->toolButtonNext->show ();
-        ui->horizontalSliderPlayer->show ();
+        ui->toolButtonPrev->setDisabled(false);
+        opacityPrev->setOpacity(this->defaultOpacity);
+        ui->toolButtonPlay->setDisabled(false);
+        opacityPlay->setOpacity(this->defaultOpacity);
+        ui->toolButtonNext->setDisabled(false);
+        opacityNext->setOpacity(this->defaultOpacity);
+        ui->horizontalSliderPlayer->setDisabled(false);
+        opacityPlayer->setOpacity(this->defaultOpacity);
     }
 }
 

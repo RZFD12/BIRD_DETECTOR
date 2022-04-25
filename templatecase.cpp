@@ -40,15 +40,12 @@ void myLabel::mousePressEvent ( QMouseEvent * event )
     emit clicked();
     if(box->isChecked()){unclecked();}
     else{slotClicked();}
-
-
-
+    Q_UNUSED(event);
 }
 void myLabel::unclecked(){
     this->setFrameStyle(QFrame::Panel | QFrame::Raised);
     box->setChecked(false);
 }
-
 
 TemplateCase::TemplateCase(QWidget *parent) :
     QWidget(parent),
