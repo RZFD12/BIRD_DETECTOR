@@ -32,21 +32,49 @@ QVector<cv::Mat> ImgData::matchingResult(cv::Mat &frame)
 {
     QVector<cv::Mat> resultVector;
 
+
+
     for(int i=0;i<includednum->length();i++){
 
         int NumTmp=(*includednum)[i];
 
-        cv:: Mat result;
+        //qDebug()<< (*ImagesForTempMatch)[NumTmp].cols<<"stolb";
 
-        cv::matchTemplate(frame,(*ImagesForTempMatch)[NumTmp],result,cv::TM_SQDIFF_NORMED);
+        //qDebug()<< (*ImagesForTempMatch)[NumTmp].rows<<"rows";
 
-        normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+        cv:: Mat result(frame.cols-(*ImagesForTempMatch)[NumTmp].cols+1,frame.rows-(*ImagesForTempMatch)[NumTmp].rows+1,0);
+
+        cv::matchTemplate(frame,(*ImagesForTempMatch)[NumTmp],result,cv::TM_CCORR_NORMED);
+
+        //normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
 
         resultVector.push_back(result);
     }
 
     return resultVector;
 
+}
+
+QVector<cv::Point> tresh(double treshold, const cv::Mat &result)
+{
+    QVector<cv::Point> vec;
+
+    cv::Mat_<uchar> result1 = result;
+
+    for(int i=0;i<result1.rows;i++){
+
+        for(int j=0;j<result1.cols;j++){
+
+            //qDebug()<<result.at<float>(i,j);
+            if(result.at<float>(i,j)>treshold){
+
+                vec.push_back(cv::Point(j,i));
+            }
+
+        }
+
+    }
+    return vec;
 }
 
 QVector<cv::Point> ImgData::ResultPoint( const QVector<cv::Mat> &matchicngResultframes)
@@ -60,9 +88,17 @@ QVector<cv::Point> ImgData::ResultPoint( const QVector<cv::Mat> &matchicngResult
 
         cv::minMaxLoc(matchicngResultframes[i],&minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
 
-        matchLoc = minLoc;
+       // objectpoints=tresh(0.98,matchicngResultframes[i]);
 
-        objectpoints.push_back(matchLoc);
+        if (maxVal>0){
+
+            qDebug()<<maxVal<<" "<<minVal;
+
+            matchLoc = maxLoc;
+
+            objectpoints.push_back(matchLoc);
+
+        }
     }
 
     return objectpoints;

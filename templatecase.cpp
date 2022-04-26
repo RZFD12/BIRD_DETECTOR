@@ -6,16 +6,16 @@ myLabel::myLabel(cv::Mat frame,int pos, QWidget *parent)
 :QLabel(parent)
 {
     box=new QCheckBox(this);
-    box->setFixedSize(10,10);
+    box->setFixedSize(5,5);
     Vbox= new QVBoxLayout(this);
-    Vbox->addWidget(box,Qt::AlignTop);
+    Vbox->addWidget(box);
     this->setLayout(Vbox);
     this->setLineWidth(2);
     this->setFrameStyle(QFrame::Panel | QFrame::Raised);
     box->setChecked(false);
     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
     QPixmap pixmap(QPixmap::fromImage(qimg.rgbSwapped()));
-    this->setAlignment(Qt::AlignCenter);
+    //this->setAlignment(Qt::AlignCenter);
     this->setPixmap(pixmap);
     this->position=pos;
 }
@@ -46,6 +46,7 @@ TemplateCase::TemplateCase(QWidget *parent) :
     ui->setupUi(this);
     QWidget *w=new QWidget(this);
     w->setLayout(&layout);
+    layout.setSpacing(0);
     ui->scrollArea->setWidget(w);
 }
 

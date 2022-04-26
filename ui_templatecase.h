@@ -35,6 +35,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(scrollArea->sizePolicy().hasHeightForWidth());
         scrollArea->setSizePolicy(sizePolicy);
+        scrollArea->setStyleSheet(QString::fromUtf8("background-color: rgb(26, 26, 26);"));
         scrollArea->setFrameShape(QFrame::Box);
         scrollArea->setFrameShadow(QFrame::Plain);
         scrollArea->setMidLineWidth(0);
