@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>200</height>
+    <width>593</width>
+    <height>153</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
-     <height>200</height>
+     <width>591</width>
+     <height>151</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -32,7 +32,7 @@
     <string notr="true">background-color: rgb(26, 26, 26);</string>
    </property>
    <property name="frameShape">
-    <enum>QFrame::Box</enum>
+    <enum>QFrame::StyledPanel</enum>
    </property>
    <property name="frameShadow">
     <enum>QFrame::Plain</enum>
@@ -48,8 +48,8 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>598</width>
-      <height>198</height>
+      <width>589</width>
+      <height>149</height>
      </rect>
     </property>
    </widget>

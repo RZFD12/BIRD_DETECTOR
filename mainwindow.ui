@@ -31,7 +31,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -344,11 +344,11 @@
         <x>620</x>
         <y>840</y>
         <width>681</width>
-        <height>41</height>
+        <height>24</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item alignment="Qt::AlignVCenter">
+       <item>
         <widget class="QSlider" name="horizontalSliderPlayer">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -474,7 +474,14 @@
         <height>151</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_3"/>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
@@ -496,12 +503,19 @@
       <property name="geometry">
        <rect>
         <x>920</x>
-        <y>10</y>
+        <y>0</y>
         <width>981</width>
-        <height>811</height>
+        <height>831</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2"/>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+      </layout>
      </widget>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">

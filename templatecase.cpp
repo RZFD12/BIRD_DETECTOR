@@ -47,7 +47,7 @@ TemplateCase::TemplateCase(QWidget *parent) :
     QWidget *w=new QWidget(this);
     w->setLayout(&layout);
     layout.setSpacing(0);
-    ui->scrollArea->setWidget(w);
+    ui->scrollArea->setWidget(w);   
 }
 
 TemplateCase::~TemplateCase()
@@ -61,11 +61,11 @@ void TemplateCase::set_template(QVector<cv::Mat> &templastes)
     QVector<cv::Mat>::iterator it;
     int posx=0;
     int posy=0;
-    int count=this->width()/55;
+    int count=this->width()/60;
     int iter=0;
     for(it=templastes.begin();it!=templastes.end();it++)
     {
-        if(posx>count){posx=0;posy++;}
+        if(posx > count){posx=0;posy++;}
         myLabel* label=new myLabel((*it),iter,this);
         connect(label,&myLabel::MyState,this,&TemplateCase::labels_state);
         label->setFixedSize(55,55);

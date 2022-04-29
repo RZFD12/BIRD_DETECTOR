@@ -44,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     opacityPlayer->setOpacity(this->hiddenOpacity);
     ui->horizontalSliderPlayer->setDisabled(true);
     ui->horizontalSliderPlayer->setGraphicsEffect(opacityPlayer);
-    ui->horizontalSliderPlayer->setAutoFillBackground(true);
+    //ui->horizontalSliderPlayer->setAutoFillBackground(true);
     ui->horizontalSliderPlayer->setMinimum (0);
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
@@ -84,10 +84,8 @@ MainWindow::MainWindow(QWidget *parent)
     if(ImgGetLeft == nullptr)
     {
         ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
-
         ImgGetLeft->SetIncludedNumList(tmpcase->includedtmp());
         ImgGetLeft->SetTemplatesImages(reader->tmp());
-
         //ImgGetLeft->setFileHandler(this->filehandler);
         lthread = new QThread(this);
         ImgGetLeft->moveToThread(lthread);
@@ -406,7 +404,7 @@ void MainWindow::on_toolButtonOpen_pressed()// open
     {
         ui->lineEditOpen->setText(fileName);
         filehandler->setFileName(fileName);
-        ui->horizontalSliderPlayer->setMaximum(filehandler->getFrameByteIndex().size());
+        ui->horizontalSliderPlayer->setMaximum((int)(filehandler->getFrameByteIndex().size()/2));
         ui->toolButtonPrev->setDisabled(false);
         opacityPrev->setOpacity(this->defaultOpacity);
         ui->toolButtonPlay->setDisabled(false);
@@ -506,24 +504,12 @@ void MainWindow::init3DGraph()
     hLayout->addWidget(container, 1);
     hLayout->addLayout(vLayout);
     widget->setWindowTitle(QStringLiteral("A Cosine Wave"));
-    QComboBox *themeList = new QComboBox(widget);
-    themeList->addItem(QStringLiteral("Qt"));
-    themeList->addItem(QStringLiteral("Primary Colors"));
-    themeList->addItem(QStringLiteral("Digia"));
-    themeList->addItem(QStringLiteral("Stone Moss"));
-    themeList->addItem(QStringLiteral("Army Blue"));
-    themeList->addItem(QStringLiteral("Retro"));
-    themeList->addItem(QStringLiteral("Ebony"));
-    themeList->addItem(QStringLiteral("Isabelle"));
-    themeList->setCurrentIndex(3);
     QPushButton *labelButton = new QPushButton(widget);
     labelButton->setText(QStringLiteral("Change label style"));
     QPushButton *cameraButton = new QPushButton(widget);
     cameraButton->setText(QStringLiteral("Change camera preset"));
     QPushButton *clearButton = new QPushButton(widget);
     clearButton->setText(QStringLiteral("Clear"));
-    QPushButton *viewButton=new QPushButton(widget);
-    viewButton->setText("View in 3D");
     QCheckBox *backgroundCheckBox = new QCheckBox(widget);
     backgroundCheckBox->setText(QStringLiteral("Show background"));
     backgroundCheckBox->setChecked(true);
@@ -532,12 +518,9 @@ void MainWindow::init3DGraph()
     gridCheckBox->setChecked(true);
     vLayout->addWidget(labelButton, 0, Qt::AlignTop);
     vLayout->addWidget(cameraButton, 0, Qt::AlignTop);
-    vLayout->addWidget(viewButton,0,Qt::AlignTop);
     vLayout->addWidget(clearButton, 0, Qt::AlignTop);
     vLayout->addWidget(backgroundCheckBox);
     vLayout->addWidget(gridCheckBox);
-    vLayout->addWidget(new QLabel(QStringLiteral("Change theme")));
-    vLayout->addWidget(themeList);
     modifier = new ScatterDataModifier(graph);
     QObject::connect(cameraButton, &QPushButton::clicked, modifier,
                      &ScatterDataModifier::changePresetCamera);
@@ -557,8 +540,6 @@ void MainWindow::init3DGraph()
                      gridCheckBox, &QCheckBox::setChecked);
    // QObject::connect(itemStyleList, SIGNAL(currentIndexChanged(int)), modifier,
        //              SLOT(changeStyle(int)));
-    QObject::connect(themeList, SIGNAL(currentIndexChanged(int)), modifier,
-                     SLOT(changeTheme(int)));
     QObject::connect(graph, &Q3DScatter::shadowQualityChanged, modifier,
                      &ScatterDataModifier::shadowQualityUpdatedByVisual);
     //ui->verticalLayout->addWidget(widget);
@@ -610,9 +591,8 @@ void MainWindow::on_doubleSpinBoxBAngle_valueChanged(double arg1)
     converter.setBtwangle(arg1);
 }
 
-
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
-    image_cut(1080-value);
+    emit image_cut(1080-value);
     //qDebug()<<1080-value;
 }
