@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     rightCAM = new CamScene(camera::right,ui->graphicsViewCamRight);
     leftCAM->setBackgroundBrush(Qt::black);
     rightCAM->setBackgroundBrush(Qt::black);
+    ui->graphicsViewCamRight->setLayoutDirection(Qt::RightToLeft);
     ui->graphicsViewCamLeft->setScene(leftCAM);
     ui->graphicsViewCamRight->setScene(rightCAM);
     leftCAM->setSceneRect(-2000,-2000,4000,4000);
