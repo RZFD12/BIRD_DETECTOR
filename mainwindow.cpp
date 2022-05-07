@@ -583,7 +583,16 @@ void MainWindow::on_doubleSpinBoxAngle_valueChanged(double arg1)
 
 void MainWindow::on_comboBoxTheme_textActivated(const QString &arg1)
 {
-    setTheme(arg1);
+    if (arg1 == "Default")
+    {
+        qApp->setStyleSheet("");
+    }
+    else setTheme(arg1);
+}
+
+void MainWindow::on_comboBoxStyle_textActivated(const QString &arg1)
+{
+    qApp->setStyle(arg1);
 }
 
 void MainWindow::on_doubleSpinBoxBAngle_valueChanged(double arg1)
@@ -596,3 +605,6 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
     emit image_cut(1080-value);
     //qDebug()<<1080-value;
 }
+
+
+

@@ -129,8 +129,8 @@ private slots:
     void on_doubleSpinBoxAngle_valueChanged(double arg1);
     void on_comboBoxTheme_textActivated(const QString &arg1);
     void on_doubleSpinBoxBAngle_valueChanged(double arg1);
-
     void on_verticalSlider_valueChanged(int value);
+    void on_comboBoxStyle_textActivated(const QString &arg1);
 
 signals:
     void thresHold(int bs,double C);
