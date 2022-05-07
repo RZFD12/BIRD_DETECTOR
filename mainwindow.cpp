@@ -81,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent)
     QVector<cv::Mat> TMP=reader->templates(template_type::BIRD);
     tmpcase=new TemplateCase();
     tmpcase->set_template(TMP);
-    ui->gridLayout_3->addWidget(tmpcase);
+    ui->gridLayoutTemplates->addWidget(tmpcase);
     if(ImgGetLeft == nullptr)
     {
         ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
