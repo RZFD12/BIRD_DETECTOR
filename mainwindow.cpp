@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
     //map->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->gridLayout->addWidget(map);
+    ui->tabWidget->setTabText(0, "Cams");
+    ui->tabWidget->setTabText(1, "Map|Graph");
     this->canAddMarker = true;
     ui->lineEditRtspLeft->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
     ui->lineEditRtspRight->setText("rtsp://admin:qwerty1234@192.168.0.103:554/ISAPI/Streaming/Channels/101");
