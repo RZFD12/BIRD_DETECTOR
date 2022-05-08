@@ -61,7 +61,7 @@ void TemplateCase::set_template(QVector<cv::Mat> &templastes)
     QVector<cv::Mat>::iterator it;
     int posx=0;
     int posy=0;
-    int count=this->width()/60;
+    int count=this->width()/55;
     int iter=0;
     for(it=templastes.begin();it!=templastes.end();it++)
     {

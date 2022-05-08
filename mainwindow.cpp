@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     map = new QQuickWidget(this);
     map->setSource(QUrl("qrc:/main.qml"));
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
+    //map->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->gridLayout->addWidget(map);
     this->canAddMarker = true;
     ui->lineEditRtspLeft->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
@@ -544,10 +545,11 @@ void MainWindow::init3DGraph()
     QObject::connect(graph, &Q3DScatter::shadowQualityChanged, modifier,
                      &ScatterDataModifier::shadowQualityUpdatedByVisual);
     //ui->verticalLayout->addWidget(widget);
-    ui->gridLayout_2->addWidget(widget);
+    //widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->verticalLayout_9->addWidget(widget);
     //widget->resize(800,500);
-    widget->show();
     vLayout->setAlignment(Qt::AlignTop);
+    widget->show();  
 }
 
 void MainWindow::To3D()
