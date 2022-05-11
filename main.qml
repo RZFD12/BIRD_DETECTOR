@@ -20,18 +20,21 @@ Item {
             z: polygon.z + 1
             model: mymodel
             delegate: MapPolygon {
-                //radius: 100000
                 opacity: 0.5
                 border.width: 1
                 color: 'green'
-                transformOrigin: "Bottom" //map.fromCoordinate(QtPositioning.coordinate(model.coords.latitude, model.coords.longitude)) //QtPositioning.coordinate(model.coords.latitude, model.coords.longitude).to
+                transformOrigin: "Bottom"
                 rotation: model.angle
-                path: [
-                            { latitude: model.coords.latitude+0.002, longitude: model.coords.longitude-0.006 },
-                            { latitude: model.coords.latitude, longitude: model.coords.longitude },
-                            { latitude: model.coords.latitude+0.002, longitude: model.coords.longitude+0.006}
-                        ]
-
+                path: [{
+                        "latitude": model.coords.latitude + 0.002,
+                        "longitude": model.coords.longitude - 0.006
+                    }, {
+                        "latitude": model.coords.latitude,
+                        "longitude": model.coords.longitude
+                    }, {
+                        "latitude": model.coords.latitude + 0.002,
+                        "longitude": model.coords.longitude + 0.006
+                    }]
             }
         }
         MapPolygon {
@@ -48,7 +51,7 @@ Item {
         var path = polygon.path
         path[index] = coord
         polygon.path = path
-        map.center=QtPositioning.coordinate(baseLat,baseLon);
+        map.center = QtPositioning.coordinate(baseLat, baseLon)
     }
     function addMarker(baseLat, baseLon, angle) {
         var coord = QtPositioning.coordinate(baseLat, baseLon)
@@ -57,7 +60,7 @@ Item {
                            "angle": angle
                        })
         polygon.addCoordinate(coord)
-        map.center=QtPositioning.coordinate(baseLat,baseLon);
+        map.center = QtPositioning.coordinate(baseLat, baseLon)
     }
     function delMarker(baseLat, baseLon) {
         mymodel.clear()
@@ -65,11 +68,9 @@ Item {
         polygon.removeCoordinate(coord)
     }
 
-    function rotate(index,angle){
+    function rotate(index, angle) {
         mymodel.set(index, {
-                            "angle": angle
+                        "angle": angle
                     })
-
-
     }
 }

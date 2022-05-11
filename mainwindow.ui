@@ -421,7 +421,7 @@
         <item row="1" column="2" colspan="2">
          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0">
           <property name="rightMargin">
-           <number>0</number>
+           <number>8</number>
           </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayoutSlider">
