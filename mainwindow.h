@@ -54,7 +54,6 @@ public:
     ~MainWindow();
     friend CamScene;
 
-
 public slots:
     void loadImg();
     void loadImgLeft(QPixmap piximg);
@@ -99,11 +98,9 @@ private:
     float hiddenOpacity = 0.2;
     float defaultOpacity = 1.0;
     QMap<int, uint64> frameMap;
-
-
     void PixMapCut();
     void setTheme(QString themeName);
-
+    static int frame_counter;
 
 private slots:
     void on_toolButtonNext_clicked();

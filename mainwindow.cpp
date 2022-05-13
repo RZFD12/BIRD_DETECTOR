@@ -10,8 +10,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-int frame_counter = 0;
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -45,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
     opacityPlayer->setOpacity(this->hiddenOpacity);
     ui->horizontalSliderPlayer->setDisabled(true);
     ui->horizontalSliderPlayer->setGraphicsEffect(opacityPlayer);
-    //ui->horizontalSliderPlayer->setAutoFillBackground(true);
     ui->horizontalSliderPlayer->setMinimum (0);
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
@@ -53,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
     map = new QQuickWidget(this);
     map->setSource(QUrl("qrc:/main.qml"));
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
-    //map->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->gridLayout->addWidget(map);
     ui->tabWidget->setTabText(0, "Cams");
     ui->tabWidget->setTabText(1, "Map|Graph");
@@ -162,12 +158,10 @@ void MainWindow::PixMapCut()
 {
     QPixmap leftPix=leftCAM->getCurrentPixMap();
     QPixmap rightPix=rightCAM->getCurrentPixMap();
-    QMap<int,QVector<FRAME*>> ::iterator it;
-    QVector<FRAME*>::iterator itFrame;
-    it=leftframe.find(frame_counter);
+    auto it=leftframe.find(MainWindow::frame_counter);
     if(it!=leftframe.end())
     {
-        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
+        for(auto itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
         {
             QPixmap templ=leftPix.copy(
                        960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
@@ -178,10 +172,10 @@ void MainWindow::PixMapCut()
             templ.save("./template_images/"+name.toString()+".jpg","JPG");
         }
     }
-    it=rightframe.find(frame_counter);
+    it=rightframe.find(MainWindow::frame_counter);
     if(it!=rightframe.end())
     {
-        for(itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
+        for(auto itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
         {
             QPixmap templ=rightPix.copy(
                         960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
@@ -241,12 +235,12 @@ void MainWindow::on_toolButtonNext_clicked()
 {
     if(leftCAM->getFrame().length()>0)
     {
-        leftframe.insert(frame_counter,leftCAM->getFrame());
-        rightframe.insert(frame_counter,rightCAM->getFrame());
+        leftframe.insert(MainWindow::frame_counter,leftCAM->getFrame());
+        rightframe.insert(MainWindow::frame_counter,rightCAM->getFrame());
         To3D();
         PixMapCut();
     }
-    frame_counter++;
+    MainWindow::frame_counter++;
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::next);
     ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()+1);
@@ -273,11 +267,11 @@ void MainWindow::on_toolButtonPrev_clicked()
     filehandler->matRead(p,frame_state::previos);
     ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()-1);
     frame_num--;
-    frame_counter--;
-    for(int i=0;i<leftframe[frame_counter].length();++i)
+    MainWindow::frame_counter--;
+    for(int i=0;i<leftframe[MainWindow::frame_counter].length();++i)
     {
-        leftCAM->addItem(leftframe[frame_counter][i]);
-        rightCAM->addItem(rightframe[frame_counter][i]);
+        leftCAM->addItem(leftframe[MainWindow::frame_counter][i]);
+        rightCAM->addItem(rightframe[MainWindow::frame_counter][i]);
     }
 }
 
@@ -611,5 +605,5 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
     //qDebug()<<1080-value;
 }
 
-
+int MainWindow::frame_counter = 0;
 
