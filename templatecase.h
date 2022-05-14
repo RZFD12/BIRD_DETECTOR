@@ -40,16 +40,15 @@ class TemplateCase : public QWidget
     Q_OBJECT
 
 public:
-    explicit TemplateCase(QWidget *parent = nullptr);
+    explicit TemplateCase(QWidget* parent = nullptr);
     ~TemplateCase();
-    void set_template(QVector<cv::Mat> &templastes);
+    void set_template(QVector<cv::Mat>& templastes);
     QGridLayout layout;
-public:
     void labels_state(int num, tmp_state state);
-    QList<int> *includedtmp ();
+    QList<int>* includedtmp ();
 
 private:
-    Ui::TemplateCase *ui;
+    Ui::TemplateCase* ui;
     QList<int> IncludedTempNum;
 };
 

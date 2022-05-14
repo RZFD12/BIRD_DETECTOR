@@ -15,28 +15,28 @@ class ScatterDataModifier : public QObject
 {
     Q_OBJECT
 public:
-    explicit ScatterDataModifier(Q3DScatter *scatter);
+    explicit ScatterDataModifier(Q3DScatter* scatter);
     ~ScatterDataModifier();
     void addData();
     void changeStyle();
     void changePresetCamera();
     void changeLabelStyle();
-    void changeFont(const QFont &font);
+    void changeFont(const QFont& font);
     void changeFontSize(int fontsize);
     void setBackgroundEnabled(int enabled);
     void setGridEnabled(int enabled);
     void setSmoothDots(int smooth);
     void clear();
     void start();
-    void AddData(const QVector<QVector3D> &Vec3D, QStringList color);
+    void AddData(const QVector<QVector3D>& Vec3D, QStringList color);
 
-public Q_SLOTS:
+public slots:
     void changeStyle(int style);
     void changeTheme(int theme);
     void changeShadowQuality(int quality);
     void shadowQualityUpdatedByVisual(QAbstract3DGraph::ShadowQuality shadowQuality);
 
-Q_SIGNALS:
+signals:
     void backgroundEnabledChanged(bool enabled);
     void gridEnabledChanged(bool enabled);
     void shadowQualityChanged(int quality);
@@ -45,13 +45,14 @@ Q_SIGNALS:
 private:
     QVector3D randVector();
     QVector<QScatter3DSeries*> series_vector;
-    Q3DScatter *m_graph;
+    Q3DScatter* m_graph;
     int m_fontSize;
     QAbstract3DSeries::Mesh m_style;
     bool m_smooth;
     int m_itemCount;
     float m_curveDivider;
-    QScatterDataArray *dataArray;
+    QScatterDataArray* dataArray;
+
 };
 
 #endif

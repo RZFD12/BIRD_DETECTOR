@@ -26,20 +26,20 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class CamScene :public QGraphicsScene
+class CamScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    CamScene(camera cam, QWidget *parent = nullptr);
+    CamScene(camera cam, QWidget* parent = nullptr);
     QVector<FRAME*> getFrame();
     void clearFrames();    
     const QPixmap &getCurrentPixMap();
-    void setCurrentPixMap(const QPixmap &newCurrentPixMap);
+    void setCurrentPixMap(const QPixmap& newCurrentPixMap);
 
 private:
     camera current_camera;
     QVector<FRAME*> frames;
-    void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
     QPixmap currentPixMap;
 //    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
@@ -48,9 +48,8 @@ private:
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
     friend CamScene;
 
@@ -62,25 +61,24 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
-    CamScene *leftCAM;
-    CamScene *rightCAM;
-    QUdpSocket *leftsock=nullptr;
+    CamScene* leftCAM;
+    CamScene* rightCAM;
+    QUdpSocket* leftsock = nullptr;
     QPixmap p;
     QPixmap pixImg;
-    ImgData * ImgGetLeft=nullptr;
-    ImgData *ImgGetRight=nullptr;
-    QGraphicsPixmapItem *leftpix=nullptr;
-    QGraphicsPixmapItem *rightpix=nullptr;
-    FileHandler*filehandler=nullptr;
-    QTimer* frame_timer=nullptr;
-    QTimer* video_timer=nullptr;
-    QThread *lthread;
-    QThread *rthread;
-    QThread *file_handler_thread;
-    QQuickWidget * map;
-    ScatterDataModifier *modifier;
-    bool video_play=true;
-    int frame_num=0;
+    ImgData* ImgGetLeft = nullptr;
+    ImgData* ImgGetRight = nullptr;
+    QGraphicsPixmapItem* leftpix = nullptr;
+    QGraphicsPixmapItem* rightpix = nullptr;
+    FileHandler* filehandler = nullptr;
+    QTimer* frame_timer = nullptr;
+    QTimer* video_timer = nullptr;
+    QThread* lthread;
+    QThread* rthread;
+    QThread* file_handler_thread;
+    QQuickWidget* map;
+    ScatterDataModifier* modifier;
+    bool video_play=true;    
     double firstLat;
     double firstLon;
     double secondLat;
@@ -89,8 +87,8 @@ private:
     QMap<int,QVector<FRAME*>> leftframe;
     QMap<int,QVector<FRAME*>> rightframe;
     flatto3d converter;
-    TemplateCase *tmpcase;
-    template_reader *reader;
+    TemplateCase* tmpcase;
+    template_reader* reader;
     QGraphicsOpacityEffect* opacityPrev;
     QGraphicsOpacityEffect* opacityPlay;
     QGraphicsOpacityEffect* opacityNext;
@@ -101,13 +99,14 @@ private:
     void PixMapCut();
     void setTheme(QString themeName);
     static int frame_counter;
+    static int frame_num;
 
 private slots:
     void on_toolButtonNext_clicked();
     void on_toolButtonPlay_clicked();
     void on_toolButtonPrev_clicked();
-    void keyPressEvent(QKeyEvent *event);
-    void addMixmap(QByteArray &data);
+    void keyPressEvent(QKeyEvent* event);
+    void addMixmap(QByteArray& data);
 //    void on_lineEdit_editingFinished();
 //    void on_lineEdit_2_editingFinished();
     void on_horizontalSliderBlsize_valueChanged(int value);
@@ -124,10 +123,10 @@ private slots:
     void To3D();
     void on_doubleSpinBoxRange_valueChanged(double arg1);
     void on_doubleSpinBoxAngle_valueChanged(double arg1);
-    void on_comboBoxTheme_textActivated(const QString &arg1);
+    void on_comboBoxTheme_textActivated(const QString& arg1);
     void on_doubleSpinBoxBAngle_valueChanged(double arg1);
     void on_verticalSlider_valueChanged(int value);
-    void on_comboBoxStyle_textActivated(const QString &arg1);
+    void on_comboBoxStyle_textActivated(const QString& arg1);
 
 signals:
     void thresHold(int bs,double C);

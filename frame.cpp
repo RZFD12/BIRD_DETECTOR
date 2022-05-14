@@ -1,20 +1,16 @@
 #include "frame.h"
 
-FRAME::FRAME(int num, QObject *parent)
+FRAME::FRAME(int num, QObject* parent)
 {
-    this->number=num;
+    this->number = num;
     Q_UNUSED(parent);
-}
-FRAME::~FRAME()
-{
-
 }
 
 QRectF FRAME::boundingRect() const
 {
     return QRectF(-25,-25,50,50);
 }
-void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void FRAME::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     painter->setPen(QColor(255,255/number,255/number));
     painter->drawRoundedRect(-25,-25,50,50,10,10);
@@ -27,26 +23,25 @@ void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
-void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     this->setPos(mapToScene(event->pos()));
 }
-void FRAME::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void FRAME::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-
-    if (event->button() & Qt::RightButton)
+    if (event->button() == Qt::RightButton)
     {
         this->setCursor(QCursor(Qt::ClosedHandCursor));
     }
 }
 
-void FRAME::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void FRAME::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     this->setCursor(QCursor(Qt::ArrowCursor));
     Q_UNUSED(event);
 }
 
-int FRAME::getNumber() const
+const int& FRAME::getNumber() const
 {
     return number;
 }

@@ -10,7 +10,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
@@ -76,9 +76,9 @@ MainWindow::MainWindow(QWidget *parent)
     });
     init3DGraph();
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
-    reader=new template_reader();
-    QVector<cv::Mat> TMP=reader->templates(template_type::BIRD);
-    tmpcase=new TemplateCase();
+    reader = new template_reader();
+    auto TMP = reader->templates(template_type::BIRD);
+    tmpcase = new TemplateCase();
     tmpcase->set_template(TMP);
     ui->gridLayoutTemplates->addWidget(tmpcase);
     if(ImgGetLeft == nullptr)
@@ -156,33 +156,33 @@ void MainWindow::IndexingStatus(QPoint p)
 
 void MainWindow::PixMapCut()
 {
-    QPixmap leftPix=leftCAM->getCurrentPixMap();
-    QPixmap rightPix=rightCAM->getCurrentPixMap();
-    auto it=leftframe.find(MainWindow::frame_counter);
-    if(it!=leftframe.end())
-    {
-        for(auto itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
+    auto leftPix = leftCAM->getCurrentPixMap();
+    auto rightPix = rightCAM->getCurrentPixMap();
+    auto it = leftframe.find(MainWindow::frame_counter);
+    if(it != leftframe.end())
+    {       
+        for(const auto& itFrame : qAsConst(it.value()))
         {
-            QPixmap templ=leftPix.copy(
-                       960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
-                       540+(*itFrame)->pos().y()-(*itFrame)->boundingRect().height()/2,
-                        (*itFrame)->boundingRect().width(),
-                        (*itFrame)->boundingRect().height());
-            QUuid name=QUuid::createUuid();
+            auto templ = leftPix.copy(
+                       960+itFrame->pos().x()-itFrame->boundingRect().width()/2,
+                       540+itFrame->pos().y()-itFrame->boundingRect().height()/2,
+                        itFrame->boundingRect().width(),
+                        itFrame->boundingRect().height());
+            auto name = QUuid::createUuid();
             templ.save("./template_images/"+name.toString()+".jpg","JPG");
         }
     }
-    it=rightframe.find(MainWindow::frame_counter);
-    if(it!=rightframe.end())
+    it = rightframe.find(MainWindow::frame_counter);
+    if(it != rightframe.end())
     {
-        for(auto itFrame=it.value().begin();itFrame!=it.value().end();itFrame++)
+        for(const auto& itFrame : qAsConst(it.value()))
         {
-            QPixmap templ=rightPix.copy(
-                        960+(*itFrame)->pos().x()-(*itFrame)->boundingRect().width()/2,
-                        540+(*itFrame)->pos().y()-(*itFrame)->boundingRect().height()/2,
-                        (*itFrame)->boundingRect().width(),
-                        (*itFrame)->boundingRect().height());
-            QUuid name=QUuid::createUuid();
+            auto templ = rightPix.copy(
+                        960+itFrame->pos().x()-itFrame->boundingRect().width()/2,
+                        540+itFrame->pos().y()-itFrame->boundingRect().height()/2,
+                        itFrame->boundingRect().width(),
+                        itFrame->boundingRect().height());
+            auto name = QUuid::createUuid();
             templ.save("./template_images/"+name.toString()+".jpg","JPG");
         }
     }
@@ -190,50 +190,14 @@ void MainWindow::PixMapCut()
 
 void MainWindow::setTheme(QString themeName)
 {
-    QFile file(QString("./themes/") + themeName + QString(".qss"));
+    QFile file("./themes/" + themeName + ".qss");
     file.open(QFile::ReadOnly);
     qApp->setStyleSheet(QString::fromLatin1(file.readAll()));
 }
 
-//void MainWindow::on_lineEdit_editingFinished()// left
-//{
-//    if(ImgGetLeft == nullptr)
-//    {
-//        ImgGetLeft = new ImgData(1,ui->lineEdit->text().toStdString());
-//        ImgGetLeft->setFileHandler(this->filehandler);
-//        QThread *lthread = new QThread(this);
-//        ImgGetLeft->moveToThread(lthread);
-//        connect(ImgGetLeft,&ImgData::Image,this,&MainWindow::loadImgLeft);
-//        connect(this,&MainWindow::thresHold,ImgGetLeft,&ImgData::setThresHold);
-//        connect(this,&MainWindow::imgFilter,ImgGetLeft,&ImgData::imgFilter);
-//        connect(frame_timer,&QTimer::timeout,ImgGetLeft,&ImgData::Get);
-//        connect(ImgGetLeft,&ImgData::set_image_data,filehandler,&FileHandler::Save);
-//        connect(lthread,&QThread::started,ImgGetLeft,&ImgData::Start);
-//        lthread->start();
-//        frame_timer->start();
-//    }
-//}
-
-//void MainWindow::on_lineEdit_2_editingFinished() //right
-//{
-//    if(ImgGetRight == nullptr)
-//    {
-//        ImgGetRight = new ImgData(2,ui->lineEdit_2->text().toStdString());
-//        QThread *rthread = new QThread(this);
-//        ImgGetRight->moveToThread(rthread);
-//        connect(ImgGetRight,&ImgData::Image,this,&MainWindow::loadImgRight);
-//        connect(this,&MainWindow::thresHold,ImgGetRight,&ImgData::setThresHold);
-//        connect(this,&MainWindow::imgFilter,ImgGetRight,&ImgData::imgFilter);
-//        connect(frame_timer,&QTimer::timeout,ImgGetRight,&ImgData::Get);
-//        connect(ImgGetRight,&ImgData::set_image_data,filehandler,&FileHandler::Save);
-//        connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
-//        rthread->start();
-//    }
-//}
-
 void MainWindow::on_toolButtonNext_clicked()
 {
-    if(leftCAM->getFrame().length()>0)
+    if(leftCAM->getFrame().length() > 0)
     {
         leftframe.insert(MainWindow::frame_counter,leftCAM->getFrame());
         rightframe.insert(MainWindow::frame_counter,rightCAM->getFrame());
@@ -244,7 +208,7 @@ void MainWindow::on_toolButtonNext_clicked()
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::next);
     ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()+1);
-    frame_num++;
+    MainWindow::frame_num++;
 }
 
 void MainWindow::on_toolButtonPlay_clicked()
@@ -252,12 +216,12 @@ void MainWindow::on_toolButtonPlay_clicked()
     if(video_play)
     {
         video_timer->start();
-        video_play=false;
+        video_play = false;
     }
     else
     {
         video_timer->stop();
-        video_play=true;
+        video_play = true;
     }
 }
 
@@ -266,9 +230,9 @@ void MainWindow::on_toolButtonPrev_clicked()
     image_saving_protocol p;
     filehandler->matRead(p,frame_state::previos);
     ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()-1);
-    frame_num--;
+    MainWindow::frame_num--;
     MainWindow::frame_counter--;
-    for(int i=0;i<leftframe[MainWindow::frame_counter].length();++i)
+    for(size_t i = 0;i < static_cast<size_t>(leftframe[MainWindow::frame_counter].length());++i)
     {
         leftCAM->addItem(leftframe[MainWindow::frame_counter][i]);
         rightCAM->addItem(rightframe[MainWindow::frame_counter][i]);
@@ -283,8 +247,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::addMixmap(QByteArray &data)
 {
-    //QByteArray b2 = QByteArray::fromBase64(data);
-    QImage m = QImage::fromData(data);
+    auto m = QImage::fromData(data);
     p.fromImage(m);
     leftCAM->addPixmap(p);
     leftCAM->update();
@@ -302,17 +265,17 @@ void MainWindow::on_horizontalSliderC_valueChanged(int value) //c
 
 void MainWindow::imageFilter()
 {
-    QRadioButton *button=qobject_cast<QRadioButton*>(QObject::sender());
+    auto button = qobject_cast<QRadioButton*>(QObject::sender());
     if(button == ui->RGB) emit imgFilter(state::RGB);
     else if (button == ui->GRAY) emit imgFilter(state::Gray);
     else if (button == ui->THRESH) emit imgFilter(state::Threshold);
-    button=nullptr;
+    button = nullptr;
     delete button;
 }
 
 CamScene::CamScene(camera cam, QWidget *parent)
 {
-    this->current_camera=cam;
+    this->current_camera = cam;
     Q_UNUSED(parent);
 }
 
@@ -326,13 +289,13 @@ void CamScene::clearFrames()
     this->frames.clear();
 }
 
-void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    QList<QGraphicsItem*> itemlist = this->items();
-    bool item_under_mouse = true;
-    for(const auto it:qAsConst(itemlist))
+    auto itemlist = this->items();
+    auto item_under_mouse = true;
+    for(const auto it : qAsConst(itemlist))
     {
-        if(it->isUnderMouse() && it->data(1).toInt()==2)
+        if(it->isUnderMouse() && it->data(1).toInt() == 2)
         {
             item_under_mouse = false;
             break;
@@ -340,17 +303,16 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     if(event->button() == Qt::LeftButton && item_under_mouse)
     {
-        FRAME* F = new FRAME(frames.length()+1);
+        auto F = new FRAME(frames.length()+1);
         F->setData(1,2);
         F->setPos(event->scenePos().x(),event->scenePos().y());
         F->setZValue(0.2);
         this->addItem(F);
         this->frames.push_back(F);
-        //qDebug()<<event->scenePos();
     }
-    if(event->button()==Qt::RightButton)
+    if(event->button() == Qt::RightButton)
     {
-        for(int i=0;i<frames.length();i++)
+        for(size_t i = 0;i < static_cast<size_t>(frames.length());i++)
         {
             if(frames[i]->isUnderMouse())
             {
@@ -375,13 +337,13 @@ void CamScene::setCurrentPixMap(const QPixmap &newCurrentPixMap)
 
 void MainWindow::on_toolButtonSave_pressed()// save
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
+    auto fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
                                                   "./record",
                                                   tr("Vids (*.bin)"));
     if(!fileName.isEmpty())
     {
         ui->lineEditSave->setText(fileName);
-        filehandler->setFileName(fileName);
+        filehandler->setNameOfFile(fileName);
         ui->toolButtonPrev->setDisabled(true);
         opacityPrev->setOpacity(this->hiddenOpacity);
         ui->toolButtonPlay->setDisabled(true);
@@ -395,13 +357,13 @@ void MainWindow::on_toolButtonSave_pressed()// save
 
 void MainWindow::on_toolButtonOpen_pressed()// open
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+    auto fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                       "./record",
                                                       tr("Vids (*.bin)"));
     if(!fileName.isEmpty())
     {
         ui->lineEditOpen->setText(fileName);
-        filehandler->setFileName(fileName);
+        filehandler->setNameOfFile(fileName);
         ui->horizontalSliderPlayer->setMaximum((int)(filehandler->getFrameByteIndex().size()/2));
         ui->toolButtonPrev->setDisabled(false);
         opacityPrev->setOpacity(this->defaultOpacity);
@@ -487,8 +449,8 @@ void MainWindow::on_spinBoxRotRight_valueChanged(int arg1) //cam right
 
 void MainWindow::init3DGraph()
 {
-    Q3DScatter *graph = new Q3DScatter();
-    QWidget *container = QWidget::createWindowContainer(graph);
+    auto graph = new Q3DScatter;
+    auto container = QWidget::createWindowContainer(graph);
     if (!graph->hasContext())
     {
         QMessageBox msgBox;
@@ -496,22 +458,22 @@ void MainWindow::init3DGraph()
         msgBox.exec();
 
     }
-    QWidget *widget = new QWidget;
-    QHBoxLayout *hLayout = new QHBoxLayout(widget);
-    QVBoxLayout *vLayout = new QVBoxLayout();
+    auto widget = new QWidget;
+    auto hLayout = new QHBoxLayout(widget);
+    auto vLayout = new QVBoxLayout;
     hLayout->addWidget(container, 1);
     hLayout->addLayout(vLayout);
     widget->setWindowTitle(QStringLiteral("A Cosine Wave"));
-    QPushButton *labelButton = new QPushButton(widget);
+    auto labelButton = new QPushButton(widget);
     labelButton->setText(QStringLiteral("Change label style"));
-    QPushButton *cameraButton = new QPushButton(widget);
+    auto cameraButton = new QPushButton(widget);
     cameraButton->setText(QStringLiteral("Change camera preset"));
-    QPushButton *clearButton = new QPushButton(widget);
+    auto clearButton = new QPushButton(widget);
     clearButton->setText(QStringLiteral("Clear"));
-    QCheckBox *backgroundCheckBox = new QCheckBox(widget);
+    auto backgroundCheckBox = new QCheckBox(widget);
     backgroundCheckBox->setText(QStringLiteral("Show background"));
     backgroundCheckBox->setChecked(true);
-    QCheckBox *gridCheckBox = new QCheckBox(widget);
+    auto gridCheckBox = new QCheckBox(widget);
     gridCheckBox->setText(QStringLiteral("Show grid"));
     gridCheckBox->setChecked(true);
     vLayout->addWidget(labelButton, 0, Qt::AlignTop);
@@ -530,20 +492,13 @@ void MainWindow::init3DGraph()
                      &ScatterDataModifier::setBackgroundEnabled);
     QObject::connect(gridCheckBox, &QCheckBox::stateChanged, modifier,
                      &ScatterDataModifier::setGridEnabled);
-   // QObject::connect(smoothCheckBox, &QCheckBox::stateChanged, modifier,
-     //                &ScatterDataModifier::setSmoothDots);
     QObject::connect(modifier, &ScatterDataModifier::backgroundEnabledChanged,
                      backgroundCheckBox, &QCheckBox::setChecked);
     QObject::connect(modifier, &ScatterDataModifier::gridEnabledChanged,
                      gridCheckBox, &QCheckBox::setChecked);
-   // QObject::connect(itemStyleList, SIGNAL(currentIndexChanged(int)), modifier,
-       //              SLOT(changeStyle(int)));
     QObject::connect(graph, &Q3DScatter::shadowQualityChanged, modifier,
                      &ScatterDataModifier::shadowQualityUpdatedByVisual);
-    //ui->verticalLayout->addWidget(widget);
-    //widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->verticalLayout_9->addWidget(widget);
-    //widget->resize(800,500);
     vLayout->setAlignment(Qt::AlignTop);
     widget->show();  
 }
@@ -552,17 +507,13 @@ void MainWindow::To3D()
 {
     QVector<QPoint> R;
     QVector<QPoint> L;
-    for(int i=0;i<leftframe[frame_counter].length();i++)
+    for(size_t i = 0;i < static_cast<size_t>(leftframe[frame_counter].length());i++)
     {
         R.push_back(QPoint());
         L.push_back(QPoint());
-        //px.append(0-rightframe[frame_counter][i]->pos().x());
         R[i].setX(rightframe[frame_counter][i]->pos().x());
-        //py.append(0-rightframe[frame_counter][i]->pos().y());
         R[i].setY(0-rightframe[frame_counter][i]->pos().y());
-        //lx.append(0-leftframe[frame_counter][i]->pos().x());
         L[i].setX(leftframe[frame_counter][i]->pos().x());
-        //ly.append(0-leftframe[frame_counter][i]->pos().y());
         L[i].setY(0-leftframe[frame_counter][i]->pos().y());
     }
     converter.Start(R, L);
@@ -602,8 +553,9 @@ void MainWindow::on_doubleSpinBoxBAngle_valueChanged(double arg1)
 void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     emit image_cut(1080-value);
-    //qDebug()<<1080-value;
 }
 
 int MainWindow::frame_counter = 0;
+
+int MainWindow::frame_num = 0;
 

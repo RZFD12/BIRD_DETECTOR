@@ -28,29 +28,29 @@ class FileHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit FileHandler(QObject *parent = nullptr);
+    explicit FileHandler(QObject* parent = nullptr);
     bool Save(image_saving_protocol p);
     QMap<camera,image_saving_protocol> Read(int numFrames);
-    void setFileName(const QString &newFileName);
-    void matRead(image_saving_protocol &read_protocol, frame_state state);
+    void setNameOfFile(const QString& newFileName);
+    void matRead(image_saving_protocol& read_protocol, frame_state state);
     void Decode(std::vector<uint8_t> buff, int camera_id);
     void start();
-    const std::vector<uint64> &getFrameByteIndex() const;
+    const std::vector<uint64>& getFrameByteIndex() const;
 
 private:
     QString m_fileName;
     QFile m_file;
     QMap<camera,image_saving_protocol> m_images;
     QVector <image_saving_protocol> m_buff;
-    int m_b=qRegisterMetaType<image_saving_protocol>("image_saving_protocol");
+    int m_b = qRegisterMetaType<image_saving_protocol>("image_saving_protocol");
     int frameState=qRegisterMetaType<frame_state>("frame_state");
-    int position=0;
-    int current_size=0;
-    int frames_counter=0;
+    int position = 0;
+    int current_size = 0;
+    int frames_counter = 0;
     std::vector<uint64> FrameByteIndex;
     std::vector<std::vector<image_saving_protocol>> image_writing_buffer;
     std::vector<image_saving_protocol> current_stream_buffer;
-    void matWrite(const image_saving_protocol& saving_protocol,std::ofstream &fs);
+    void matWrite(const image_saving_protocol& saving_protocol,std::ofstream& fs);
     std::vector<uint64> Data_Indexing();
 
 signals:

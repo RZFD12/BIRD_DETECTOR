@@ -2,115 +2,84 @@
 #include <QtDebug>
 #include <QTime>
 
-ImgData::ImgData(int id, std::string url, QObject *parent) : QObject(parent)
+ImgData::ImgData(int id, std::string url, QObject* parent) : QObject(parent)
 {
     m_video_url = url;
-    cam_id=id;
+    cam_id = id;
 }
 
-ImgData::~ImgData() { }
-
-void CreateCenterMark(cv::Mat &frame)
+void CreateCenterMark(cv::Mat& frame)
 {
     cv::Point vertical1(960,0);
     cv::Point vertical2(960,1080);
     cv::Point horizontal1(0,540);
     cv::Point horizontal2(1920,540);
-    cv::line(frame,vertical1,vertical2,cv::Scalar(255,0,0)); // vertical
-    cv::line(frame,horizontal1,horizontal2,cv::Scalar(0,0,255)); // horizontal
+    cv::line(frame,vertical1,vertical2,cv::Scalar(255,0,0));
+    cv::line(frame,horizontal1,horizontal2,cv::Scalar(0,0,255));
 }
 
-cv::Mat ImgData::cropped(cv::Mat &frame)
+cv::Mat ImgData::cropped(cv::Mat& frame)
 {
     cv::Rect cutRect(0,0,1920,this->cut_pix);
-    cv::Mat CFFTM=frame(cutRect);
+    auto CFFTM = frame(cutRect);
     cv::line(frame,cv::Point(0,this->cut_pix), cv::Point(1920,this->cut_pix),cv::Scalar(0,255,0),2);
     return CFFTM;
 }
 
-QVector<cv::Mat> ImgData::matchingResult(cv::Mat &frame)
+QVector<cv::Mat> ImgData::matchingResult(cv::Mat& frame)
 {
     QVector<cv::Mat> resultVector;
-
-
-
-    for(int i=0;i<includednum->length();i++){
-
+    for(size_t i = 0;i < static_cast<size_t>(includednum->length());i++)
+    {
         int NumTmp=(*includednum)[i];
-
-        //qDebug()<< (*ImagesForTempMatch)[NumTmp].cols<<"stolb";
-
-        //qDebug()<< (*ImagesForTempMatch)[NumTmp].rows<<"rows";
-
         cv:: Mat result(frame.cols-(*ImagesForTempMatch)[NumTmp].cols+1,frame.rows-(*ImagesForTempMatch)[NumTmp].rows+1,0);
-
         cv::matchTemplate(frame,(*ImagesForTempMatch)[NumTmp],result,cv::TM_CCORR_NORMED);
-
-        //normalize( result, result, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
-
         resultVector.push_back(result);
     }
-
     return resultVector;
-
 }
 
-QVector<cv::Point> tresh(double treshold, const cv::Mat &result)
+QVector<cv::Point> tresh(double treshold, const cv::Mat& result)
 {
     QVector<cv::Point> vec;
-
     cv::Mat_<uchar> result1 = result;
-
-    for(int i=0;i<result1.rows;i++){
-
-        for(int j=0;j<result1.cols;j++){
-
-            //qDebug()<<result.at<float>(i,j);
-            if(result.at<float>(i,j)>treshold){
-
+    for(size_t i = 0;i < static_cast<size_t>(result1.rows);i++)
+    {
+        for(size_t j = 0;j < static_cast<size_t>(result1.cols);j++)
+        {
+            if(result.at<float>(i,j) > treshold)
+            {
                 vec.push_back(cv::Point(j,i));
             }
-
         }
-
     }
     return vec;
 }
 
-QVector<cv::Point> ImgData::ResultPoint( const QVector<cv::Mat> &matchicngResultframes)
+QVector<cv::Point> ImgData::ResultPoint(const QVector<cv::Mat>& matchicngResultframes)
 {
     QVector<cv::Point> objectpoints;
-
     double minVal, maxVal;
     cv::Point  minLoc, maxLoc, matchLoc;
-
-    for(int i=0;i<matchicngResultframes.length();i++){
-
+    for(size_t i = 0;i < static_cast<size_t>(matchicngResultframes.length());i++)
+    {
         cv::minMaxLoc(matchicngResultframes[i],&minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
-
-       // objectpoints=tresh(0.98,matchicngResultframes[i]);
-
-        if (maxVal>0){
-
-            qDebug()<<maxVal<<" "<<minVal;
-
+        if (maxVal > 0)
+        {
+            qDebug() << maxVal << " " << minVal;
             matchLoc = maxLoc;
-
             objectpoints.push_back(matchLoc);
-
         }
     }
-
     return objectpoints;
 }
 
-void ImgData::matchrectangle(QVector<cv::Point> &points, cv::Mat frame)
+void ImgData::matchrectangle(QVector<cv::Point>& points, cv::Mat frame)
 {
-    for(int i=0;i<points.length();i++){
-
+    for(size_t i = 0;i < static_cast<size_t>(points.length());i++)
+    {
         cv::rectangle(frame, points[i], cv::Point( points[i].x+50 , points[i].y+50 ), CV_RGB(255, 255, 255),3);
     }
-
 }
 
 void ImgData::Get()
@@ -118,21 +87,16 @@ void ImgData::Get()
     cv::Mat frame;
     if(m_video.isOpened())
     {
-        m_video>>frame;
+        m_video >> frame;
         if(!frame.empty())
         {
             switch(m_FrameFilter)
             {
                 case RGB:{
-
-                    //bitwise_not(frame,frame);
-
                     CreateCenterMark(frame);
-
-                    cv::Mat cropp=cropped(frame); //cutting
-                    QVector<cv::Point> points=ResultPoint(matchingResult(cropp));
+                    auto cropp = cropped(frame);
+                    auto points = ResultPoint(matchingResult(cropp));
                     matchrectangle(points,frame);
-
                     p.frame = frame;
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_RGB888);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
@@ -142,11 +106,9 @@ void ImgData::Get()
                     cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
                     bitwise_not(frame,frame);
                     CreateCenterMark(frame);
-
-                    cv::Mat cropp=cropped(frame); // cutting
-                    QVector<cv::Point> points=ResultPoint(matchingResult(cropp));
+                    auto cropp = cropped(frame); // cutting
+                    auto points = ResultPoint(matchingResult(cropp));
                     matchrectangle(points,frame);
-
                     p.frame = frame;
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
@@ -155,14 +117,11 @@ void ImgData::Get()
                 case Threshold:{
                     cvtColor(frame,frame,cv::COLOR_BGR2GRAY);
                     adaptiveThreshold(frame,frame,255,cv::ADAPTIVE_THRESH_MEAN_C,cv::THRESH_BINARY,m_block_size,m_C);
-
                     bitwise_not(frame,frame);
                     CreateCenterMark(frame);
-
-                    cv::Mat cropp=cropped(frame); //cutting
-                    QVector<cv::Point> points=ResultPoint(matchingResult(cropp));
+                    auto cropp = cropped(frame); //cutting
+                    auto points = ResultPoint(matchingResult(cropp));
                     matchrectangle(points,frame);
-
                     p.frame = frame;
                     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
                     emit Image(QPixmap::fromImage(qimg.rgbSwapped()));
@@ -174,23 +133,23 @@ void ImgData::Get()
             (std::chrono::system_clock::now().time_since_epoch()).count();
             emit set_image_data(p);
         }
-        else{qDebug()<<"empty";}
+        else{qDebug() << "empty";}
     }
 }
 
 void ImgData::img_cut(int pix_pos)
 {
-    this->cut_pix=pix_pos;
+    this->cut_pix = pix_pos;
 }
 
-void ImgData::SetIncludedNumList(QList<int> *lst)
+void ImgData::SetIncludedNumList(QList<int>* lst)
 {
-    includednum=lst;
+    includednum = lst;
 }
 
-void ImgData::SetTemplatesImages(QVector<cv::Mat> *vec)
+void ImgData::SetTemplatesImages(QVector<cv::Mat>* vec)
 {
-    ImagesForTempMatch=vec;
+    ImagesForTempMatch = vec;
 }
 
 void ImgData::setThresHold(int bs, double C)
@@ -207,16 +166,10 @@ void ImgData::imgFilter(state filter)
 
 void ImgData::Start()
 {
-   // QTimer * timer = new QTimer(this);
-   // connect(timer,&QTimer::timeout,this,&ImgData::Get);
-   // timer->setInterval(100);
-   // timer->start();
     m_video.open(m_video_url);
 }
 
-void ImgData::setFileHandler(FileHandler *f)
+void ImgData::setFileHandler(FileHandler* f)
 {
-//    this->filehandler = f;
-//    this->filehandler->moveToThread(this->thread());
     Q_UNUSED(f);
 }

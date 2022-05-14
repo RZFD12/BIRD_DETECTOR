@@ -12,11 +12,10 @@
 
 using namespace QtDataVisualization;
 
-//#define RANDOM_SCATTER // Uncomment this to switch to random scatter
 const int lowerNumberOfItems = 900;
 const float lowerCurveDivider = 0.75f;
 
-ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
+ScatterDataModifier::ScatterDataModifier(Q3DScatter* scatter)
     :m_graph(scatter),
      m_fontSize(40.0f),
      m_style(QAbstract3DSeries::MeshBevelCube),
@@ -25,15 +24,15 @@ ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
      m_curveDivider(lowerCurveDivider)
 {
     m_graph->activeTheme()->setType(Q3DTheme::ThemeStoneMoss);
-    QFont font = m_graph->activeTheme()->font();
+    auto font = m_graph->activeTheme()->font();
     font.setPointSize(m_fontSize);
     m_graph->activeTheme()->setFont(font);
     m_graph->setShadowQuality(QAbstract3DGraph::ShadowQualitySoftLow);
     m_graph->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetIsometricLeft);
     m_graph->setAspectRatio(1.0);
     m_graph->setHorizontalAspectRatio(1.0);
-    QScatterDataProxy *proxy = new QScatterDataProxy;
-    QScatter3DSeries *series = new QScatter3DSeries(proxy);
+    auto proxy = new QScatterDataProxy;
+    auto series = new QScatter3DSeries(proxy);
     series->setItemLabelFormat(QStringLiteral("@xTitle: @xLabel @yTitle: @yLabel @zTitle: @zLabel"));
     series->setMeshSmooth(m_smooth);
     m_graph->addSeries(series);
@@ -51,17 +50,11 @@ ScatterDataModifier::~ScatterDataModifier()
 void ScatterDataModifier::addData()
 {
     // Configure the axes according to the data
-    QScatterDataItem *ptrToDataArray = &dataArray->first();
-#ifdef RANDOM_SCATTER
-    for (int i = 0; i < m_itemCount; i++) {
-        ptrToDataArray->setPosition(randVector());
-        ptrToDataArray++;
-    }
-#else
-    float limit = qSqrt(m_itemCount) / 2.0f;
-    for (float i = -limit; i < limit;i++)
+    QScatterDataItem* ptrToDataArray = &dataArray->first();
+    auto limit = static_cast<float>(qSqrt(m_itemCount) / 2.0f);
+    for (auto i = -limit; i < limit;i++)
     {
-        for (float j = -limit; j < limit; j++)
+        for (auto j = -limit; j < limit; j++)
         {
             ptrToDataArray->setPosition(QVector3D(i + 0.5f,
                                                   qSin(qDegreesToRadians((i * j) / m_curveDivider)),
@@ -69,22 +62,21 @@ void ScatterDataModifier::addData()
             ptrToDataArray++;
         }
     }
-#endif
     m_graph->seriesList().at(0)->dataProxy()->resetArray(dataArray);
 }
 
-void ScatterDataModifier::AddData(const QVector<QVector3D> &Vec3D, QStringList color)
+void ScatterDataModifier::AddData(const QVector<QVector3D>& Vec3D, QStringList color)
 {
     //берем каждый 10 элемент
-    int size=m_graph->seriesList().length();    
+    auto size = m_graph->seriesList().length();
     //series->setBaseColor(color.at (series_vector.length()));    
     qDebug()<<size<<" size of data";
-    for(int i=0;i<Vec3D.length();i++)
+    for(size_t i = 0;i < static_cast<size_t>(Vec3D.length());i++)
     {
-        QScatter3DSeries * series=new QScatter3DSeries();
+        auto series = new QScatter3DSeries();
         series->setItemSize(0.15f);
         series->setBaseColor(color.at(i));
-        QScatterDataItem* item3D=new QScatterDataItem;        
+        auto item3D = new QScatterDataItem;
         item3D->setX(Vec3D[i].x());
         item3D->setY(Vec3D[i].z());
         item3D->setZ(Vec3D[i].y());
@@ -96,7 +88,7 @@ void ScatterDataModifier::AddData(const QVector<QVector3D> &Vec3D, QStringList c
 
 void ScatterDataModifier::changeStyle(int style)
 {
-    QComboBox *comboBox = qobject_cast<QComboBox *>(sender());
+    auto comboBox = qobject_cast<QComboBox*>(sender());
     if (comboBox)
     {
         m_style = QAbstract3DSeries::Mesh(comboBox->itemData(style).toInt());
@@ -107,13 +99,13 @@ void ScatterDataModifier::changeStyle(int style)
 void ScatterDataModifier::setSmoothDots(int smooth)
 {
     m_smooth = bool(smooth);
-    QScatter3DSeries *series = m_graph->seriesList().at(0);
+    auto series = m_graph->seriesList().at(0);
     series->setMeshSmooth(m_smooth);
 }
 
 void ScatterDataModifier::changeTheme(int theme)
 {
-    Q3DTheme *currentTheme = m_graph->activeTheme();
+    auto currentTheme = m_graph->activeTheme();
     currentTheme->setType(Q3DTheme::Theme(theme));
     emit backgroundEnabledChanged(currentTheme->isBackgroundEnabled());
     emit gridEnabledChanged(currentTheme->isGridEnabled());
@@ -134,20 +126,20 @@ void ScatterDataModifier::changeLabelStyle()
 
 void ScatterDataModifier::changeFont(const QFont &font)
 {
-    QFont newFont = font;
+    auto newFont = font;
     newFont.setPointSizeF(m_fontSize);
     m_graph->activeTheme()->setFont(newFont);
 }
 
 void ScatterDataModifier::shadowQualityUpdatedByVisual(QAbstract3DGraph::ShadowQuality sq)
 {
-    int quality = int(sq);
+    auto quality = static_cast<int>(sq);
     emit shadowQualityChanged(quality); // connected to a checkbox in main.cpp
 }
 
 void ScatterDataModifier::changeShadowQuality(int quality)
 {
-    QAbstract3DGraph::ShadowQuality sq = QAbstract3DGraph::ShadowQuality(quality);
+    auto sq = QAbstract3DGraph::ShadowQuality(quality);
     m_graph->setShadowQuality(sq);
 }
 
@@ -164,7 +156,7 @@ void ScatterDataModifier::setGridEnabled(int enabled)
 void ScatterDataModifier::clear()
 {
 
-    for(int i=0; i< series_vector.length();i++)
+    for(size_t i = 0; i < static_cast<size_t>(series_vector.length());i++)
     {
         m_graph->removeSeries(series_vector[i]);
     }

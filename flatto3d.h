@@ -11,24 +11,21 @@ class flatto3d : public QObject
 public:
     explicit flatto3d(QObject *parent = nullptr);
     void Start(QVector<QPoint> r, QVector<QPoint> l);
-    float getRangeCam() const;
+    const float& getRangeCam() const;
     void setRangeCam(float newRangeCam);
-    float getAngle() const;
+    const float& getAngle() const;
     void setAngle(float newAngle);
-    float getTetaxprav() const;
+    const float& getTetaxprav() const;
     void setTetaxprav(float newTetaxprav);
-    float getTetayprav() const;
+    const float& getTetayprav() const;
     void setTetayprav(float newTetayprav);
-    float getTetaxlev() const;
+    const float& getTetaxlev() const;
     void setTetaxlev(float newTetaxlev);
-    float getTetaylev() const;
+    const float& getTetaylev() const;
     void setTetaylev(float newTetaylev);
-//    const QVector<float> &getX() const;
-//    const QVector<float> &getY() const;
-//    const QVector<float> &getH() const;
-    const QVector<QVector3D> &getVec3D() const;
+    const QVector<QVector3D>& getVec3D() const;
     void Clear();
-    float getBtwangle() const;
+    const float &getBtwangle() const;
     void setBtwangle(float newBtwangle);
 
 private:

@@ -8,22 +8,20 @@
 #include <QDebug>
 #include <QCursor>
 
-class FRAME:public QObject,public QGraphicsItem
+class FRAME: public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 public:
-    explicit FRAME(int num,QObject *parent = 0);
-    ~FRAME();
-    int getNumber() const;
+    explicit FRAME(int num, QObject* parent = 0);
+    const int& getNumber() const;
     QRectF boundingRect() const;
 
 private:
-
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-    void mousePressEvent(QGraphicsSceneMouseEvent *event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* widget);
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void setBrush();
     int number;
 };
