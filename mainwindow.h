@@ -41,8 +41,6 @@ private:
     QVector<FRAME*> frames;
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     QPixmap currentPixMap;
-//    void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-//    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
 
 class MainWindow : public QMainWindow
@@ -107,8 +105,6 @@ private slots:
     void on_toolButtonPrev_clicked();
     void keyPressEvent(QKeyEvent* event);
     void addMixmap(QByteArray& data);
-//    void on_lineEdit_editingFinished();
-//    void on_lineEdit_2_editingFinished();
     void on_horizontalSliderBlsize_valueChanged(int value);
     void on_horizontalSliderC_valueChanged(int value);
     void imageFilter();

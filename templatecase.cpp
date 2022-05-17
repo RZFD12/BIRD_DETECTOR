@@ -58,12 +58,12 @@ void TemplateCase::set_template(QVector<cv::Mat> &templastes)
 {
     int posx = 0;
     int posy = 0;
-    auto count = static_cast<int>(this->width()/55);
     int iter = 0;
+    auto count = static_cast<int>(this->width()/55); 
     for(const auto& it : templastes)
     {
-        if(posx > count){posx = 0;posy++;}
-        myLabel* label = new myLabel(it,iter,this);
+        if(posx > count){posx = 0; posy++;}
+        auto label = new myLabel(it,iter,this);
         connect(label,&myLabel::MyState,this,&TemplateCase::labels_state);
         label->setFixedSize(55,55);
         layout.addWidget(label,posy,posx);
@@ -75,7 +75,7 @@ void TemplateCase::set_template(QVector<cv::Mat> &templastes)
 int element_position(QList<int>& lst, int num)
 {
     int position = 0;
-    for(size_t i = 0;i < static_cast<size_t>(lst.length());++i)
+    for(auto i = 0; i < lst.length(); ++i)
     {
         if(lst[i] == num)
         {
@@ -102,11 +102,6 @@ void TemplateCase::labels_state(int num, tmp_state state)
         auto position = element_position(IncludedTempNum,num);
         IncludedTempNum.removeOne(position);
     }
-
-    // надо законектить эту штуку с имгдата шобы шаблон значит убираешь и корреляция хоба говорит досвидули
-    // отправка указателя на шото там
-
-
 }
 
 QList<int>* TemplateCase::includedtmp()

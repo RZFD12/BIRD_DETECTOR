@@ -232,7 +232,7 @@ void MainWindow::on_toolButtonPrev_clicked()
     ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()-1);
     MainWindow::frame_num--;
     MainWindow::frame_counter--;
-    for(size_t i = 0;i < static_cast<size_t>(leftframe[MainWindow::frame_counter].length());++i)
+    for(auto i = 0; i < leftframe[MainWindow::frame_counter].length(); ++i)
     {
         leftCAM->addItem(leftframe[MainWindow::frame_counter][i]);
         rightCAM->addItem(rightframe[MainWindow::frame_counter][i]);
@@ -273,13 +273,13 @@ void MainWindow::imageFilter()
     delete button;
 }
 
-CamScene::CamScene(camera cam, QWidget *parent)
+CamScene::CamScene(camera cam, QWidget* parent)
 {
     this->current_camera = cam;
     Q_UNUSED(parent);
 }
 
-QVector<FRAME *> CamScene::getFrame()
+QVector<FRAME*> CamScene::getFrame()
 {
     return frames;
 }
@@ -293,7 +293,7 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     auto itemlist = this->items();
     auto item_under_mouse = true;
-    for(const auto it : qAsConst(itemlist))
+    for(const auto& it : qAsConst(itemlist))
     {
         if(it->isUnderMouse() && it->data(1).toInt() == 2)
         {
@@ -312,7 +312,7 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
     if(event->button() == Qt::RightButton)
     {
-        for(size_t i = 0;i < static_cast<size_t>(frames.length());i++)
+        for(auto i = 0; i < frames.length(); i++)
         {
             if(frames[i]->isUnderMouse())
             {
@@ -507,7 +507,7 @@ void MainWindow::To3D()
 {
     QVector<QPoint> R;
     QVector<QPoint> L;
-    for(size_t i = 0;i < static_cast<size_t>(leftframe[frame_counter].length());i++)
+    for(auto i = 0; i < leftframe[frame_counter].length(); i++)
     {
         R.push_back(QPoint());
         L.push_back(QPoint());

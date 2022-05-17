@@ -19,21 +19,23 @@ class myLabel : public QLabel
 {
     Q_OBJECT
 public:
-    myLabel(cv::Mat frame, int pos, QWidget *parent = nullptr);
+    myLabel(cv::Mat frame, int pos, QWidget* parent = nullptr);
     ~myLabel(){}
-    QCheckBox *box;
-    QVBoxLayout *Vbox;
+    QCheckBox* box;
+    QVBoxLayout* Vbox;
     int position;
+
 signals:
     void clicked();
-    void MyState(int pos,tmp_state st);
+    void MyState(int pos, tmp_state st);
+
 public slots:
     void slotClicked();
     void unclecked();
-protected:
-    void mousePressEvent (QMouseEvent *event) ;
-};
 
+protected:
+    void mousePressEvent (QMouseEvent* event) ;
+};
 
 class TemplateCase : public QWidget
 {

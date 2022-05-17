@@ -39,12 +39,12 @@ bool FileHandler::Save(image_saving_protocol p)
        current_stream_buffer.clear();
        current_stream_buffer.shrink_to_fit();
     }
-    if (image_writing_buffer.size()>199)
+    if (image_writing_buffer.size() > 199)
     {
-        std::ofstream FILE_INPUT(m_fileName.toStdString(),std::ios::binary | std::ios::app);
+        std::ofstream FILE_INPUT(m_fileName.toStdString(), std::ios::binary | std::ios::app);
         if(FILE_INPUT.is_open())
         {
-            for(size_t i = 0;i < image_writing_buffer.size();++i)
+            for(size_t i = 0; i < image_writing_buffer.size(); ++i)
             {
                 ++frames_counter;
                 qDebug() << frames_counter;
@@ -52,13 +52,13 @@ bool FileHandler::Save(image_saving_protocol p)
                 image_writing_buffer[i][1].NUMBER_OF_FRAMES = frames_counter;
                 if(image_writing_buffer[i][0].CAMERA_ID == 1)
                 {
-                    matWrite(image_writing_buffer[i][0],FILE_INPUT);
-                    matWrite(image_writing_buffer[i][1],FILE_INPUT);
+                    matWrite(image_writing_buffer[i][0], FILE_INPUT);
+                    matWrite(image_writing_buffer[i][1], FILE_INPUT);
                 }
                 else
                 {
-                    matWrite(image_writing_buffer[i][1],FILE_INPUT);
-                    matWrite(image_writing_buffer[i][0],FILE_INPUT);
+                    matWrite(image_writing_buffer[i][1], FILE_INPUT);
+                    matWrite(image_writing_buffer[i][0], FILE_INPUT);
                 }
             }
             FILE_INPUT.close();

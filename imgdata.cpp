@@ -29,7 +29,7 @@ cv::Mat ImgData::cropped(cv::Mat& frame)
 QVector<cv::Mat> ImgData::matchingResult(cv::Mat& frame)
 {
     QVector<cv::Mat> resultVector;
-    for(size_t i = 0;i < static_cast<size_t>(includednum->length());i++)
+    for(auto i = 0; i < includednum->length(); i++)
     {
         int NumTmp=(*includednum)[i];
         cv:: Mat result(frame.cols-(*ImagesForTempMatch)[NumTmp].cols+1,frame.rows-(*ImagesForTempMatch)[NumTmp].rows+1,0);
@@ -43,9 +43,9 @@ QVector<cv::Point> tresh(double treshold, const cv::Mat& result)
 {
     QVector<cv::Point> vec;
     cv::Mat_<uchar> result1 = result;
-    for(size_t i = 0;i < static_cast<size_t>(result1.rows);i++)
+    for(auto i = 0; i < result1.rows; i++)
     {
-        for(size_t j = 0;j < static_cast<size_t>(result1.cols);j++)
+        for(auto j = 0; j < result1.cols; j++)
         {
             if(result.at<float>(i,j) > treshold)
             {
@@ -61,7 +61,7 @@ QVector<cv::Point> ImgData::ResultPoint(const QVector<cv::Mat>& matchicngResultf
     QVector<cv::Point> objectpoints;
     double minVal, maxVal;
     cv::Point  minLoc, maxLoc, matchLoc;
-    for(size_t i = 0;i < static_cast<size_t>(matchicngResultframes.length());i++)
+    for(auto i = 0; i < matchicngResultframes.length(); i++)
     {
         cv::minMaxLoc(matchicngResultframes[i],&minVal, &maxVal, &minLoc, &maxLoc, cv::Mat());
         if (maxVal > 0)
@@ -76,7 +76,7 @@ QVector<cv::Point> ImgData::ResultPoint(const QVector<cv::Mat>& matchicngResultf
 
 void ImgData::matchrectangle(QVector<cv::Point>& points, cv::Mat frame)
 {
-    for(size_t i = 0;i < static_cast<size_t>(points.length());i++)
+    for(auto i = 0; i < points.length(); i++)
     {
         cv::rectangle(frame, points[i], cv::Point( points[i].x+50 , points[i].y+50 ), CV_RGB(255, 255, 255),3);
     }

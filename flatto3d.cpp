@@ -13,14 +13,14 @@ flatto3d::flatto3d(QObject* parent)
 
 void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
 {
-    for (size_t i = 0;i < static_cast<size_t>(r.length());i++)
+    for (auto i = 0; i < r.length(); i++)
     {
         this->vec3D.push_back(QVector3D());
         this->alphaprav.append(abs((r[i].x())*this->tetaxprav));
         this->bettaprav.append((r[i].y())*this->tetayprav*2*pi/360);
-        this->alphalev.append(abs((l[i]. x())*this->tetaxlev));
-        this->bettalev.append((l[i]. y())*this->tetaylev*2*pi/360);
-        if (r[i].x() <=0)
+        this->alphalev.append(abs((l[i].x())*this->tetaxlev));
+        this->bettalev.append((l[i].y())*this->tetaylev*2*pi/360);
+        if (r[i].x() <= 0)
         {
             this->alpha1.append((this->btwangle-this->alphaprav[i])*2*pi/360);
         }

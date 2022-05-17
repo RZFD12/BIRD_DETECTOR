@@ -71,7 +71,7 @@ void ScatterDataModifier::AddData(const QVector<QVector3D>& Vec3D, QStringList c
     auto size = m_graph->seriesList().length();
     //series->setBaseColor(color.at (series_vector.length()));    
     qDebug()<<size<<" size of data";
-    for(size_t i = 0;i < static_cast<size_t>(Vec3D.length());i++)
+    for(auto i = 0; i < Vec3D.length(); i++)
     {
         auto series = new QScatter3DSeries();
         series->setItemSize(0.15f);
@@ -124,7 +124,7 @@ void ScatterDataModifier::changeLabelStyle()
     m_graph->activeTheme()->setLabelBackgroundEnabled(!m_graph->activeTheme()->isLabelBackgroundEnabled());
 }
 
-void ScatterDataModifier::changeFont(const QFont &font)
+void ScatterDataModifier::changeFont(const QFont& font)
 {
     auto newFont = font;
     newFont.setPointSizeF(m_fontSize);
@@ -156,7 +156,7 @@ void ScatterDataModifier::setGridEnabled(int enabled)
 void ScatterDataModifier::clear()
 {
 
-    for(size_t i = 0; i < static_cast<size_t>(series_vector.length());i++)
+    for(auto i = 0; i < series_vector.length(); i++)
     {
         m_graph->removeSeries(series_vector[i]);
     }
