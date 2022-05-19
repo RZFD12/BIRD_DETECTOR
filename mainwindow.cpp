@@ -161,7 +161,7 @@ void MainWindow::PixMapCut()
     auto it = leftframe.find(MainWindow::frame_counter);
     if(it != leftframe.end())
     {       
-        for(const auto& itFrame : qAsConst(it.value()))
+        for(auto itFrame : it.value())
         {
             auto templ = leftPix.copy(
                        960+itFrame->pos().x()-itFrame->boundingRect().width()/2,
@@ -175,7 +175,7 @@ void MainWindow::PixMapCut()
     it = rightframe.find(MainWindow::frame_counter);
     if(it != rightframe.end())
     {
-        for(const auto& itFrame : qAsConst(it.value()))
+        for(auto itFrame : it.value())
         {
             auto templ = rightPix.copy(
                         960+itFrame->pos().x()-itFrame->boundingRect().width()/2,
@@ -293,7 +293,7 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     auto itemlist = this->items();
     auto item_under_mouse = true;
-    for(const auto& it : qAsConst(itemlist))
+    for(auto it : itemlist)
     {
         if(it->isUnderMouse() && it->data(1).toInt() == 2)
         {
