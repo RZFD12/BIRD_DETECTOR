@@ -31,7 +31,7 @@ QVector<cv::Mat> ImgData::matchingResult(cv::Mat& frame)
     QVector<cv::Mat> resultVector;
     for(auto i = 0; i < includednum->length(); i++)
     {
-        int NumTmp=(*includednum)[i];
+        auto NumTmp = (*includednum)[i];
         cv:: Mat result(frame.cols-(*ImagesForTempMatch)[NumTmp].cols+1,frame.rows-(*ImagesForTempMatch)[NumTmp].rows+1,0);
         cv::matchTemplate(frame,(*ImagesForTempMatch)[NumTmp],result,cv::TM_CCORR_NORMED);
         resultVector.push_back(result);
@@ -78,7 +78,7 @@ void ImgData::matchrectangle(QVector<cv::Point>& points, cv::Mat frame)
 {
     for(auto i = 0; i < points.length(); i++)
     {
-        cv::rectangle(frame, points[i], cv::Point( points[i].x+50 , points[i].y+50 ), CV_RGB(255, 255, 255),3);
+        cv::rectangle(frame, points[i], cv::Point( points[i].x+50 , points[i].y+50 ), CV_RGB(255, 255, 255), 3);
     }
 }
 

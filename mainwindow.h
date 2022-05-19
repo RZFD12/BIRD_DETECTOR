@@ -96,8 +96,8 @@ private:
     QMap<int, uint64> frameMap;
     void PixMapCut();
     void setTheme(QString themeName);
-    static int frame_counter;
-    static int frame_num;
+    inline static int frame_counter = 0;
+    inline static int frame_num = 0;
 
 private slots:
     void on_toolButtonNext_clicked();

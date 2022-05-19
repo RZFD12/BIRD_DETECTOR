@@ -554,8 +554,3 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     emit image_cut(1080-value);
 }
-
-int MainWindow::frame_counter = 0;
-
-int MainWindow::frame_num = 0;
-
