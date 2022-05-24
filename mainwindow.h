@@ -124,6 +124,8 @@ private slots:
     void on_verticalSlider_valueChanged(int value);
     void on_comboBoxStyle_textActivated(const QString& arg1);
 
+    void on_dial_valueChanged(int value);
+
 signals:
     void thresHold(int bs,double C);
     void imgFilter(state filter);

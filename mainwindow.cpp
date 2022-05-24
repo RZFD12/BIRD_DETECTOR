@@ -65,9 +65,9 @@ MainWindow::MainWindow(QWidget* parent)
     connect(filehandler,&FileHandler::readImageleft,this,&MainWindow::loadImgLeft);
     connect(filehandler,&FileHandler::readImageRight,this,&MainWindow::loadImgRight);
     frame_timer=new QTimer();
-    frame_timer->setInterval(250);
+    frame_timer->setInterval(100);
     video_timer=new QTimer();
-    video_timer->setInterval(250);
+    video_timer->setInterval(100);
     connect(video_timer,&QTimer::timeout,this,[this]()
     {
         image_saving_protocol p;
@@ -554,3 +554,11 @@ void MainWindow::on_verticalSlider_valueChanged(int value)
 {
     emit image_cut(1080-value);
 }
+
+void MainWindow::on_dial_valueChanged(int value)
+{
+    frame_timer->setInterval(1000/value);
+    video_timer->setInterval(1000/value);
+    ui->label_4->setText(QString::number(value));
+}
+
