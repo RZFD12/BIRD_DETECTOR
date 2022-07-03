@@ -13,7 +13,7 @@ flatto3d::flatto3d(QObject* parent)
 
 void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
 {
-    for (auto i = 0; i < r.length(); i++)
+    for (int i = 0; i < r.length(); i++)
     {
         this->vec3D.push_back(QVector3D());
         this->alphaprav.append(abs((r[i].x())*this->tetaxprav));

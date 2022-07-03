@@ -12,14 +12,15 @@ QRectF FRAME::boundingRect() const
 }
 void FRAME::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
-    painter->setPen(QColor(255,255/number,255/number));
+    painter->setPen(QColor::colorNames().at(number));
     painter->drawRoundedRect(-25,-25,50,50,10,10);
     painter->drawText(-10,-10,QString::number(this->number));
     QPen* pen = new QPen;
-    pen->setColor(QColor(255,255/number,255/number));
+    pen->setColor(QColor::colorNames().at(number));
     pen->setWidth(3);
     painter->setPen(*pen);
     painter->drawPoint(0,0);
+    delete pen;
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }

@@ -65,17 +65,17 @@ void ScatterDataModifier::addData()
     m_graph->seriesList().at(0)->dataProxy()->resetArray(dataArray);
 }
 
-void ScatterDataModifier::AddData(const QVector<QVector3D>& Vec3D, QStringList color)
+void ScatterDataModifier::AddData(const QVector<QVector3D>& Vec3D)
 {
     //берем каждый 10 элемент
     auto size = m_graph->seriesList().length();
-    //series->setBaseColor(color.at (series_vector.length()));    
-    qDebug()<<size<<" size of data";
-    for(auto i = 0; i < Vec3D.length(); i++)
+    //series->setBaseColor(color.at (series_vector.length()));
+    qDebug() << size << " size of data";
+    for(int i = 0; i < Vec3D.length(); i++)
     {
         auto series = new QScatter3DSeries();
         series->setItemSize(0.15f);
-        series->setBaseColor(color.at(i));
+        series->setBaseColor(QColor::colorNames().at(i));
         auto item3D = new QScatterDataItem;
         item3D->setX(Vec3D[i].x());
         item3D->setY(Vec3D[i].z());
@@ -156,7 +156,7 @@ void ScatterDataModifier::setGridEnabled(int enabled)
 void ScatterDataModifier::clear()
 {
 
-    for(auto i = 0; i < series_vector.length(); i++)
+    for(int i = 0; i < series_vector.length(); i++)
     {
         m_graph->removeSeries(series_vector[i]);
     }

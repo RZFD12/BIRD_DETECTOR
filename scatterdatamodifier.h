@@ -28,7 +28,7 @@ public:
     void setSmoothDots(int smooth);
     void clear();
     void start();
-    void AddData(const QVector<QVector3D>& Vec3D, QStringList color);
+    void AddData(const QVector<QVector3D>& Vec3D);
 
 public slots:
     void changeStyle(int style);

@@ -453,10 +453,7 @@ void MainWindow::init3DGraph()
     auto container = QWidget::createWindowContainer(graph);
     if (!graph->hasContext())
     {
-        QMessageBox msgBox;
-        msgBox.setText("Couldn't initialize the OpenGL context.");
-        msgBox.exec();
-
+        QMessageBox::information(this, "Error", "Couldn't initialize the OpenGL context.");
     }
     auto widget = new QWidget;
     auto hLayout = new QHBoxLayout(widget);
@@ -507,7 +504,7 @@ void MainWindow::To3D()
 {
     QVector<QPoint> R;
     QVector<QPoint> L;
-    for(auto i = 0; i < leftframe[frame_counter].length(); i++)
+    for(int i = 0; i < leftframe[frame_counter].length(); i++)
     {
         R.push_back(QPoint());
         L.push_back(QPoint());
@@ -517,7 +514,7 @@ void MainWindow::To3D()
         L[i].setY(0-leftframe[frame_counter][i]->pos().y());
     }
     converter.Start(R, L);
-    modifier->AddData(converter.getVec3D(), QColor::colorNames ());
+    modifier->AddData(converter.getVec3D());
     converter.Clear();
 }
 
