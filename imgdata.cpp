@@ -2,9 +2,10 @@
 #include <QtDebug>
 #include <QTime>
 
-ImgData::ImgData(int id, std::string url, QObject* parent) : QObject(parent),
-    cam_id(id),
-    m_video_url(url)
+ImgData::ImgData(int id, std::string url, QObject* parent)
+    : QObject(parent),
+      cam_id(id),
+      m_video_url(url)
 {}
 
 void CreateCenterMark(cv::Mat& frame)

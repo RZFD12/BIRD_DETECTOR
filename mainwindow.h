@@ -126,7 +126,7 @@ private slots:
     void on_dial_valueChanged(int value);
 
 signals:
-    void thresHold(int bs,double C);
+    void thresHold(int bs, double C);
     void imgFilter(state filter);
     void image_cut(int height_pos);
 };

@@ -13,7 +13,7 @@ class FRAME: public QObject, public QGraphicsItem
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
 public:
-    explicit FRAME(int num, QObject* parent = 0);
+    explicit FRAME(int num, QObject* parent = nullptr);
     const int& getNumber() const;
     QRectF boundingRect() const;
 

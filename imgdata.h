@@ -19,18 +19,18 @@ struct color
     quint8 V1;
 };
 
-enum state {Threshold,Gray,RGB};
+enum state {Threshold, Gray, RGB};
 
 class ImgData : public QObject
 {
     Q_OBJECT
 public:
-    explicit ImgData(int id, std::string, QObject* parent = 0);
+    explicit ImgData(int id, std::string, QObject* parent = nullptr);
     void SetIncludedNumList(QList<int>* lst);
     void SetTemplatesImages(QVector<cv::Mat>* vec);
 
 public slots:
-    void setThresHold(int bs,double C);
+    void setThresHold(int bs, double C);
     void imgFilter(state filter);
     void Start();
     void setFileHandler(FileHandler* f);

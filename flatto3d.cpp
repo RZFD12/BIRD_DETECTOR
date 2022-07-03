@@ -3,13 +3,9 @@
 
 #include "flatto3d.h"
 
-#define pi 3.1415
-
 flatto3d::flatto3d(QObject* parent)
     : QObject{parent}
-{
-
-}
+{}
 
 void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
 {
@@ -17,33 +13,33 @@ void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
     {
         this->vec3D.push_back(QVector3D());
         this->alphaprav.append(abs((r[i].x())*this->tetaxprav));
-        this->bettaprav.append((r[i].y())*this->tetayprav*2*pi/360);
+        this->bettaprav.append((r[i].y())*this->tetayprav*2*M_PI/360);
         this->alphalev.append(abs((l[i].x())*this->tetaxlev));
-        this->bettalev.append((l[i].y())*this->tetaylev*2*pi/360);
+        this->bettalev.append((l[i].y())*this->tetaylev*2*M_PI/360);
         if (r[i].x() <= 0)
         {
-            this->alpha1.append((this->btwangle-this->alphaprav[i])*2*pi/360);
+            this->alpha1.append((this->btwangle-this->alphaprav[i])*2*M_PI/360);
         }
         else
         {
-            this->alpha1.append((this->btwangle+this->alphaprav[i])*2*pi/360);
+            this->alpha1.append((this->btwangle+this->alphaprav[i])*2*M_PI/360);
         }
         if (l[i].x() <= 0)
         {
-            this->alpha2.append((this->btwangle+this->alphalev[i])*2*pi/360);
+            this->alpha2.append((this->btwangle+this->alphalev[i])*2*M_PI/360);
         }
         else
         {
-            this->alpha2.append((this->btwangle-this->alphalev[i])*2*pi/360);
+            this->alpha2.append((this->btwangle-this->alphalev[i])*2*M_PI/360);
         }
-        this->gamma.append(pi-(this->alpha1[i]+this->alpha2[i]));
-        this->x1.append(this->rangeCam*sin(this->alpha2[i])/sin(this->gamma[i])*cos(this->angle*2*pi/360));
-        this->x2.append(this->rangeCam*sin(this->alpha1[i])/sin(this->gamma[i])*cos(this->angle*2*pi/360));
+        this->gamma.append(M_PI-(this->alpha1[i]+this->alpha2[i]));
+        this->x1.append(this->rangeCam*sin(this->alpha2[i])/sin(this->gamma[i])*cos(this->angle*2*M_PI/360));
+        this->x2.append(this->rangeCam*sin(this->alpha1[i])/sin(this->gamma[i])*cos(this->angle*2*M_PI/360));
         this->h1.append(tan(this->bettaprav[i])*this->x1[i]);
         this->h2.append(tan(this->bettalev[i])*this->x2[i]);
         this->vec3D[i].setX(this->rangeCam*tan(this->alpha1[i])/(tan(this->alpha1[i])+tan(this->alpha2[i])));
         this->vec3D[i].setY(tan(this->alpha2[i])*this->vec3D[i].x());
-        this->h11.append(tan(this->angle*2*pi/360)*this->x1[i]);
+        this->h11.append(tan(this->angle*2*M_PI/360)*this->x1[i]);
         if (r[i].ry() <= this->videoHalfHeight)
         {
             this->vec3D[i].setZ(this->h1[i]+this->h11[i]+1.5);

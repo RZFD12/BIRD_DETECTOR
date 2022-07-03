@@ -1,8 +1,8 @@
 #include "frame.h"
 
 FRAME::FRAME(int num, QObject* parent)
+    : number(num)
 {
-    this->number = num;
     Q_UNUSED(parent);
 }
 

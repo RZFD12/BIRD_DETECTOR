@@ -6,10 +6,9 @@
 
 #include "filehandler.h"
 
-FileHandler::FileHandler(QObject *parent) : QObject(parent)
-{
-
-}
+FileHandler::FileHandler(QObject *parent)
+    : QObject(parent)
+{}
 
 void FileHandler::setNameOfFile(const QString &newFileName)
 {

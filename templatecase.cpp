@@ -3,7 +3,8 @@
 #include <QtDebug>
 
 myLabel::myLabel(cv::Mat frame,int pos, QWidget *parent)
-:QLabel(parent)
+    : QLabel(parent),
+      position(pos)
 {
     box = new QCheckBox(this);
     box->setFixedSize(5,5);
@@ -16,7 +17,6 @@ myLabel::myLabel(cv::Mat frame,int pos, QWidget *parent)
     QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
     QPixmap pixmap(QPixmap::fromImage(qimg.rgbSwapped()));
     this->setPixmap(pixmap);
-    this->position = pos;
 }
 
 void myLabel::slotClicked()

@@ -3,10 +3,9 @@
 
 #include "template_reader.h"
 
-template_reader::template_reader(QObject* parent) : QObject(parent)
-{
-
-}
+template_reader::template_reader(QObject* parent)
+    : QObject(parent)
+{}
 
 QVector<cv::Mat> template_reader::templates(template_type type)
 {

@@ -66,7 +66,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(filehandler,&FileHandler::readImageRight,this,&MainWindow::loadImgRight);
     frame_timer=new QTimer();
     frame_timer->setInterval(100);
-    video_timer=new QTimer();
+    video_timer = new QTimer();
     video_timer->setInterval(100);
     connect(video_timer,&QTimer::timeout,this,[this]()
     {
@@ -232,7 +232,7 @@ void MainWindow::on_toolButtonPrev_clicked()
     ui->horizontalSliderPlayer->setValue(ui->horizontalSliderPlayer->value()-1);
     MainWindow::frame_num--;
     MainWindow::frame_counter--;
-    for(auto i = 0; i < leftframe[MainWindow::frame_counter].length(); ++i)
+    for(int i = 0; i < leftframe[MainWindow::frame_counter].length(); ++i)
     {
         leftCAM->addItem(leftframe[MainWindow::frame_counter][i]);
         rightCAM->addItem(rightframe[MainWindow::frame_counter][i]);
@@ -274,8 +274,8 @@ void MainWindow::imageFilter()
 }
 
 CamScene::CamScene(camera cam, QWidget* parent)
+    : current_camera(cam)
 {
-    this->current_camera = cam;
     Q_UNUSED(parent);
 }
 
@@ -312,7 +312,7 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
     if(event->button() == Qt::RightButton)
     {
-        for(auto i = 0; i < frames.length(); i++)
+        for(int i = 0; i < frames.length(); i++)
         {
             if(frames[i]->isUnderMouse())
             {

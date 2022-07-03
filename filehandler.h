@@ -20,8 +20,8 @@ struct image_saving_protocol
     std::vector<uint8_t> imgbuff;
 };
 
-enum camera {left,right};
-enum frame_state {next,previos};
+enum camera {left, right};
+enum frame_state {next, previos};
 Q_DECLARE_METATYPE(image_saving_protocol)
 
 class FileHandler : public QObject
@@ -43,7 +43,7 @@ private:
     QMap<camera,image_saving_protocol> m_images;
     QVector <image_saving_protocol> m_buff;
     int m_b = qRegisterMetaType<image_saving_protocol>("image_saving_protocol");
-    int frameState=qRegisterMetaType<frame_state>("frame_state");
+    int frameState = qRegisterMetaType<frame_state>("frame_state");
     int position {};
     int current_size {};
     int frames_counter {};
