@@ -15,10 +15,10 @@ void FRAME::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     painter->setPen(QColor(255,255/number,255/number));
     painter->drawRoundedRect(-25,-25,50,50,10,10);
     painter->drawText(-10,-10,QString::number(this->number));
-    QPen pen;
-    pen.setColor(QColor(255,255/number,255/number));
-    pen.setWidth(3);
-    painter->setPen(pen);
+    QPen* pen = new QPen;
+    pen->setColor(QColor(255,255/number,255/number));
+    pen->setWidth(3);
+    painter->setPen(*pen);
     painter->drawPoint(0,0);
     Q_UNUSED(option);
     Q_UNUSED(widget);

@@ -89,14 +89,14 @@ std::vector<uint64> FileHandler::Data_Indexing()
         QPoint status;
         status.setX(static_cast<quint32>(file.size()/1000));
         image_saving_protocol read_protocol;
-        uint64 def_size = 0;
+        uint64 def_size {};
         indexes.push_back(def_size);
         while(!fs.eof())
         {
             fs.read((char*)&read_protocol.CAMERA_ID,sizeof(unsigned int));
             fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
             fs.read((char*)&read_protocol.tmsec,sizeof (uint64));
-            int size;
+            int size {};
             fs.read((char*)&size,sizeof(int));
             std::vector<uint8_t> buff1;
             buff1.resize(size);
@@ -120,15 +120,15 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
         case frame_state::previos:{position -= 2; break;}
         default: {position += 0;}
     }
-    int f = 0;
+    int f {};
     fs.seekg(FrameByteIndex[position], std::ios_base::beg);
     while (f < 2)
     {
-        int fff = 0;
+        int fff {};
         fs.read((char*)&fff,sizeof(unsigned int));
         fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
         fs.read((char*)&read_protocol.tmsec,sizeof (uint64));
-        int size;
+        int size {};
         fs.read((char*)&size,sizeof(int));
         std::vector<uint8_t> buff1;
         buff1.resize(size);

@@ -49,7 +49,7 @@ private:
     image_saving_protocol p;
     int cut_pix;
     QVector<cv::Mat>* ImagesForTempMatch = nullptr;
-    QList <int>* includednum = nullptr;
+    QList<int>* includednum = nullptr;
     cv::Mat cropped(cv::Mat& frame);
     QVector<cv::Mat> matchingResult(cv::Mat& frame);
     QVector<cv::Point> ResultPoint(const QVector<cv::Mat>& matchicngResultframes);

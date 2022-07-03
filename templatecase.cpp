@@ -46,7 +46,7 @@ TemplateCase::TemplateCase(QWidget* parent) :
     QWidget* w = new QWidget(this);
     w->setLayout(&layout);
     layout.setSpacing(0);
-    ui->scrollArea->setWidget(w);   
+    ui->scrollArea->setWidget(w);
 }
 
 TemplateCase::~TemplateCase()
@@ -56,9 +56,9 @@ TemplateCase::~TemplateCase()
 
 void TemplateCase::set_template(QVector<cv::Mat> &templastes)
 {
-    int posx = 0;
-    int posy = 0;
-    int iter = 0;
+    int posx {};
+    int posy {};
+    int iter {};
     auto count = static_cast<int>(this->width()/55); 
     for(const auto& it : templastes)
     {
@@ -74,8 +74,8 @@ void TemplateCase::set_template(QVector<cv::Mat> &templastes)
 
 int element_position(QList<int>& lst, int num)
 {
-    int position = 0;
-    for(auto i = 0; i < lst.length(); ++i)
+    int position {};
+    for(int i = 0; i < lst.length(); ++i)
     {
         if(lst[i] == num)
         {
@@ -97,7 +97,7 @@ void TemplateCase::labels_state(int num, tmp_state state)
     {
         this->IncludedTempNum.push_back(num);
     }
-    if(state==tmp_state::exclude)
+    if(state == tmp_state::exclude)
     {
         auto position = element_position(IncludedTempNum,num);
         IncludedTempNum.removeOne(position);

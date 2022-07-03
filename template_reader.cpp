@@ -18,7 +18,10 @@ QVector<cv::Mat> template_reader::templates(template_type type)
     QVector<cv::Mat> vec;
     if(type == template_type::BIRD)
     {
-        for(const auto& it : qAsConst(lst)){vec.push_back(cv::imread(it.absoluteFilePath().toStdString(),cv::IMREAD_GRAYSCALE));}
+        for(const auto& it : qAsConst(lst))
+        {
+            vec.push_back(cv::imread(it.absoluteFilePath().toStdString(),cv::IMREAD_GRAYSCALE));
+        }
     }
     else if(type == template_type::BPLA)
     {

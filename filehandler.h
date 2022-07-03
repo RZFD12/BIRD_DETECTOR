@@ -44,9 +44,9 @@ private:
     QVector <image_saving_protocol> m_buff;
     int m_b = qRegisterMetaType<image_saving_protocol>("image_saving_protocol");
     int frameState=qRegisterMetaType<frame_state>("frame_state");
-    int position = 0;
-    int current_size = 0;
-    int frames_counter = 0;
+    int position {};
+    int current_size {};
+    int frames_counter {};
     std::vector<uint64> FrameByteIndex;
     std::vector<std::vector<image_saving_protocol>> image_writing_buffer;
     std::vector<image_saving_protocol> current_stream_buffer;
