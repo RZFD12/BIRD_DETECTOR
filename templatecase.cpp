@@ -17,6 +17,12 @@ myLabel::myLabel(cv::Mat frame,int pos, QWidget *parent)
     this->setPixmap(pixmap);
 }
 
+myLabel::~myLabel()
+{
+    box->deleteLater();
+    Vbox->deleteLater();
+}
+
 void myLabel::slotClicked()
 {
     this->setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -91,7 +97,6 @@ int element_position(QList<int>& lst, int num)
 
 void TemplateCase::labels_state(int num, tmp_state state)
 {
-    qDebug() << num;
     if(state == tmp_state::include)
     {
         this->IncludedTempNum.push_back(num);

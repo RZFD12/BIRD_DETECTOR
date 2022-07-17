@@ -132,6 +132,30 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    leftCAM->deleteLater();
+    rightCAM->deleteLater();
+    leftsock->deleteLater();
+    ImgGetLeft->deleteLater();
+    ImgGetRight->deleteLater();
+    delete leftpix;
+    delete rightpix;
+    filehandler->deleteLater();
+    frame_timer->deleteLater();
+    video_timer->deleteLater();
+    lthread->quit();
+    lthread->deleteLater();
+    rthread->quit();
+    rthread->deleteLater();
+    file_handler_thread->quit();
+    file_handler_thread->deleteLater();
+    map->deleteLater();
+    modifier->deleteLater();
+    tmpcase->deleteLater();
+    reader->deleteLater();
+    opacityPrev->deleteLater();
+    opacityPlay->deleteLater();
+    opacityNext->deleteLater();
+    opacityPlayer->deleteLater();
 }
 
 void MainWindow::loadImgLeft(QPixmap piximg)
@@ -324,12 +348,12 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
     else if(event->button() == Qt::RightButton)
     {
-        for(auto it : frames)
+        for(auto it : qAsConst(frames))
         {
             if(it->isUnderMouse())
             {
-                frames.removeOne(it);
                 it->deleteLater();
+                frames.removeOne(it);
                 break;
             }
             else continue;

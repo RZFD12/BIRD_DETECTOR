@@ -16,6 +16,13 @@ ImgData::ImgData(int id, QString url, QObject* parent)
       includednum(Q_NULLPTR)
 {}
 
+ImgData::~ImgData()
+{
+    filehandler->deleteLater();
+    delete ImagesForTempMatch;
+    delete includednum;
+}
+
 void CreateCenterMark(cv::Mat& frame)
 {
     cv::Point vertical1(960,0);

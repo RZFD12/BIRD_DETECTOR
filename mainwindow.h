@@ -40,7 +40,7 @@ class CamScene final : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    CamScene(camera cam, QWidget* parent = Q_NULLPTR);
+    explicit CamScene(camera cam, QWidget* parent = Q_NULLPTR);
     inline const QVector<FRAME*>& getFrame() const { return frames; }
     inline void clearFrames() { frames.clear(); }
     inline const QPixmap &getCurrentPixMap() { return currentPixMap; }

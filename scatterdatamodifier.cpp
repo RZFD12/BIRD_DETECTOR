@@ -69,10 +69,6 @@ void ScatterDataModifier::addData()
 
 void ScatterDataModifier::AddData(const QVector<QVector3D>& Vec3D)
 {
-    //берем каждый 10 элемент
-    auto size = m_graph->seriesList().length();
-    //series->setBaseColor(color.at (series_vector.length()));
-    qDebug() << size << " size of data";
     for(int i = 0; i < Vec3D.length(); i++)
     {
         auto series = new QScatter3DSeries();

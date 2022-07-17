@@ -30,6 +30,7 @@ class ImgData final : public QObject
     Q_OBJECT
 public:
     explicit ImgData(int id, QString, QObject* parent = Q_NULLPTR);
+    ~ImgData();
     inline void SetIncludedNumList(QList<int>* lst) { includednum = lst; }
     inline void SetTemplatesImages(QVector<cv::Mat>* vec) { ImagesForTempMatch = vec; }
 

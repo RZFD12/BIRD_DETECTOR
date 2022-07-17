@@ -22,7 +22,8 @@ class myLabel final : public QLabel
 {
     Q_OBJECT
 public:
-    myLabel(cv::Mat frame, int pos, QWidget* parent = Q_NULLPTR);
+    explicit myLabel(cv::Mat frame, int pos, QWidget* parent = Q_NULLPTR);
+    ~myLabel();
     QCheckBox* box;
     QVBoxLayout* Vbox;
     int position;
