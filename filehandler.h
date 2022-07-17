@@ -1,7 +1,7 @@
+#pragma once
+
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
-
-#pragma once
 
 #include <QObject>
 #include <QImage>
@@ -12,6 +12,12 @@
 #include <fstream>
 #include <opencv2/opencv.hpp>
 #include <QPoint>
+#include <QDataStream>
+#include <QtDebug>
+#include <QByteArray>
+#include <QThread>
+#include <QDateTime>
+
 
 struct image_saving_protocol
 {
@@ -31,14 +37,13 @@ class FileHandler final : public QObject
     Q_OBJECT
 public:
     explicit FileHandler(QObject* parent = Q_NULLPTR);
-    explicit FileHandler(QString fileName);
     bool Save(image_saving_protocol p);
     QMap<camera,image_saving_protocol> Read(int numFrames);
     void setNameOfFile(const QString& newFileName);
     void matRead(image_saving_protocol& read_protocol, frame_state state);
     void Decode(std::vector<uint8_t> buff, int camera_id);
     void start();
-    const std::vector<uint64>& getFrameByteIndex() const;
+    inline const std::vector<uint64>& getFrameByteIndex() const { return m_FrameByteIndex; }
 
 private:
     QString m_fileName;

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -14,6 +16,14 @@
 #include <QtPositioning>
 #include <QPair>
 #include <QGraphicsEffect>
+#include <QImage>
+#include <QMediaPlayer>
+#include <QTimer>
+#include <QGraphicsPixmapItem>
+#include <QThread>
+#include <QFileDialog>
+#include <QVector3D>
+#include <QUuid>
 
 #include <frame.h>
 #include <imgdata.h>
@@ -30,33 +40,32 @@ class CamScene final : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    CamScene(camera cam, QWidget* parent = nullptr);
-    QVector<FRAME*> getFrame();
-    void clearFrames();
-    const QPixmap &getCurrentPixMap();
-    void setCurrentPixMap(const QPixmap& newCurrentPixMap);
+    CamScene(camera cam, QWidget* parent = Q_NULLPTR);
+    inline const QVector<FRAME*>& getFrame() const { return frames; }
+    inline void clearFrames() { frames.clear(); }
+    inline const QPixmap &getCurrentPixMap() { return currentPixMap; }
+    inline void setCurrentPixMap(const QPixmap& newCurrentPixMap) { currentPixMap = newCurrentPixMap; }
     inline bool isGrabToggled(){ return grabToggled; }
 
 private:
     camera current_camera;
     QVector<FRAME*> frames;
+    QPixmap currentPixMap;
+    bool grabToggled;
+    bool item_under_mouse;
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    QPixmap currentPixMap;
-    bool grabToggled = false;
-    bool item_under_mouse = true;
 };
 
-class MainWindow : public QMainWindow
+class MainWindow final : public QMainWindow
 {
     Q_OBJECT
 public:
-    MainWindow(QWidget* parent = nullptr);
+    MainWindow(QWidget* parent = Q_NULLPTR);
     ~MainWindow();
     friend CamScene;
 
 public slots:
-    void loadImg();
     void loadImgLeft(QPixmap piximg);
     void loadImgRight(QPixmap piximg);
     void IndexingStatus(QPoint p);
@@ -65,22 +74,22 @@ private:
     Ui::MainWindow *ui;
     CamScene* leftCAM;
     CamScene* rightCAM;
-    QUdpSocket* leftsock = nullptr;
+    QUdpSocket* leftsock;
     QPixmap p;
     QPixmap pixImg;
-    ImgData* ImgGetLeft = nullptr;
-    ImgData* ImgGetRight = nullptr;
-    QGraphicsPixmapItem* leftpix = nullptr;
-    QGraphicsPixmapItem* rightpix = nullptr;
-    FileHandler* filehandler = nullptr;
-    QTimer* frame_timer = nullptr;
-    QTimer* video_timer = nullptr;
+    ImgData* ImgGetLeft;
+    ImgData* ImgGetRight;
+    QGraphicsPixmapItem* leftpix;
+    QGraphicsPixmapItem* rightpix;
+    FileHandler* filehandler;
+    QTimer* frame_timer;
+    QTimer* video_timer;
     QThread* lthread;
     QThread* rthread;
     QThread* file_handler_thread;
     QQuickWidget* map;
     ScatterDataModifier* modifier;
-    bool video_play=true;    
+    bool video_play;
     double firstLat;
     double firstLon;
     double secondLat;
@@ -95,8 +104,8 @@ private:
     QGraphicsOpacityEffect* opacityPlay;
     QGraphicsOpacityEffect* opacityNext;
     QGraphicsOpacityEffect* opacityPlayer;
-    float hiddenOpacity = 0.2;
-    float defaultOpacity = 1.0;
+    float hiddenOpacity;
+    float defaultOpacity;
     QMap<int, uint64> frameMap;
     void PixMapCut();
     void setTheme(QString themeName);
@@ -107,7 +116,7 @@ private slots:
     void on_toolButtonNext_clicked();
     void on_toolButtonPlay_clicked();
     void on_toolButtonPrev_clicked();
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent* event) override;
     void addMixmap(QByteArray& data);
     void on_horizontalSliderBlsize_valueChanged(int value);
     void on_horizontalSliderC_valueChanged(int value);

@@ -1,10 +1,8 @@
-#include <QDir>
-#include <QDebug>
-
 #include "template_reader.h"
 
 template_reader::template_reader(QObject* parent)
-    : QObject(parent)
+    : QObject(parent),
+      tmp_images()
 {}
 
 QVector<cv::Mat> template_reader::templates(template_type type)
@@ -32,9 +30,4 @@ QVector<cv::Mat> template_reader::templates(template_type type)
     }
     this->tmp_images = vec;
     return tmp_images;
-}
-
-QVector<cv::Mat>* template_reader::tmp()
-{
-    return &tmp_images;
 }

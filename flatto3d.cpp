@@ -1,10 +1,29 @@
-#include <QtMath>
-#include <QtDebug>
-
 #include "flatto3d.h"
 
 flatto3d::flatto3d(QObject* parent)
-    : QObject{parent}
+    : QObject(parent),
+      rangeCam(1.39),
+      angle(0.0),
+      btwangle(0.0),
+      tetayprav(0.053089),
+      tetaxprav(0.054808),
+      tetaylev(0.053089),
+      tetaxlev(0.054808),
+      videoHalfWidth(960),
+      videoHalfHeight(540),
+      alphaprav(),
+      bettaprav(),
+      alphalev(),
+      bettalev(),
+      alpha1(),
+      alpha2(),
+      gamma(),
+      x1(),
+      x2(),
+      h1(),
+      h2(),
+      h11(),
+      vec3D()
 {}
 
 void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
@@ -51,66 +70,6 @@ void flatto3d::Start(QVector<QPoint> r, QVector<QPoint> l)
     }
 }
 
-const float& flatto3d::getRangeCam() const
-{
-    return rangeCam;
-}
-
-void flatto3d::setRangeCam(float newRangeCam)
-{
-    rangeCam = newRangeCam;
-}
-
-const float& flatto3d::getAngle() const
-{
-    return angle;
-}
-
-void flatto3d::setAngle(float newAngle)
-{
-    angle = newAngle;
-}
-
-const float& flatto3d::getTetaxprav() const
-{
-    return tetaxprav;
-}
-
-void flatto3d::setTetaxprav(float newTetaxprav)
-{
-    tetaxprav = newTetaxprav;
-}
-
-const float& flatto3d::getTetayprav() const
-{
-    return tetayprav;
-}
-
-void flatto3d::setTetayprav(float newTetayprav)
-{
-    tetayprav = newTetayprav;
-}
-
-const float& flatto3d::getTetaxlev() const
-{
-    return tetaxlev;
-}
-
-void flatto3d::setTetaxlev(float newTetaxlev)
-{
-    tetaxlev = newTetaxlev;
-}
-
-const float& flatto3d::getTetaylev() const
-{
-    return tetaylev;
-}
-
-void flatto3d::setTetaylev(float newTetaylev)
-{
-    tetaylev = newTetaylev;
-}
-
 void flatto3d::Clear()
 {
     this->alphaprav.clear (); this->alphaprav.squeeze ();
@@ -126,19 +85,4 @@ void flatto3d::Clear()
     this->h2.clear (); this->h2.squeeze ();
     this->h11.clear (); this->h11.squeeze ();
     this->vec3D.clear(); this->vec3D.squeeze();
-}
-
-const float& flatto3d::getBtwangle() const
-{
-    return btwangle;
-}
-
-void flatto3d::setBtwangle(float newBtwangle)
-{
-    btwangle = newBtwangle;
-}
-
-const QVector<QVector3D> &flatto3d::getVec3D() const
-{
-    return vec3D;
 }

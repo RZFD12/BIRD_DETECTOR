@@ -1,22 +1,46 @@
-#include <QImage>
-#include <QMediaPlayer>
-#include <QTimer>
-#include <QGraphicsPixmapItem>
-#include <QThread>
-#include <QFileDialog>
-#include <QVector3D>
-#include <QUuid>
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow),
+      leftCAM(new CamScene(camera::left)),
+      rightCAM(new CamScene(camera::right)),
+      leftsock(Q_NULLPTR),
+      p(),
+      pixImg(),
+      ImgGetLeft(Q_NULLPTR),
+      ImgGetRight(Q_NULLPTR),
+      leftpix(Q_NULLPTR),
+      rightpix(Q_NULLPTR),
+      filehandler(new FileHandler()),
+      frame_timer(new QTimer()),
+      video_timer(new QTimer()),
+      lthread(Q_NULLPTR),
+      rthread(Q_NULLPTR),
+      file_handler_thread(new QThread()),
+      map(new QQuickWidget(this)),
+      modifier(Q_NULLPTR),
+      video_play(true),
+      firstLat(),
+      firstLon(),
+      secondLat(),
+      secondLon(),
+      canAddMarker(true),
+      leftframe(),
+      rightframe(),
+      converter(),
+      tmpcase(new TemplateCase()),
+      reader(new template_reader()),
+      opacityPrev(new QGraphicsOpacityEffect(this)),
+      opacityPlay(new QGraphicsOpacityEffect(this)),
+      opacityNext(new QGraphicsOpacityEffect(this)),
+      opacityPlayer(new QGraphicsOpacityEffect(this)),
+      hiddenOpacity(0.2),
+      defaultOpacity(1.0),
+      frameMap()
 {
     ui->setupUi(this);
-    leftCAM = new CamScene(camera::left,ui->graphicsViewCamLeft);
-    rightCAM = new CamScene(camera::right,ui->graphicsViewCamRight);
     leftCAM->setBackgroundBrush(Qt::black);
     rightCAM->setBackgroundBrush(Qt::black);
     ui->graphicsViewCamRight->setLayoutDirection(Qt::RightToLeft);
@@ -24,22 +48,18 @@ MainWindow::MainWindow(QWidget* parent)
     ui->graphicsViewCamRight->setScene(rightCAM);
     leftCAM->setSceneRect(-2000,-2000,4000,4000);
     rightCAM->setSceneRect(-2000,-2000,4000,4000);
-    opacityPrev = new QGraphicsOpacityEffect(this);
     opacityPrev->setOpacity(this->hiddenOpacity);
     ui->toolButtonPrev->setDisabled(true);
     ui->toolButtonPrev->setGraphicsEffect(opacityPrev);
     ui->toolButtonPrev->setAutoFillBackground(true);
-    opacityPlay = new QGraphicsOpacityEffect(this);
     opacityPlay->setOpacity(this->hiddenOpacity);
     ui->toolButtonPlay->setDisabled(true);
     ui->toolButtonPlay->setGraphicsEffect(opacityPlay);
     ui->toolButtonPlay->setAutoFillBackground(true);
-    opacityNext = new QGraphicsOpacityEffect(this);
     opacityNext->setOpacity(this->hiddenOpacity);
     ui->toolButtonNext->setDisabled(true);
     ui->toolButtonNext->setGraphicsEffect(opacityNext);
     ui->toolButtonNext->setAutoFillBackground(true);
-    opacityPlayer = new QGraphicsOpacityEffect(this);
     opacityPlayer->setOpacity(this->hiddenOpacity);
     ui->horizontalSliderPlayer->setDisabled(true);
     ui->horizontalSliderPlayer->setGraphicsEffect(opacityPlayer);
@@ -47,26 +67,20 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->RGB,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->GRAY,&QRadioButton::toggled,this,&MainWindow::imageFilter);
     connect(ui->THRESH,&QRadioButton::toggled,this,&MainWindow::imageFilter);
-    map = new QQuickWidget(this);
     map->setSource(QUrl("qrc:/main.qml"));
     map->setResizeMode(QQuickWidget::SizeRootObjectToView);
     ui->gridLayout->addWidget(map);
     ui->tabWidget->setTabText(0, "Cams");
     ui->tabWidget->setTabText(1, "Map|Graph");
-    this->canAddMarker = true;
     ui->lineEditRtspLeft->setText("rtsp://admin:qwerty1234@192.168.0.102:554/ISAPI/Streaming/Channels/101");
     ui->lineEditRtspRight->setText("rtsp://admin:qwerty1234@192.168.0.103:554/ISAPI/Streaming/Channels/101");
-    filehandler = new FileHandler();
-    file_handler_thread = new QThread();
     filehandler->moveToThread(file_handler_thread);
     connect(filehandler,&FileHandler::Status,this,&MainWindow::IndexingStatus);
     connect(file_handler_thread,&QThread::started,filehandler,&FileHandler::start);
     file_handler_thread->start();
     connect(filehandler,&FileHandler::readImageleft,this,&MainWindow::loadImgLeft);
     connect(filehandler,&FileHandler::readImageRight,this,&MainWindow::loadImgRight);
-    frame_timer=new QTimer();
     frame_timer->setInterval(100);
-    video_timer = new QTimer();
     video_timer->setInterval(100);
     connect(video_timer,&QTimer::timeout,this,[this]()
     {
@@ -76,14 +90,12 @@ MainWindow::MainWindow(QWidget* parent)
     });
     init3DGraph();
     leftCAM->setItemIndexMethod(QGraphicsScene::NoIndex);
-    reader = new template_reader();
     auto TMP = reader->templates(template_type::BIRD);
-    tmpcase = new TemplateCase();
     tmpcase->set_template(TMP);
     ui->gridLayoutTemplates->addWidget(tmpcase);
-    if(ImgGetLeft == nullptr)
+    if(ImgGetLeft == Q_NULLPTR)
     {
-        ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text().toStdString());
+        ImgGetLeft = new ImgData(1,ui->lineEditRtspLeft->text());
         ImgGetLeft->SetIncludedNumList(tmpcase->includedtmp());
         ImgGetLeft->SetTemplatesImages(reader->tmp());
         //ImgGetLeft->setFileHandler(this->filehandler);
@@ -99,9 +111,9 @@ MainWindow::MainWindow(QWidget* parent)
         lthread->start();
         frame_timer->start();
     }
-    if(ImgGetRight == nullptr)
+    if(ImgGetRight == Q_NULLPTR)
     {
-        ImgGetRight = new ImgData(2,ui->lineEditRtspRight->text().toStdString());
+        ImgGetRight = new ImgData(2,ui->lineEditRtspRight->text());
         ImgGetRight->SetIncludedNumList(tmpcase->includedtmp());
         ImgGetRight->SetTemplatesImages(reader->tmp());
         rthread = new QThread(this);
@@ -122,14 +134,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::loadImg()
-{
-
-}
-
 void MainWindow::loadImgLeft(QPixmap piximg)
 {
-    if(leftpix != nullptr){leftCAM->removeItem(leftpix); /*leftCAM->clear(); */delete leftpix;}
+    if(leftpix != Q_NULLPTR){leftCAM->removeItem(leftpix); /*leftCAM->clear(); */delete leftpix;}
     leftpix = leftCAM->addPixmap(piximg);    
     leftpix->setData(1,1);
     leftpix->setPos(-960,-540);
@@ -140,7 +147,7 @@ void MainWindow::loadImgLeft(QPixmap piximg)
 
 void MainWindow::loadImgRight(QPixmap piximg)
 {
-    if(rightpix != nullptr){rightCAM->removeItem(rightpix);/*rightCAM->clear();*/ delete rightpix;}
+    if(rightpix != Q_NULLPTR){rightCAM->removeItem(rightpix);/*rightCAM->clear();*/ delete rightpix;}
     rightpix = rightCAM->addPixmap(piximg);
     rightpix->setData(1,1);
     rightpix->setPos(-960,-540);
@@ -274,20 +281,13 @@ void MainWindow::imageFilter()
 }
 
 CamScene::CamScene(camera cam, QWidget* parent)
-    : current_camera(cam)
-{
-    Q_UNUSED(parent);
-}
-
-QVector<FRAME*> CamScene::getFrame()
-{
-    return frames;
-}
-
-void CamScene::clearFrames()
-{
-    this->frames.clear();
-}
+    : QGraphicsScene(parent),
+      current_camera(cam),
+      frames(),
+      currentPixMap(),
+      grabToggled(false),
+      item_under_mouse(true)
+{}
 
 void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
@@ -324,12 +324,12 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
     else if(event->button() == Qt::RightButton)
     {
-        for(auto it : frames)
+        for(int i = 0 ; i < frames.size() ; ++i)
         {
-            if(it->isUnderMouse())
+            if(frames[i]->isUnderMouse())
             {
-                frames.removeOne(it);
-                it->deleteLater();
+                frames.remove(i);
+                frames[i]->deleteLater();
                 break;
             }
             else continue;
@@ -352,16 +352,6 @@ void CamScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         }
         grabToggled = false;
     }
-}
-
-const QPixmap &CamScene::getCurrentPixMap()
-{
-    return currentPixMap;
-}
-
-void CamScene::setCurrentPixMap(const QPixmap &newCurrentPixMap)
-{
-    currentPixMap = newCurrentPixMap;
 }
 
 void MainWindow::on_toolButtonSave_pressed()// save
@@ -478,15 +468,15 @@ void MainWindow::on_spinBoxRotRight_valueChanged(int arg1) //cam right
 
 void MainWindow::init3DGraph()
 {
-    auto graph = new Q3DScatter;
+    auto graph = new Q3DScatter();
     auto container = QWidget::createWindowContainer(graph);
     if (!graph->hasContext())
     {
         QMessageBox::information(this, "Error", "Couldn't initialize the OpenGL context.");
     }
-    auto widget = new QWidget;
+    auto widget = new QWidget();
     auto hLayout = new QHBoxLayout(widget);
-    auto vLayout = new QVBoxLayout;
+    auto vLayout = new QVBoxLayout();
     hLayout->addWidget(container, 1);
     hLayout->addLayout(vLayout);
     widget->setWindowTitle(QStringLiteral("A Cosine Wave"));

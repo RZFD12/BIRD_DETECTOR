@@ -1,7 +1,8 @@
 #include "frame.h"
 
 FRAME::FRAME(int num, QObject* parent)
-    : number(num)
+    : QObject(parent),
+      number(num)
 {
     Q_UNUSED(parent);
 }
@@ -25,9 +26,4 @@ void FRAME::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
     this->setPos(mapToScene(event->pos()));
-}
-
-const int& FRAME::getNumber() const
-{
-    return number;
 }

@@ -1,21 +1,19 @@
 #include "templatecase.h"
 #include "ui_templatecase.h"
-#include <QtDebug>
 
 myLabel::myLabel(cv::Mat frame,int pos, QWidget *parent)
     : QLabel(parent),
-      position(pos)
+      box(new QCheckBox(this)),
+      Vbox(new QVBoxLayout(this)),
+      position(pos),
+      pixmap(QPixmap::fromImage(QImage(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8).rgbSwapped()))
 {
-    box = new QCheckBox(this);
     box->setFixedSize(5,5);
-    Vbox = new QVBoxLayout(this);
     Vbox->addWidget(box);
     this->setLayout(Vbox);
     this->setLineWidth(2);
     this->setFrameStyle(QFrame::Panel | QFrame::Raised);
     box->setChecked(false);
-    QImage qimg(frame.data,frame.cols,frame.rows,frame.step,QImage::Format_Grayscale8);
-    QPixmap pixmap(QPixmap::fromImage(qimg.rgbSwapped()));
     this->setPixmap(pixmap);
 }
 
@@ -28,11 +26,11 @@ void myLabel::slotClicked()
 void myLabel::mousePressEvent ( QMouseEvent* event )
 {
     emit clicked();
-    if(box->isChecked()){unclecked();}
+    if(box->isChecked()){unclicked();}
     else{slotClicked();}
     Q_UNUSED(event);
 }
-void myLabel::unclecked(){
+void myLabel::unclicked(){
     this->setFrameStyle(QFrame::Panel | QFrame::Raised);
     box->setChecked(false);
     emit MyState(this->position, tmp_state::exclude);
@@ -40,10 +38,11 @@ void myLabel::unclecked(){
 
 TemplateCase::TemplateCase(QWidget* parent) :
     QWidget(parent),
-    ui(new Ui::TemplateCase)
+    ui(new Ui::TemplateCase),
+    IncludedTempNum()
 {
     ui->setupUi(this);
-    QWidget* w = new QWidget(this);
+    auto w = new QWidget(this);
     w->setLayout(&layout);
     layout.setSpacing(0);
     ui->scrollArea->setWidget(w);
@@ -102,9 +101,4 @@ void TemplateCase::labels_state(int num, tmp_state state)
         auto position = element_position(IncludedTempNum,num);
         IncludedTempNum.removeOne(position);
     }
-}
-
-QList<int>* TemplateCase::includedtmp()
-{
-    return &IncludedTempNum;
 }

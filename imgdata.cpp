@@ -1,11 +1,19 @@
 #include "imgdata.h"
-#include <QtDebug>
-#include <QTime>
 
-ImgData::ImgData(int id, std::string url, QObject* parent)
+ImgData::ImgData(int id, QString url, QObject* parent)
     : QObject(parent),
       cam_id(id),
-      m_video_url(url)
+      m_video_url(url),
+      m_video(),
+      m_block_size(15),
+      m_C(15),
+      m_FrameFilter(Gray),
+      m_b(qRegisterMetaType<state>("state")),
+      filehandler(Q_NULLPTR),
+      p(),
+      cut_pix(),
+      ImagesForTempMatch(Q_NULLPTR),
+      includednum(Q_NULLPTR)
 {}
 
 void CreateCenterMark(cv::Mat& frame)
@@ -137,39 +145,9 @@ void ImgData::Get()
     }
 }
 
-void ImgData::img_cut(int pix_pos)
-{
-    this->cut_pix = pix_pos;
-}
-
-void ImgData::SetIncludedNumList(QList<int>* lst)
-{
-    includednum = lst;
-}
-
-void ImgData::SetTemplatesImages(QVector<cv::Mat>* vec)
-{
-    ImagesForTempMatch = vec;
-}
-
 void ImgData::setThresHold(int bs, double C)
 {
     if(bs%2 == 1){this->m_block_size = bs;}
     else{this->m_block_size = bs+1;}
     this->m_C = C;
-}
-
-void ImgData::imgFilter(state filter)
-{
-    this->m_FrameFilter = filter;
-}
-
-void ImgData::Start()
-{
-    m_video.open(m_video_url);
-}
-
-void ImgData::setFileHandler(FileHandler* f)
-{
-    Q_UNUSED(f);
 }

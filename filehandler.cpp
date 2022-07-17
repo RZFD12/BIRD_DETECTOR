@@ -1,9 +1,3 @@
-#include <QDataStream>
-#include <QtDebug>
-#include <QByteArray>
-#include <QThread>
-#include <QDateTime>
-
 #include "filehandler.h"
 
 FileHandler::FileHandler(QObject *parent)
@@ -170,10 +164,6 @@ void FileHandler::start()
 
 }
 
-const std::vector<uint64> &FileHandler::getFrameByteIndex() const
-{
-    return m_FrameByteIndex;
-}
 
 QMap<camera,image_saving_protocol> FileHandler::Read(int numFrames)
 {

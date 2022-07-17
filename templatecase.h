@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef TEMPLATECASE_H
 #define TEMPLATECASE_H
 
@@ -8,6 +10,7 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QGridLayout>
+#include <QtDebug>
 
 enum tmp_state{include,exclude};
 
@@ -15,12 +18,11 @@ namespace Ui {
 class TemplateCase;
 }
 
-class myLabel : public QLabel
+class myLabel final : public QLabel
 {
     Q_OBJECT
 public:
-    myLabel(cv::Mat frame, int pos, QWidget* parent = nullptr);
-    ~myLabel(){}
+    myLabel(cv::Mat frame, int pos, QWidget* parent = Q_NULLPTR);
     QCheckBox* box;
     QVBoxLayout* Vbox;
     int position;
@@ -31,23 +33,24 @@ signals:
 
 public slots:
     void slotClicked();
-    void unclecked();
+    void unclicked();
 
-protected:
+private:
+    QPixmap pixmap;
     void mousePressEvent (QMouseEvent* event) override;
 };
 
-class TemplateCase : public QWidget
+class TemplateCase final : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit TemplateCase(QWidget* parent = nullptr);
+    explicit TemplateCase(QWidget* parent = Q_NULLPTR);
     ~TemplateCase();
     void set_template(QVector<cv::Mat>& templastes);
     QGridLayout layout;
     void labels_state(int num, tmp_state state);
-    QList<int>* includedtmp ();
+    inline QList<int>* includedtmp() { return &IncludedTempNum; }
 
 private:
     Ui::TemplateCase* ui;

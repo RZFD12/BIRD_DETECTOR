@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef IMGDATA_H
 #define IMGDATA_H
 
@@ -6,6 +8,8 @@
 #include <QTimer>
 #include <QImage>
 #include <QPixmap>
+#include <QtDebug>
+#include <QTime>
 
 #include <filehandler.h>
 
@@ -25,31 +29,30 @@ class ImgData final : public QObject
 {
     Q_OBJECT
 public:
-    explicit ImgData(int id, std::string, QObject* parent = nullptr);
-    void SetIncludedNumList(QList<int>* lst);
-    void SetTemplatesImages(QVector<cv::Mat>* vec);
+    explicit ImgData(int id, QString, QObject* parent = Q_NULLPTR);
+    inline void SetIncludedNumList(QList<int>* lst) { includednum = lst; }
+    inline void SetTemplatesImages(QVector<cv::Mat>* vec) { ImagesForTempMatch = vec; }
 
 public slots:
     void setThresHold(int bs, double C);
-    void imgFilter(state filter);
-    void Start();
-    void setFileHandler(FileHandler* f);
+    inline void imgFilter(state filter) { m_FrameFilter = filter; }
+    inline void Start() { m_video.open(m_video_url.toStdString()); }
     void Get();
-    void img_cut(int pix_pos);
+    inline void img_cut(int pix_pos) { cut_pix = pix_pos; }
 
 private:
     int cam_id;
-    std::string m_video_url;
+    QString m_video_url;
     cv::VideoCapture m_video;
-    int m_block_size = 15;
-    double m_C = 15;
-    state m_FrameFilter = Gray;
-    int m_b=qRegisterMetaType<state>("state");
-    FileHandler* filehandler = nullptr;
+    int m_block_size;
+    double m_C;
+    state m_FrameFilter;
+    int m_b;
+    FileHandler* filehandler;
     image_saving_protocol p;
     int cut_pix;
-    QVector<cv::Mat>* ImagesForTempMatch = nullptr;
-    QList<int>* includednum = nullptr;
+    QVector<cv::Mat>* ImagesForTempMatch;
+    QList<int>* includednum;
     cv::Mat cropped(cv::Mat& frame);
     QVector<cv::Mat> matchingResult(cv::Mat& frame);
     QVector<cv::Point> ResultPoint(const QVector<cv::Mat>& matchicngResultframes);
