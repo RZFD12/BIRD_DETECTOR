@@ -5,7 +5,7 @@
 #include <QVector3D>
 #include <QPoint>
 
-class flatto3d : public QObject
+class flatto3d final : public QObject
 {
     Q_OBJECT
 public:

@@ -1,6 +1,4 @@
-QT += core gui multimedia network multimediawidgets widgets quickwidgets positioning
-QT += datavisualization
-QT += charts
+QT += core gui multimedia network multimediawidgets widgets quickwidgets positioning datavisualization charts
 
 CONFIG += c++17
 

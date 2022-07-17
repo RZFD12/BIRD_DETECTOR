@@ -26,7 +26,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class CamScene : public QGraphicsScene
+class CamScene final : public QGraphicsScene
 {
     Q_OBJECT
 public:
@@ -40,8 +40,8 @@ public:
 private:
     camera current_camera;
     QVector<FRAME*> frames;
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
     QPixmap currentPixMap;
     bool grabToggled = false;
     bool item_under_mouse = true;
@@ -100,8 +100,8 @@ private:
     QMap<int, uint64> frameMap;
     void PixMapCut();
     void setTheme(QString themeName);
-    inline static int frame_counter = 0;
-    inline static int frame_num = 0;
+    inline static int frame_counter{};
+    inline static int frame_num{};
 
 private slots:
     void on_toolButtonNext_clicked();

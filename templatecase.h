@@ -34,7 +34,7 @@ public slots:
     void unclecked();
 
 protected:
-    void mousePressEvent (QMouseEvent* event) ;
+    void mousePressEvent (QMouseEvent* event) override;
 };
 
 class TemplateCase : public QWidget

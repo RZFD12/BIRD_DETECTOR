@@ -7,14 +7,26 @@
 #include "filehandler.h"
 
 FileHandler::FileHandler(QObject *parent)
-    : QObject(parent)
+    : QObject(parent),
+      m_fileName(),
+      m_file(),
+      m_images(),
+      m_buff(),
+      m_b(qRegisterMetaType<image_saving_protocol>("image_saving_protocol")),
+      m_frameState(qRegisterMetaType<frame_state>("frame_state")),
+      m_position(),
+      m_current_size(),
+      m_frames_counter(),
+      m_FrameByteIndex(),
+      m_image_writing_buffer(),
+      m_current_stream_buffer()
 {}
 
 void FileHandler::setNameOfFile(const QString &newFileName)
 {
     m_fileName = newFileName;
     m_file.setFileName(newFileName);
-    FrameByteIndex = Data_Indexing();
+    m_FrameByteIndex = Data_Indexing();
 }
 
 bool FileHandler::Save(image_saving_protocol p)
@@ -23,46 +35,46 @@ bool FileHandler::Save(image_saving_protocol p)
     param[0] = cv::IMWRITE_JPEG_QUALITY;
     param[1] = 90;
     imencode(".jpg", p.frame, p.imgbuff, param);
-    if(current_stream_buffer.size() == 0)
+    if(m_current_stream_buffer.size() == 0)
     {
-        current_stream_buffer.push_back(p);
+        m_current_stream_buffer.push_back(p);
     }
-    if(current_stream_buffer.size() == 1 && current_stream_buffer[0].CAMERA_ID == p.CAMERA_ID)
+    if(m_current_stream_buffer.size() == 1 && m_current_stream_buffer[0].CAMERA_ID == p.CAMERA_ID)
     {
-        current_stream_buffer[0] = p;
+        m_current_stream_buffer[0] = p;
     }
-    else if (current_stream_buffer.size() == 1 && current_stream_buffer[0].CAMERA_ID != p.CAMERA_ID)
+    else if (m_current_stream_buffer.size() == 1 && m_current_stream_buffer[0].CAMERA_ID != p.CAMERA_ID)
     {
-       current_stream_buffer.push_back(p);
-       image_writing_buffer.push_back(current_stream_buffer);
-       current_stream_buffer.clear();
-       current_stream_buffer.shrink_to_fit();
+       m_current_stream_buffer.push_back(p);
+       m_image_writing_buffer.push_back(m_current_stream_buffer);
+       m_current_stream_buffer.clear();
+       m_current_stream_buffer.shrink_to_fit();
     }
-    if (image_writing_buffer.size() > 199)
+    if (m_image_writing_buffer.size() > 199)
     {
         std::ofstream FILE_INPUT(m_fileName.toStdString(), std::ios::binary | std::ios::app);
         if(FILE_INPUT.is_open())
         {
-            for(size_t i = 0; i < image_writing_buffer.size(); ++i)
+            for(size_t i = 0; i < m_image_writing_buffer.size(); ++i)
             {
-                ++frames_counter;
-                qDebug() << frames_counter;
-                image_writing_buffer[i][0].NUMBER_OF_FRAMES = frames_counter;
-                image_writing_buffer[i][1].NUMBER_OF_FRAMES = frames_counter;
-                if(image_writing_buffer[i][0].CAMERA_ID == 1)
+                ++m_frames_counter;
+                qDebug() << m_frames_counter;
+                m_image_writing_buffer[i][0].NUMBER_OF_FRAMES = m_frames_counter;
+                m_image_writing_buffer[i][1].NUMBER_OF_FRAMES = m_frames_counter;
+                if(m_image_writing_buffer[i][0].CAMERA_ID == 1)
                 {
-                    matWrite(image_writing_buffer[i][0], FILE_INPUT);
-                    matWrite(image_writing_buffer[i][1], FILE_INPUT);
+                    matWrite(m_image_writing_buffer[i][0], FILE_INPUT);
+                    matWrite(m_image_writing_buffer[i][1], FILE_INPUT);
                 }
                 else
                 {
-                    matWrite(image_writing_buffer[i][1], FILE_INPUT);
-                    matWrite(image_writing_buffer[i][0], FILE_INPUT);
+                    matWrite(m_image_writing_buffer[i][1], FILE_INPUT);
+                    matWrite(m_image_writing_buffer[i][0], FILE_INPUT);
                 }
             }
             FILE_INPUT.close();
-            image_writing_buffer.clear();
-            image_writing_buffer.shrink_to_fit();
+            m_image_writing_buffer.clear();
+            m_image_writing_buffer.shrink_to_fit();
         }
     }
     return true;
@@ -115,12 +127,12 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
     std::ifstream fs(m_fileName.toStdString(), std::ios::binary);
     switch(state)
     {
-        case frame_state::next:{position += 2; break;}
-        case frame_state::previos:{position -= 2; break;}
-        default: {position += 0;}
+        case frame_state::next:{m_position += 2; break;}
+        case frame_state::previos:{m_position -= 2; break;}
+        default: {m_position += 0;}
     }
     int f {};
-    fs.seekg(FrameByteIndex[position], std::ios_base::beg);
+    fs.seekg(m_FrameByteIndex[m_position], std::ios_base::beg);
     while (f < 2)
     {
         int fff {};
@@ -160,7 +172,7 @@ void FileHandler::start()
 
 const std::vector<uint64> &FileHandler::getFrameByteIndex() const
 {
-    return FrameByteIndex;
+    return m_FrameByteIndex;
 }
 
 QMap<camera,image_saving_protocol> FileHandler::Read(int numFrames)

@@ -15,12 +15,11 @@ class FRAME final : public QObject, public QGraphicsItem
 public:
     explicit FRAME(int num, QObject* parent = nullptr);
     const int& getNumber() const;
-    QRectF boundingRect() const;
-
+    QRectF boundingRect() const override;
 
 private:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* widget);
-    void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* widget) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     void setBrush();
     int number;
 };

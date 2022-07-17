@@ -21,7 +21,7 @@ struct color
 
 enum state {Threshold, Gray, RGB};
 
-class ImgData : public QObject
+class ImgData final : public QObject
 {
     Q_OBJECT
 public:

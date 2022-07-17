@@ -11,7 +11,7 @@
 
 using namespace QtDataVisualization;
 
-class ScatterDataModifier : public QObject
+class ScatterDataModifier final : public QObject
 {
     Q_OBJECT
 public:

@@ -161,7 +161,7 @@ void MainWindow::PixMapCut()
     auto it = leftframe.find(MainWindow::frame_counter);
     if(it != leftframe.end())
     {       
-        for(auto itFrame : it.value())
+        for(auto itFrame : qAsConst(it.value()))
         {
             auto templ = leftPix.copy(
                        960+itFrame->pos().x()-itFrame->boundingRect().width()/2,
@@ -175,7 +175,7 @@ void MainWindow::PixMapCut()
     it = rightframe.find(MainWindow::frame_counter);
     if(it != rightframe.end())
     {
-        for(auto itFrame : it.value())
+        for(auto itFrame : qAsConst(it.value()))
         {
             auto templ = rightPix.copy(
                         960+itFrame->pos().x()-itFrame->boundingRect().width()/2,
