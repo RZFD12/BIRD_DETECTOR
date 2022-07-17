@@ -324,12 +324,12 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
     }
     else if(event->button() == Qt::RightButton)
     {
-        for(int i = 0 ; i < frames.size() ; ++i)
+        for(auto it : frames)
         {
-            if(frames[i]->isUnderMouse())
+            if(it->isUnderMouse())
             {
-                frames.remove(i);
-                frames[i]->deleteLater();
+                frames.removeOne(it);
+                it->deleteLater();
                 break;
             }
             else continue;
