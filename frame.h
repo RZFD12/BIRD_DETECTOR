@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QCursor>
 
-class FRAME: public QObject, public QGraphicsItem
+class FRAME final : public QObject, public QGraphicsItem
 {
     Q_OBJECT
     Q_INTERFACES(QGraphicsItem)
@@ -17,11 +17,10 @@ public:
     const int& getNumber() const;
     QRectF boundingRect() const;
 
+
 private:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget* widget);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
-    void mousePressEvent(QGraphicsSceneMouseEvent* event);
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void setBrush();
     int number;
 };

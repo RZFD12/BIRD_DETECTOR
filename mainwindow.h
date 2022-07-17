@@ -32,15 +32,19 @@ class CamScene : public QGraphicsScene
 public:
     CamScene(camera cam, QWidget* parent = nullptr);
     QVector<FRAME*> getFrame();
-    void clearFrames();    
+    void clearFrames();
     const QPixmap &getCurrentPixMap();
     void setCurrentPixMap(const QPixmap& newCurrentPixMap);
+    inline bool isGrabToggled(){ return grabToggled; }
 
 private:
     camera current_camera;
     QVector<FRAME*> frames;
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     QPixmap currentPixMap;
+    bool grabToggled = false;
+    bool item_under_mouse = true;
 };
 
 class MainWindow : public QMainWindow

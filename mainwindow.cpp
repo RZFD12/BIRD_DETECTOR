@@ -292,7 +292,7 @@ void CamScene::clearFrames()
 void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     auto itemlist = this->items();
-    auto item_under_mouse = true;
+    item_under_mouse = true;
     for(auto it : itemlist)
     {
         if(it->isUnderMouse() && it->data(1).toInt() == 2)
@@ -310,18 +310,47 @@ void CamScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
         this->addItem(F);
         this->frames.push_back(F);
     }
-    if(event->button() == Qt::RightButton)
+    else if(event->button() == Qt::LeftButton && !item_under_mouse)
     {
-        for(int i = 0; i < frames.length(); i++)
+        for(auto it : itemlist)
         {
-            if(frames[i]->isUnderMouse())
+            if(it->isUnderMouse())
             {
-                frames[i]->deleteLater();
-                frames.remove(i);
+                it->setCursor(QCursor(Qt::ClosedHandCursor));
+                it->grabMouse();
+                grabToggled = true;
+            }
+        }
+    }
+    else if(event->button() == Qt::RightButton)
+    {
+        for(auto it : frames)
+        {
+            if(it->isUnderMouse())
+            {
+                frames.removeOne(it);
+                it->deleteLater();
                 break;
             }
             else continue;
         }
+    }
+}
+
+void CamScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    auto itemlist = this->items();
+    if(event->button() == Qt::LeftButton && grabToggled)
+    {
+        for(auto it : itemlist)
+        {
+            if(it->isUnderMouse())
+            {
+                it->setCursor(QCursor(Qt::ArrowCursor));
+                it->ungrabMouse();
+            }
+        }
+        grabToggled = false;
     }
 }
 
