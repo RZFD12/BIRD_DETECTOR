@@ -1,4 +1,5 @@
 #include "filehandler.h"
+<<<<<<< Updated upstream
 #include <QDataStream>
 #include <QtDebug>
 #include <QByteArray>
@@ -6,6 +7,8 @@
 
 FileHandler::FileHandler(QObject *parent) : QObject(parent)
 {
+=======
+>>>>>>> Stashed changes
 
 }
 
@@ -139,11 +142,17 @@ void FileHandler::matRead(image_saving_protocol& read_protocol, frame_state stat
     {
         int fff=0;
         fs.read((char*)&fff,sizeof(unsigned int));
+<<<<<<< Updated upstream
         //qDebug()<<read_protocol.CAMERA_ID;
         fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof (unsigned int));
         fs.read((char*)&read_protocol.tsec,sizeof (unsigned int));
         fs.read((char*)&read_protocol.tusec,sizeof(unsigned int));
         int size;
+=======
+        fs.read((char*)&read_protocol.NUMBER_OF_FRAMES,sizeof(unsigned int));
+        fs.read((char*)&read_protocol.tmsec,sizeof(uint64));
+        int size {};
+>>>>>>> Stashed changes
         fs.read((char*)&size,sizeof(int));
         std::vector<uint8_t> buff1;
         buff1.resize(size);

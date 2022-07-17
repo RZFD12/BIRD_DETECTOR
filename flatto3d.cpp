@@ -1,4 +1,5 @@
 #include "flatto3d.h"
+<<<<<<< Updated upstream
 #include <QtMath>
 
 #define pi 3.1415
@@ -8,6 +9,34 @@ flatto3d::flatto3d(QObject *parent)
 {
 
 }
+=======
+
+flatto3d::flatto3d(QObject* parent)
+    : QObject(parent),
+      rangeCam(1.39),
+      angle(0.0),
+      btwangle(0.0),
+      tetayprav(0.053089),
+      tetaxprav(0.054808),
+      tetaylev(0.053089),
+      tetaxlev(0.054808),
+      videoHalfWidth(960),
+      videoHalfHeight(540),
+      alphaprav(),
+      bettaprav(),
+      alphalev(),
+      bettalev(),
+      alpha1(),
+      alpha2(),
+      gamma(),
+      x1(),
+      x2(),
+      h1(),
+      h2(),
+      h11(),
+      vec3D()
+{}
+>>>>>>> Stashed changes
 
 void flatto3d::Start(QVector<int> px, QVector<int> py, QVector<int> lx, QVector<int> ly)
 {
@@ -54,6 +83,7 @@ void flatto3d::Start(QVector<int> px, QVector<int> py, QVector<int> lx, QVector<
 
 }
 
+<<<<<<< Updated upstream
 float flatto3d::getRangeCam() const
 {
     return rangeCam;
@@ -120,6 +150,9 @@ const QVector<float> &flatto3d::getH3() const
 }
 
 void flatto3d::clear_data()
+=======
+void flatto3d::Clear()
+>>>>>>> Stashed changes
 {
     this->alphaprav.clear (); this->alphaprav.squeeze ();
     this->bettaprav.clear (); this->bettaprav.squeeze ();
@@ -135,5 +168,9 @@ void flatto3d::clear_data()
     this->x.clear (); this->x.squeeze ();
     this->y.clear (); this->y.squeeze ();
     this->h11.clear (); this->h11.squeeze ();
+<<<<<<< Updated upstream
     this->h3.clear (); this->h3.squeeze ();
+=======
+    this->vec3D.clear(); this->vec3D.squeeze();
+>>>>>>> Stashed changes
 }

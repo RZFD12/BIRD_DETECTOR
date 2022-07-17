@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef SCATTERDATAMODIFIER_H
 #define SCATTERDATAMODIFIER_H
 

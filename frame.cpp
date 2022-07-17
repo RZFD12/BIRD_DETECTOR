@@ -1,5 +1,6 @@
 #include "frame.h"
 
+<<<<<<< Updated upstream
 FRAME::FRAME(QObject *parent)
 {
 
@@ -9,6 +10,12 @@ FRAME::~FRAME()
 {
 
 }
+=======
+FRAME::FRAME(int num, QObject* parent)
+    : QObject(parent),
+      number(num)
+{}
+>>>>>>> Stashed changes
 
 QRectF FRAME::boundingRect() const
 {
@@ -22,6 +29,7 @@ void FRAME::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     Q_UNUSED(option);
     Q_UNUSED(widget);
 }
+<<<<<<< Updated upstream
 void FRAME::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     this->setPos(mapToScene(event->pos()));
@@ -43,3 +51,5 @@ void FRAME::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     this->setCursor(QCursor(Qt::ArrowCursor));
     Q_UNUSED(event);
 }
+=======
+>>>>>>> Stashed changes

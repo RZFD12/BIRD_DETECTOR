@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
 
@@ -10,6 +12,11 @@
 #include <fstream>
 #include <opencv2/opencv.hpp>
 #include <QPoint>
+#include <QDataStream>
+#include <QtDebug>
+#include <QByteArray>
+#include <QThread>
+#include <QDateTime>
 
 struct image_saving_protocol
 {

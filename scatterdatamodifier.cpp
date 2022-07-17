@@ -14,6 +14,7 @@ using namespace QtDataVisualization;
 const int lowerNumberOfItems = 900;
 const float lowerCurveDivider = 0.75f;
 
+<<<<<<< Updated upstream
 ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
     : m_graph(scatter),
       m_fontSize(40.0f),
@@ -25,6 +26,20 @@ ScatterDataModifier::ScatterDataModifier(Q3DScatter *scatter)
     //! [0]
     m_graph->activeTheme()->setType(Q3DTheme::ThemeEbony);
     QFont font = m_graph->activeTheme()->font();
+=======
+ScatterDataModifier::ScatterDataModifier(Q3DScatter* scatter)
+    :series_vector(),
+     m_graph(scatter),
+     m_fontSize(40.0f),
+     m_style(QAbstract3DSeries::MeshBevelCube),
+     m_smooth(true),
+     m_itemCount(lowerNumberOfItems),
+     m_curveDivider(lowerCurveDivider),
+     dataArray()
+{
+    m_graph->activeTheme()->setType(Q3DTheme::ThemeStoneMoss);
+    auto font = m_graph->activeTheme()->font();
+>>>>>>> Stashed changes
     font.setPointSize(m_fontSize);
     m_graph->activeTheme()->setFont(font);
     m_graph->setShadowQuality(QAbstract3DGraph::ShadowQualitySoftLow);
