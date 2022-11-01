@@ -12,7 +12,7 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , Ui::MainWindow
 {
     ui->setupUi(this);
     leftCAM = new CamScene(camera::left,ui->graphicsViewCamLeft);
@@ -115,11 +115,6 @@ MainWindow::MainWindow(QWidget* parent)
         connect(rthread,&QThread::started,ImgGetRight,&ImgData::Start);
         rthread->start();
     }
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }
 
 void MainWindow::loadImg()
